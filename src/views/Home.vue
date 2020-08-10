@@ -5,25 +5,22 @@
       <a-menu theme="dark" :default-selected-keys="['1']" mode="inline">
         <a-menu-item key="1">
           <a-icon type="pie-chart" />
-          <span>工作台</span>
+          <span>Option 1</span>
         </a-menu-item>
         <a-menu-item key="2">
           <a-icon type="desktop" />
-          <span>我的团队</span>
+          <span>Option 2</span>
         </a-menu-item>
         <a-sub-menu key="sub1">
-          <span slot="title"><a-icon type="user" /><span>工作台</span></span>
+          <span slot="title"><a-icon type="user" /><span>User</span></span>
           <a-menu-item key="3">
-            我收藏的文档
+            Tom
           </a-menu-item>
           <a-menu-item key="4">
-            我建立的文档
+            Bill
           </a-menu-item>
           <a-menu-item key="5">
-            我浏览过的文档
-          </a-menu-item>
-          <a-menu-item key="7">
-            我浏览过的文档
+            Alex
           </a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="sub2">
@@ -52,6 +49,9 @@
           Bill is a cat.
         </div>
       </a-layout-content>
+      <a-layout-footer style="text-align: center">
+        Ant Design ©2018 Created by Ant UED
+      </a-layout-footer>
     </a-layout>
   </a-layout>
 </template>
