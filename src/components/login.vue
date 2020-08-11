@@ -64,7 +64,7 @@
 
 <script>
 import axios from 'axios'
-
+//import Cookies from 'js-cookie'
 export default {
   name: "login",
 
@@ -134,8 +134,9 @@ export default {
       
     };
   },
-
+  
   methods: {
+    
     signfail() {
       this.$notification.open({
         message: '注册失败',
@@ -150,7 +151,7 @@ export default {
       this.$notification.open({
         message: '注册成功',
         description:
-          '恭喜你，快来体验石墨烯文档吧！',
+          '恭喜你，快来登录体验石墨烯文档吧！',
         onClick: () => {
           console.log('Notification Clicked!');
         },
@@ -181,8 +182,11 @@ export default {
           axios.post('http://localhost:5000/api/regist',formData,config)
               .then(function (response) {
                   if (response.data.message=="成功注册！"){
+                    
+                    //_this.$router.push('/loginView')
+                    //_this.$router.go(0);
                     _this.signsus();
-                    console.log(response.data);
+                    //console.log(response.data);
                     
                   }else {
                       _this.signfail();
@@ -218,17 +222,16 @@ export default {
                   //userData.wronglog1 = !userData.wronglog1;
                   _this.wronglog.wl=false;
                   _this.rightlog.rl=true;
+                  localStorage.setItem('token',_this.loginForm.username);
                   
-                  
-                  //this.openNotification() ;
-                   
+                  _this.$router.push('/');
+                  _this.$router.go(0)
+                  //this.openNotification() ;   
               }else {
                   //alert(userData.wronglog1)
                   //userData.wronglog1 = true;
                   _this.wronglog.wl=true;
                   _this.rightlog.rl=false;
-                  
-                  
                   //response.openNotification() ;
                   //this.wronglog=true;
                   

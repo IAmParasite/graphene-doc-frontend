@@ -13,7 +13,7 @@
        <router-link  to="/" >
  <a-dropdown>
     <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-       <span><a-badge dot><a-avatar shape="square" size="large" icon="user" /> </a-badge></span><a-icon type="down" />
+       <span><a-badge dot><a-avatar shape="square" size="large" icon="user" /> {{showUserName}}</a-badge></span><a-icon type="down" />
     </a>
     <a-menu slot="overlay">
       <a-menu-item>
@@ -24,7 +24,7 @@
       </a-menu-item>
       <a-menu-divider />
       <a-menu-item>
-        <a href="javascript:;" style="color:#cf2a14;" >退出登陆</a>
+        <a href="javascript:;" style="color:#cf2a14;"  @click="logout">退出登陆,{{showUserName}}</a>
       </a-menu-item>
     </a-menu>
   </a-dropdown>
@@ -125,6 +125,11 @@ export default {
     }
   },
   methods:{
+    logout(){
+      localStorage.removeItem('token');
+      this.$router.push('/loginView');
+      this.$router.go(0)
+    },
     tolog:function(){
       //alert(this.islog)
       this.islog=!this.islog;
@@ -138,9 +143,14 @@ export default {
       //this.$router.go(-1); 
       this.islogging=!this.islogging;
       this.islog=!this.islog;
+      this.$router.push('/');
     }
   },
-  
+  computed:{
+    showUserName(){
+      return localStorage.getItem('token')
+    }
+  }
   
   
 };
