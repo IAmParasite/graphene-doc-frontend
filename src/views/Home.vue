@@ -50,7 +50,8 @@
           <a-breadcrumb-item>Bill</a-breadcrumb-item>
         </a-breadcrumb>
         <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
-          Bill is a cat.
+          
+  
           
         </div>
       </a-layout-content>
@@ -68,6 +69,18 @@ export default {
     return {
       collapsed: false,
     };
+  },
+  methods: {
+    openNotification() {
+      this.$notification.open({
+        message: 'Notification Title',
+        description:
+          'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+        onClick: () => {
+          console.log('Notification Clicked!');
+        },
+      });
+    },
   },
 };
 </script>
