@@ -9,8 +9,7 @@
           <a-breadcrumb-item>Bill</a-breadcrumb-item>
         </a-breadcrumb>
         <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
-          Bill is a cat.
-          
+          Bill is dead.
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
@@ -31,6 +30,8 @@ export default {
   },
   components: {
     Sider,
+  },
+  methods: {
   }
 };
 </script>

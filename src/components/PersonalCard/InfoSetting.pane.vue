@@ -26,7 +26,7 @@
 
 <script>
 //import axios from 'axios'
-import GLOBAL from '@/components/Global.vue'
+import GLOBAL from '@/components/common/Global.vue'
 import axios from 'axios'
 
 export default {
