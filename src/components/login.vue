@@ -122,6 +122,7 @@ export default {
 
   methods: {
     callback(key) {
+      console.log(key);
     },
     successmessage(msg){
       this.$message.success(msg);
@@ -150,7 +151,7 @@ export default {
                   }
               })
               .catch(function (error) {
-                  console.log('wrong')
+                  console.log('wrong', error)
               });
         } else {
           console.log('error submit!!');
@@ -176,7 +177,7 @@ export default {
               }
           })
           .catch(function (error) {
-             console.log("Fail")
+             console.log("Fail", error)
           });
     },
     resetForm(formName) {
