@@ -14,7 +14,6 @@ import { Tabs } from 'ant-design-vue';
 import { Form } from 'ant-design-vue';
 import { FormModel } from 'ant-design-vue';
 import { Menu } from 'ant-design-vue';
-import { Breadcrumb } from 'ant-design-vue';
 
 Vue.use(Button);
 Vue.use(Input);
@@ -28,7 +27,6 @@ Vue.use(Tabs);
 Vue.use(Form);
 Vue.use(FormModel);
 Vue.use(Menu);
-Vue.use(Breadcrumb);
 
 Vue.config.productionTip = false
 

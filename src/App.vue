@@ -8,6 +8,7 @@
      <router-link to="/" @click.native="logback">Back</router-link> 
     </div>
     <router-view/>
+    <AppFooter></AppFooter>
   </div>
   
 </template>

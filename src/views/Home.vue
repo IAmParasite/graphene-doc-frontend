@@ -48,19 +48,9 @@
           <a-breadcrumb-item>User</a-breadcrumb-item>
           <a-breadcrumb-item>Bill</a-breadcrumb-item>
         </a-breadcrumb>
-
-       
-        <div class="icons-list">
-          <a-icon type="file-word" />
-          <a-icon type="file-word" />
-          <a-icon type="file-word" />
-          <a-icon type="file-word" />
-          <a-icon type="file-word" />
-          <a-icon type="file-word" />
-          <a-icon type="step-backward" />
+        <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
+          Bill is a cat.
         </div>
-        
-
       </a-layout-content>
       <a-layout-footer style="text-align: center">
         石墨烯文档
@@ -79,13 +69,6 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.icons-list >>> .anticon {
-  margin-right: 60px;
-  font-size: 40px;
-}
-</style>
 
 <style>
 #components-layout-demo-side .logo {
