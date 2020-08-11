@@ -101,9 +101,9 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           let formData = new FormData();
-          formData.append('username', this.ruleForm.username);
-          formData.append('password', this.ruleForm.pass);
-          formData.append('email', this.ruleForm.email);
+          formData.append('new_username', this.ruleForm.username);
+          formData.append('new_password1', this.ruleForm.pass);
+          formData.append('new_email', this.ruleForm.email);
           let config = {
               headers: {
                   'Content-Type': 'multipart/form-data'
