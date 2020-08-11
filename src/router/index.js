@@ -11,7 +11,37 @@ Vue.use(VueRouter)
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    children: [
+      {
+        path: '/team',
+        component: () => import('../components/menu/Team.vue')
+      },
+      {
+        path: '/help',
+        component: () => import('../components/menu/Help.vue')
+      },
+      {
+        path: '/recent-docs',
+        component: () => import('../components/menu/RecentDocs.vue')
+      },
+      {
+        path: '/enshrine-docs',
+        component: () => import('../components/menu/EnshrineDocs.vue')
+      },
+      {
+        path: '/own-docs',
+        component: () => import('../components/menu/OwnDocs.vue')
+      },
+      {
+        path: '/teams-mem',
+        component: () => import('../components/menu/TeamsMem.vue')
+      },
+      {
+        path: '/dustbin',
+        component: () => import('../components/menu/Dustbin.vue')
+      },
+    ]
   },
 
   {
