@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 import loginView from '../views/loginView.vue'
 import Home from '../views/Home.vue'
+import Personal from '../views/Personal.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,12 @@ Vue.use(VueRouter)
     // which is lazy-loaded when the route is visited.
     component: loginView
   },
+
+  {
+    path: '/Personal',
+    name: 'Personal',
+    component: Personal
+  }
 ]
 
 const router = new VueRouter({
