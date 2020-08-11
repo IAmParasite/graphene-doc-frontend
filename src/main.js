@@ -18,6 +18,7 @@ import { Breadcrumb } from 'ant-design-vue';
 import { Dropdown } from 'ant-design-vue';
 import { Badge } from 'ant-design-vue';
 import { Avatar } from 'ant-design-vue';
+import { Alert } from 'ant-design-vue';
 import { notification } from 'ant-design-vue';
 
 Vue.use(Button);
@@ -36,10 +37,11 @@ Vue.use(Breadcrumb);
 Vue.use(Dropdown);
 Vue.use(Badge);
 Vue.use(Avatar);
-Vue.use(notification);Vue.prototype.$notification = notification;
+Vue.use(Alert);
+Vue.use(notification);
 
-Vue.config.productionTip = false
-
+Vue.config.productionTip = false;
+Vue.prototype.$notification = notification;
 new Vue({
   router,
   render: h => h(App)

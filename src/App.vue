@@ -52,13 +52,14 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #0d0e06;
+  background-size: cover;  
 }
 
 #nav {
   padding: 25px;
   text-align: right;
   font-size:25px;
-  background-repeat: no-repeat;
+  background-size: cover;  
   
 }
 #nav1 {
