@@ -13,8 +13,6 @@
             <a-input-password placeholder="密码"  v-model="loginForm.password" style="margin-top:60px">
               <a-icon slot="prefix" type="info-circle" />
             </a-input-password>
-            <a-alert v-show="rightlog.rl" message="登陆成功" type="success" banner/>
-            <a-alert v-show="wronglog.wl" type="error" message="用户名或密码错误" banner />
             </a-form-model>
             <a-row type="flex" justify="center" style="margin-top:60px;margin-bottom:60px">
               <a-col :span="11">
@@ -183,17 +181,14 @@ export default {
                     //console.log(response.data);
                   }
                   else {
-                    _this.signfail();
                     console.log(response.data.message)
                     console.log('wrong')
                   }
               })
               .catch(function (error) {
-                _this.signfail();
                   console.log('wrong', error)
               });
         } else {
-          _this.signfail();
           console.log('error submit!!');
           return false;
         }
@@ -214,7 +209,7 @@ export default {
               if (response.data.message=='success') {
                   //alert(userData.wronglog1)
                   //userData.wronglog1 = !userData.wronglog1;
-                  //alert(123)
+                  alert(123)
                   _this.wronglog.wl = false;
                   _this.rightlog.rl = true;
                   localStorage.setItem('token',_this.loginForm.username);
@@ -223,9 +218,8 @@ export default {
                   _this.$router.go(0)
                   //this.openNotification() ;   
               }else {
-                
-                console.log(response.data)
-                //alert(0)
+                console.log(response.data.message)
+                alert(0)
                   //alert(userData.wronglog1)
                   //userData.wronglog1 = true;
                   _this.wronglog.wl=true;
