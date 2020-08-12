@@ -4,7 +4,10 @@ const colorList = [
 const loginStatus = false;
 const token='';
 const username='not login';
+<<<<<<< Updated upstream
 const email='test@example.com';
+=======
+>>>>>>> Stashed changes
 /*const my_book_comments={};
 const my_movie_comments={};
 const my_groups={};
@@ -21,7 +24,10 @@ export default
   loginStatus,
   token,
   username,
+<<<<<<< Updated upstream
   email,
+=======
+>>>>>>> Stashed changes
   /*my_book_comments,
   my_movie_comments,
   my_groups,

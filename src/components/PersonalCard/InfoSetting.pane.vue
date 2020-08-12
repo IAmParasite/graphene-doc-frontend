@@ -26,7 +26,10 @@
 
 <script>
 //import axios from 'axios'
+<<<<<<< Updated upstream
 import GLOBAL from '@/components/common/Global.vue'
+=======
+>>>>>>> Stashed changes
 import axios from 'axios'
 
 export default {
@@ -67,8 +70,13 @@ export default {
       }
     }
     return {
+<<<<<<< Updated upstream
       PreEmail: GLOBAL.email,
       PreUsername: GLOBAL.username,
+=======
+      PreEmail: '',
+      PreUsername: localStorage.getItem('token'),
+>>>>>>> Stashed changes
 
       ruleForm: {
         pass: '',
@@ -126,6 +134,7 @@ export default {
         }
       });
     },
+<<<<<<< Updated upstream
   }
 }
 </script>
@@ -269,3 +278,24 @@ export default {
 };
 </script>
 -->
+=======
+  },
+  mounted() {
+    var _this=this;
+    this.PreUsername=localStorage.getItem('token');
+
+    axios.get('http://localhost:5000/api/get_user')
+      .then(function(response) {
+        if(response) {
+          _this.PreEmail=response.email;
+          console.log(response);
+        }else {
+          alert("请先登录！");
+        }
+    }).catch(function(error) {
+      console.log('wrong',error);
+    });
+  }
+}
+</script>
+>>>>>>> Stashed changes
