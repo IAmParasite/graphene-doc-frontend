@@ -4,6 +4,7 @@ const colorList = [
 const loginStatus = false;
 const token='';
 const username='not login';
+const email='test@example.com';
 /*const my_book_comments={};
 const my_movie_comments={};
 const my_groups={};
@@ -20,6 +21,7 @@ export default
   loginStatus,
   token,
   username,
+  email,
   /*my_book_comments,
   my_movie_comments,
   my_groups,

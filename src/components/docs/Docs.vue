@@ -43,7 +43,8 @@
       load_data(id) {
         console.log("Begin load_data" + id)
         let formData = new FormData();
-        formData.append('id', id);
+        formData.append('DocumentID', id);
+        formData.append('username',localStorage.getItem('token'));
         let config = {
         headers: {
             'Content-Type': 'multipart/form-data'
@@ -72,6 +73,7 @@
         let formData = new FormData();
         formData.append('content', this.content);
         formData.append('DocumentID', this.$route.params.id);
+        formData.append('username',localStorage.getItem('token'))
         let config = {
         headers: {
             'Content-Type': 'multipart/form-data'
