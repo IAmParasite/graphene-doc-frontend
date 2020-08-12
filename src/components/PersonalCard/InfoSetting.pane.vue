@@ -97,7 +97,6 @@ export default {
       this.$refs[formName].resetFields();
     },
     changeInfo(formName) {
-      var _this=this
       this.$refs[formName].validate(valid => {
         if (valid) {
           let formData = new FormData();
@@ -114,10 +113,6 @@ export default {
               .then(function (response) {
                   if (response){
                     console.log(response.data);
-                    localStorage.setItem('token',_this.ruleForm.username);
-                    _this.PreUsername=localStorage.getItem('token');
-                    // 刷新页面
-
                   }else {
                       console.log('wrong')
                   }
@@ -144,8 +139,7 @@ export default {
     axios.post('http://localhost:5000/api/get_user/',formData,config)
       .then(function(response) {
         if(response) {
-          _this.ruleForm.username=response.data.username;
-          _this.ruleForm.email=response.data.email;
+          _this.PreEmail=response.data.email;
           _this.ruleForm.pass=response.data.password
           _this.ruleForm.checkPass=response.data.password
           console.log(response);
