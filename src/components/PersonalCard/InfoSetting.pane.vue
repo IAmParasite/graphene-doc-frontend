@@ -26,10 +26,6 @@
 
 <script>
 //import axios from 'axios'
-<<<<<<< Updated upstream
-import GLOBAL from '@/components/common/Global.vue'
-=======
->>>>>>> Stashed changes
 import axios from 'axios'
 
 export default {
@@ -70,13 +66,8 @@ export default {
       }
     }
     return {
-<<<<<<< Updated upstream
-      PreEmail: GLOBAL.email,
-      PreUsername: GLOBAL.username,
-=======
       PreEmail: '',
       PreUsername: localStorage.getItem('token'),
->>>>>>> Stashed changes
 
       ruleForm: {
         pass: '',
@@ -117,7 +108,7 @@ export default {
                   'Content-Type': 'multipart/form-data'
               }
           };
-          axios.post('http://localhost:5000/api/modify_user_info',formData,config)
+          axios.post('http://localhost:5000/api/modify_user_info/',formData,config)
               .then(function (response) {
                   if (response){
                     console.log(response.data);
@@ -134,157 +125,12 @@ export default {
         }
       });
     },
-<<<<<<< Updated upstream
-  }
-}
-</script>
-
-<!--
-<script>
-
-
-export default {
-  name: "PersonalCard",
-
-  data() {
-    //let checkPending;
-    let validatePass = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码！'));
-      } else {
-        if (this.ruleForm.checkPass !== '') {
-          this.$refs.ruleForm.validateField('checkPass');
-        }
-        callback();
-      }
-    };
-    let validatePass2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码！'));
-      } else if (value !== this.ruleForm.pass) {
-        callback(new Error("两次输入的密码不匹配！"));
-      } else {
-        callback();
-      }
-    };
-    let validateusername=(rule,value,callback)=>{
-      if(value==''){
-        callback(new Error('用户名不能为空！'));
-      }else {
-        callback();
-      }
-    };
-    let validateemail=(rule,value,callback)=>{
-      if(value==''){
-        callback(new Error('邮箱不能为空！'));
-      }else{
-        callback();
-      }
-    }
-    return {
-      Global,
-
-      ruleForm: {
-        pass: '',
-        checkPass: '',
-        email:'',
-        username:''
-      },
-      loginForm:{
-        username:'',
-        password:''
-      },
-      rules: {
-        pass: [{ validator: validatePass, trigger: 'change' }],
-        checkPass: [{ validator: validatePass2, trigger: 'change' }],
-        username:[{ validator: validateusername, trigger: 'change' }],
-        email:[{ validator: validateemail, trigger: 'change' }],
-      },
-      layout: {
-        labelCol: { span: 4 },
-        wrapperCol: { span: 20 },
-      },
-    };
-  },
-
-  methods: {
-    callback(key) {
-      console.log(key);
-    },
-    successmessage(msg){
-      this.$message.success(msg);
-    },
-    errormessage(msg){
-      this.$message.error(msg);
-    },
-    signup(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          let formData = new FormData();
-          formData.append('username', this.ruleForm.username);
-          formData.append('password', this.ruleForm.pass);
-          formData.append('email', this.ruleForm.email);
-          let config = {
-              headers: {
-                  'Content-Type': 'multipart/form-data'
-              }
-          };
-          axios.post('http://localhost:5000/api/regist',formData,config)
-              .then(function (response) {
-                  if (response){
-                    console.log(response.data);
-                  }else {
-                      console.log('wrong')
-                  }
-              })
-              .catch(function (error) {
-                  console.log('wrong', error)
-              });
-        } else {
-          console.log('error submit!!');
-          return false;
-        }
-      });
-    },
-    checklogin(){
-      let formData = new FormData();
-      formData.append('username', this.loginForm.username);
-      formData.append('password', this.loginForm.password);
-      let config = {
-          headers: {
-              'Content-Type': 'multipart/form-data'
-          }
-      };
-      axios.post('http://localhost:5000/api/login',formData, config)
-          .then(function (response)  {
-              if (response.data.message=='success') {
-                  console.log("程坤")
-              }else {
-                  console.log("失败")
-              }
-          })
-          .catch(function (error) {
-             console.log("Fail", error)
-          });
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
-  },
-
-  components: {
-    Global
-  }
-};
-</script>
--->
-=======
   },
   mounted() {
     var _this=this;
     this.PreUsername=localStorage.getItem('token');
 
-    axios.get('http://localhost:5000/api/get_user')
+    axios.get('http://localhost:5000/api/get_user/')
       .then(function(response) {
         if(response) {
           _this.PreEmail=response.email;
@@ -298,4 +144,3 @@ export default {
   }
 }
 </script>
->>>>>>> Stashed changes

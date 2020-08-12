@@ -117,10 +117,38 @@ export default {
         labelCol: { span: 4 },
         wrapperCol: { span: 20 },
       },
+
+      wronglog: {
+        wl: false,
+      },
+      
+      rightlog: {
+        rl: false,
+      }
     };
   },
 
   methods: {
+    signfail() {
+      this.$notification.open({
+        message: '注册失败',
+        description:
+          '注册信息有一些问题哦！',
+        onClick: () => {
+          console.log('Notification Clicked!');
+        },
+      });
+    },
+    signsus() {
+      this.$notification.open({
+        message: '注册成功',
+        description:
+          '恭喜你，快来登录体验石墨烯文档吧！',
+        onClick: () => {
+          console.log('Notification Clicked!');
+        },
+      });
+    },
     callback(key) {
       console.log(key);
     },
@@ -142,12 +170,19 @@ export default {
                   'Content-Type': 'multipart/form-data'
               }
           };
-          axios.post('http://localhost:5000/api/regist',formData,config)
+          var _this = this
+          axios.post('http://localhost:5000/api/regist/',formData,config)
               .then(function (response) {
-                  if (response){
-                    console.log(response.data);
-                  }else {
-                      console.log('wrong')
+                  if (response.data.message=="success"){
+                    
+                    //_this.$router.push('/loginView')
+                    //_this.$router.go(0);
+                    _this.signsus();
+                    //console.log(response.data);
+                  }
+                  else {
+                    console.log(response.data.message)
+                    console.log('wrong')
                   }
               })
               .catch(function (error) {
@@ -168,12 +203,30 @@ export default {
               'Content-Type': 'multipart/form-data'
           }
       };
-      axios.post('http://localhost:5000/api/login',formData, config)
+      var _this = this
+      axios.post('http://localhost:5000/api/login/',formData, config)
           .then(function (response)  {
               if (response.data.message=='success') {
-                  console.log("程坤")
+                  //alert(userData.wronglog1)
+                  //userData.wronglog1 = !userData.wronglog1;
+                  alert(123)
+                  _this.wronglog.wl = false;
+                  _this.rightlog.rl = true;
+                  localStorage.setItem('token',_this.loginForm.username);
+                  
+                  _this.$router.push('/');
+                  _this.$router.go(0)
+                  //this.openNotification() ;   
               }else {
-                  console.log("失败")
+                console.log(response.data.message)
+                alert(0)
+                  //alert(userData.wronglog1)
+                  //userData.wronglog1 = true;
+                  _this.wronglog.wl=true;
+                  _this.rightlog.rl=false;
+                  //response.openNotification() ;
+                  //this.wronglog=true;
+                  
               }
           })
           .catch(function (error) {
