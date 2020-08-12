@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import './assets/icon/iconfont.css';
 import 'ant-design-vue/dist/antd.css'; 
-import { Button } from 'ant-design-vue';
+import { Button, notification } from 'ant-design-vue';
 import { Card } from 'ant-design-vue';
 import { Col } from 'ant-design-vue';
 import { Row } from 'ant-design-vue';
@@ -18,10 +18,10 @@ import { Breadcrumb } from 'ant-design-vue';
 import { Dropdown } from 'ant-design-vue';
 import { Badge } from 'ant-design-vue';
 import { Avatar } from 'ant-design-vue';
-import { Alert } from 'ant-design-vue';
-import { notification } from 'ant-design-vue';
+import { ConfigProvider } from 'ant-design-vue';
+import { List } from 'ant-design-vue';
+import { Empty } from 'ant-design-vue'
 import Axios from 'axios'
-
 
 Vue.use(Button);
 Vue.use(Input);
@@ -39,9 +39,11 @@ Vue.use(Breadcrumb);
 Vue.use(Dropdown);
 Vue.use(Badge);
 Vue.use(Avatar);
-Vue.use(Alert);
-Vue.use(notification);
+Vue.use(ConfigProvider);
+Vue.use(List);
+Vue.use(Empty);
 
+Vue.config.productionTip = false
 Axios.interceptors.request.use(config => {  
   if(config.push === '/'){
     console.log(1)
@@ -81,8 +83,9 @@ Axios.interceptors.request.use(config => {
 // error => { 
 //    return Promise.reject(error);  
 //    })
-Vue.config.productionTip = false;
+
 Vue.prototype.$notification = notification;
+
 new Vue({
   router,
   render: h => h(App)
