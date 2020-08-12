@@ -8,12 +8,12 @@
         </span>
         <span class="test">石墨烯文档</span>
       </div>
-      <router-link to="/">Home</router-link> 
-      <router-link v-if="showUserName == null " @click.native='tolog()' to="/loginView" >| Login</router-link>
+      <router-link to="/">Home</router-link> |
+      <router-link @click.native='tolog()' to="/loginView" >Login</router-link>|
        <router-link  to="/" >
  <a-dropdown>
-    <a class="ant-dropdown-link" v-if="showUserName" @click="e => e.preventDefault()">
-       |    <span><a-badge dot><a-avatar shape="square" size="large" icon="user" /> {{showUserName}}</a-badge></span><a-icon type="down" />
+    <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+       <span><a-badge dot><a-avatar shape="square" size="large" icon="user" /> </a-badge></span><a-icon type="down" />
     </a>
     <a-menu slot="overlay">
       <a-menu-item>
@@ -24,7 +24,7 @@
       </a-menu-item>
       <a-menu-divider />
       <a-menu-item>
-        <a href="javascript:;" style="color:#cf2a14;"  @click="logout">退出登陆,{{showUserName}}</a>
+        <a href="javascript:;" style="color:#cf2a14;" >退出登陆</a>
       </a-menu-item>
     </a-menu>
   </a-dropdown>
@@ -52,14 +52,13 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #0d0e06;
-  background-size: cover;  
 }
 
 #nav {
   padding: 25px;
   text-align: right;
   font-size:25px;
-  background-size: cover;  
+  background-repeat: no-repeat;
   
 }
 #nav1 {
@@ -105,10 +104,13 @@
 
 <script>
 
+import AppFooter from './components/Footer.vue';
 //import MessageSvg from './assets/message.svg';
 export default {
   
   components:{
+    
+    AppFooter,
   },
   data(){
     return{
@@ -121,11 +123,6 @@ export default {
     }
   },
   methods:{
-    logout(){
-      localStorage.removeItem('token');
-      this.$router.push('/loginView');
-      this.$router.go(0)
-    },
     tolog:function(){
       //alert(this.islog)
       this.islog=!this.islog;
@@ -139,14 +136,9 @@ export default {
       //this.$router.go(-1); 
       this.islogging=!this.islogging;
       this.islog=!this.islog;
-      this.$router.push('/');
     }
   },
-  computed:{
-    showUserName(){
-      return localStorage.getItem('token')
-    }
-  }
+  
   
   
 };
