@@ -1,6 +1,7 @@
 <template>
   <a-layout style="min-height:100%">
     <a-layout-content>
+      
       <a-card style="width:400px;height:500px;margin:100px auto;">
         <a-tabs default-active-key="sign in" @change="callback">
           <!-- 登录card -->
@@ -12,18 +13,23 @@
             </a-input>
             <a-input-password placeholder="密码"  v-model="loginForm.password" style="margin-top:60px">
               <a-icon slot="prefix" type="info-circle" />
+              
             </a-input-password>
+            <a-alert v-show="rightlog.rl" message="登陆成功" type="success" banner/>
+            <a-alert v-show="wronglog.wl" type="error" message="用户名或密码错误" banner />
             </a-form-model>
+            
             <a-row type="flex" justify="center" style="margin-top:60px;margin-bottom:60px">
               <a-col :span="11">
                 <a-button type="primary" block @click="checklogin()">登录</a-button>
               </a-col>
             </a-row>
           </a-tab-pane>
-
+            
           <!-- 注册card -->
           <a-tab-pane key="sign up" tab="注册" force-render>
             <!-- 注册表单 -->
+            
             <a-form-model ref="ruleForm" :model="ruleForm" :rules="rules" v-bind="layout">
               <a-form-model-item has-feedback prop="email" style="marginBottom:0"  wrapper-col="span: 20">
                 <a-input placeholder="Email" v-model="ruleForm.email" style="margin-top:30px">
@@ -58,6 +64,7 @@
 
 <script>
 import axios from 'axios'
+//import Cookies from 'js-cookie'
 export default {
   name: "login",
 
@@ -117,10 +124,39 @@ export default {
         labelCol: { span: 4 },
         wrapperCol: { span: 20 },
       },
+
+      wronglog:{
+        wl:false,
+      },
+      rightlog:{
+        rl:false,
+      }
+      
     };
   },
-
+  
   methods: {
+    
+    signfail() {
+      this.$notification.open({
+        message: '注册失败',
+        description:
+          '注册信息有一些问题哦！',
+        onClick: () => {
+          console.log('Notification Clicked!');
+        },
+      });
+    },
+    signsus() {
+      this.$notification.open({
+        message: '注册成功',
+        description:
+          '恭喜你，快来登录体验石墨烯文档吧！',
+        onClick: () => {
+          console.log('Notification Clicked!');
+        },
+      });
+    },
     callback(key) {
       console.log(key);
     },
@@ -144,22 +180,31 @@ export default {
           };
           axios.post('http://localhost:5000/api/regist/',formData,config)
               .then(function (response) {
-                  if (response){
-                    console.log(response.data);
+                  if (response.data.message=="成功注册！"){
+                    
+                    //_this.$router.push('/loginView')
+                    //_this.$router.go(0);
+                    _this.signsus();
+                    //console.log(response.data);
+                    
                   }else {
+                      _this.signfail();
                       console.log('wrong')
                   }
               })
               .catch(function (error) {
+                  _this.signfail();
                   console.log('wrong', error)
               });
         } else {
+          _this.signfail();
           console.log('error submit!!');
           return false;
         }
       });
     },
     checklogin(){
+      
       let formData = new FormData();
       formData.append('username', this.loginForm.username);
       formData.append('password', this.loginForm.password);
@@ -171,9 +216,23 @@ export default {
       axios.post('http://localhost:5000/api/login/',formData, config)
           .then(function (response)  {
               if (response.data.message=='success') {
-                  console.log("程坤")
+                  //alert(userData.wronglog1)
+                  //userData.wronglog1 = !userData.wronglog1;
+                  _this.wronglog.wl=false;
+                  _this.rightlog.rl=true;
+                  localStorage.setItem('token',_this.loginForm.username);
+                  
+                  _this.$router.push('/');
+                  _this.$router.go(0)
+                  //this.openNotification() ;   
               }else {
-                  console.log("失败")
+                  //alert(userData.wronglog1)
+                  //userData.wronglog1 = true;
+                  _this.wronglog.wl=true;
+                  _this.rightlog.rl=false;
+                  //response.openNotification() ;
+                  //this.wronglog=true;
+                  
               }
           })
           .catch(function (error) {
@@ -183,6 +242,7 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
+    
   },
 };
 </script>
