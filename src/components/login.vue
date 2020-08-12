@@ -144,8 +144,13 @@ export default {
           };
           axios.post('http://localhost:5000/api/regist/',formData,config)
               .then(function (response) {
-                  if (response){
-                    console.log(response.data);
+                  if (response.data.message=="success"){
+                    
+                    //_this.$router.push('/loginView')
+                    //_this.$router.go(0);
+                    _this.signsus();
+                    //console.log(response.data);
+                    
                   }else {
                       console.log('wrong')
                   }
@@ -171,9 +176,26 @@ export default {
       axios.post('http://localhost:5000/api/login/',formData, config)
           .then(function (response)  {
               if (response.data.message=='success') {
-                  console.log("程坤")
+                  //alert(userData.wronglog1)
+                  //userData.wronglog1 = !userData.wronglog1;
+                  alert(123)
+                  _this.wronglog.wl=false;
+                  _this.rightlog.rl=true;
+                  localStorage.setItem('token',_this.loginForm.username);
+                  
+                  _this.$router.push('/');
+                  _this.$router.go(0)
+                  //this.openNotification() ;   
               }else {
-                  console.log("失败")
+                console.log(response.data.message)
+                alert(0)
+                  //alert(userData.wronglog1)
+                  //userData.wronglog1 = true;
+                  _this.wronglog.wl=true;
+                  _this.rightlog.rl=false;
+                  //response.openNotification() ;
+                  //this.wronglog=true;
+                  
               }
           })
           .catch(function (error) {

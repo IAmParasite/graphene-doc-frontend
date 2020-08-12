@@ -54,7 +54,6 @@
         <div style="margin-top:10px">
           <router-view></router-view>
         </div>
-
       </a-layout-content>
       <a-layout-footer style="text-align: center">
         石墨烯文档
@@ -103,10 +102,17 @@ export default {
                 default:
                   console.log("nothing")
             }
+        }，
+        openNotification() {
+          this.$notification.open({
+            description:
+          'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
+        onClick: () => {
+          console.log('Notification Clicked!');
         },
-
-    },
-};
+          })
+        }
+  }
 </script>
 
 <style>

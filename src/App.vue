@@ -41,6 +41,7 @@
     </div>
    
     <router-view/>
+    <AppFooter></AppFooter>
   </div>
   
 </template>
