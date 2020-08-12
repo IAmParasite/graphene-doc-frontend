@@ -8,6 +8,9 @@
         </span>
         <span class="test">石墨烯文档</span>
       </div>
+
+      
+        
       <router-link to="/">Home</router-link> 
       <router-link v-if="showUserName == null " @click.native='tolog()' to="/loginView" >| Login</router-link>
        <router-link  to="/" >
@@ -17,7 +20,7 @@
     </a>
     <a-menu slot="overlay">
       <a-menu-item>
-        <a href="javascript:;">账号信息</a>
+        <router-link to="/Personal">个人信息设置</router-link>
       </a-menu-item>
       <a-menu-item disabled>
         <a href="javascript:;" >石墨烯小程序(还未开通)</a>
@@ -29,6 +32,7 @@
     </a-menu>
   </a-dropdown>
   </router-link>
+
     </div>
   <div id="nav" v-if="islogging" :style="backgroundDiv" >
     
@@ -41,6 +45,7 @@
     </div>
    
     <router-view/>
+    <AppFooter></AppFooter>
   </div>
   
 </template>
@@ -105,10 +110,13 @@
 
 <script>
 
+import AppFooter from './components/Footer.vue';
 //import MessageSvg from './assets/message.svg';
 export default {
   
   components:{
+    
+    AppFooter,
   },
   data(){
     return{

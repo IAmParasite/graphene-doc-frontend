@@ -1,11 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
 import loginView from '../views/loginView.vue'
 import Home from '../views/Home.vue'
 import Personal from '../views/Personal.vue'
-
 Vue.use(VueRouter)
+
   const routes = [
   {
     path: '/',
@@ -42,7 +41,6 @@ Vue.use(VueRouter)
       },
     ]
   },
-
   {
     path: '/loginView',
     name: 'loginView',
@@ -51,12 +49,19 @@ Vue.use(VueRouter)
     // which is lazy-loaded when the route is visited.
     component: loginView
   },
-
   {
     path: '/Personal',
     name: 'Personal',
     component: Personal
-  }
+  },
+  {
+    path: '/docs/:id',
+    name: 'Docs',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import('../components/docs/Docs.vue')
+  },
 ]
 
 const router = new VueRouter({
@@ -72,7 +77,7 @@ router.beforeEach((to,from,next) => {
       next();
     } else {
     //取出localStorage判断
-          let token = localStorage.getItem('token');      	     
+          let token = localStorage.getItem('token');            
           if (token == null || token === '') { 
                  console.log('请先登录3')    
                  console.log(to.path)
