@@ -4,7 +4,6 @@ import loginView from '../views/loginView.vue'
 import Home from '../views/Home.vue'
 import Personal from '../views/Personal.vue'
 Vue.use(VueRouter)
-
   const routes = [
   {
     path: '/',

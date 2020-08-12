@@ -17,7 +17,7 @@
     </a>
     <a-menu slot="overlay">
       <a-menu-item>
-        <router-link to="/Personal">个人信息设置</router-link>
+        <a href="javascript:;">账号信息</a>
       </a-menu-item>
       <a-menu-item disabled>
         <a href="javascript:;" >石墨烯小程序(还未开通)</a>

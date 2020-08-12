@@ -20,6 +20,10 @@ import { Badge } from 'ant-design-vue';
 import { Avatar } from 'ant-design-vue';
 import { ConfigProvider } from 'ant-design-vue';
 import Axios from 'axios'
+import { Alert } from 'ant-design-vue';
+import { notification } from 'ant-design-vue';
+import Axios from 'axios'
+
 
 Vue.use(Button);
 Vue.use(Input);
@@ -40,6 +44,9 @@ Vue.use(Avatar);
 Vue.use(ConfigProvider);
 
 Vue.config.productionTip = false
+Vue.use(Alert);
+Vue.use(notification);
+
 Axios.interceptors.request.use(config => {  
   if(config.push === '/'){
     console.log(1)
@@ -82,6 +89,32 @@ Axios.interceptors.request.use(config => {
 
 Vue.prototype.$notification = notification;
 
+//    Axios.interceptors.response.use(response => {  
+//     console.log('响应回来：'+response.data.code)  
+//       //和后端token失效返回码约定403    
+//       if (response.data.code == 403) {
+//               // 引用elementui message提示框       
+//               this.$notification.open({
+//                 message: '注册成功',
+//                 description:
+//                   '恭喜你，快来登录体验石墨烯文档吧！',
+//                 onClick: () => {
+//                   console.log('Notification Clicked!');
+//                 },
+//               });
+//               //清除token  
+//               localStorage.removeItem('token ');
+//               //跳转      
+//               router.push({name: 'login'});    
+//           } else { 
+//                   return response  
+//           }  
+//      }, 
+// error => { 
+//    return Promise.reject(error);  
+//    })
+Vue.config.productionTip = false;
+Vue.prototype.$notification = notification;
 new Vue({
   router,
   render: h => h(App)
