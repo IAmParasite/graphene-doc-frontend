@@ -117,10 +117,38 @@ export default {
         labelCol: { span: 4 },
         wrapperCol: { span: 20 },
       },
+
+      wronglog: {
+        wl: false,
+      },
+      
+      rightlog: {
+        rl: false,
+      }
     };
   },
 
   methods: {
+    signfail() {
+      this.$notification.open({
+        message: '注册失败',
+        description:
+          '注册信息有一些问题哦！',
+        onClick: () => {
+          console.log('Notification Clicked!');
+        },
+      });
+    },
+    signsus() {
+      this.$notification.open({
+        message: '注册成功',
+        description:
+          '恭喜你，快来登录体验石墨烯文档吧！',
+        onClick: () => {
+          console.log('Notification Clicked!');
+        },
+      });
+    },
     callback(key) {
       console.log(key);
     },
@@ -142,6 +170,7 @@ export default {
                   'Content-Type': 'multipart/form-data'
               }
           };
+          var _this = this
           axios.post('http://localhost:5000/api/regist/',formData,config)
               .then(function (response) {
                   if (response.data.message=="success"){
@@ -150,9 +179,10 @@ export default {
                     //_this.$router.go(0);
                     _this.signsus();
                     //console.log(response.data);
-                    
-                  }else {
-                      console.log('wrong')
+                  }
+                  else {
+                    console.log(response.data.message)
+                    console.log('wrong')
                   }
               })
               .catch(function (error) {
@@ -173,14 +203,15 @@ export default {
               'Content-Type': 'multipart/form-data'
           }
       };
+      var _this = this
       axios.post('http://localhost:5000/api/login/',formData, config)
           .then(function (response)  {
               if (response.data.message=='success') {
                   //alert(userData.wronglog1)
                   //userData.wronglog1 = !userData.wronglog1;
                   alert(123)
-                  _this.wronglog.wl=false;
-                  _this.rightlog.rl=true;
+                  _this.wronglog.wl = false;
+                  _this.rightlog.rl = true;
                   localStorage.setItem('token',_this.loginForm.username);
                   
                   _this.$router.push('/');

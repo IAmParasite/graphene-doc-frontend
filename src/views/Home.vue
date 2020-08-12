@@ -77,42 +77,40 @@ export default {
                 case "help":
                     console.log("帮助页面")
                     this.$router.push('/help')
-                    this.breadcrumbItems  = ['导航一']
                     break;
                 case "team-index":
                     this.$router.push('/team')
-                    this.breadcrumbItems  = ['导航二']
                     break;
                 case "recent-docs":
                     this.$router.push('/recent-docs')
-                    this.breadcrumbItems  = ['导航三']
                     break;
                 case "enshrine-docs":
                     this.$router.push('/enshrine-docs')
-                    this.breadcrumbItems  = ['导航三']
                     break;
                 case "own-docs":
                     this.$router.push('/own-docs')
-                    this.breadcrumbItems  = ['导航三']
                     break;
                 case "dustbin":
                     this.$router.push('/dustbin')
-                    this.breadcrumbItems  = ['导航三']
+                    break;
+                case "teams-mem":
+                    this.$router.push('/teams-mem')
                     break;
                 default:
                   console.log("nothing")
             }
-        }，
+        },
         openNotification() {
           this.$notification.open({
             description:
           'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
         onClick: () => {
           console.log('Notification Clicked!');
+          },
+          });
         },
-          })
-        }
-  }
+  },
+}
 </script>
 
 <style>
