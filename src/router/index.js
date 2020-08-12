@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import loginView from '../views/loginView.vue'
 import Home from '../views/Home.vue'
+import Personal from '../views/Personal.vue'
 Vue.use(VueRouter)
 
   const routes = [
@@ -49,6 +50,11 @@ Vue.use(VueRouter)
     component: loginView
   },
   {
+    path: '/Personal',
+    name: 'Personal',
+    component: Personal
+  },
+  {
     path: '/docs/:id',
     name: 'Docs',
     // route level code-splitting
@@ -56,7 +62,6 @@ Vue.use(VueRouter)
     // which is lazy-loaded when the route is visited.
     component: () => import('../components/docs/Docs.vue')
   },
-  
 ]
 
 const router = new VueRouter({
