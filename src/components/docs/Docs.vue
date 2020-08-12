@@ -14,7 +14,6 @@
       </a-config-provider>
   </div>
   </div>
-  
 </template>
 
 <script>
@@ -51,7 +50,7 @@
           }
         };
       var _this = this
-        axios.post('http://localhost:5000/api/get_doccontent',formData, config)
+        axios.post('http://localhost:5000/api/get_doccontent/',formData, config)
           .then(function (response)  {
             console.log(response.data.message)
               if (response.data.message=="success") {
@@ -79,7 +78,7 @@
           }
         };
         var _this = this
-        axios.post('http://localhost:5000/api/modify_doc',formData, config)
+        axios.post('http://localhost:5000/api/modify_doc/',formData, config)
           .then(function (response)  {
               console.log(response.data.message)
                 if (response.data.message == "success") {

@@ -71,7 +71,7 @@ export default {
     };
   },
   methods:{  
-        handleSelect(key, keyPath){
+        handleSelect(key){
             console.log(key)
             switch(key.key){
                 case "help":
