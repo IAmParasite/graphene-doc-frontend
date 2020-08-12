@@ -142,7 +142,7 @@ export default {
                   'Content-Type': 'multipart/form-data'
               }
           };
-          axios.post('http://localhost:5000/api/regist',formData,config)
+          axios.post('http://localhost:5000/api/regist/',formData,config)
               .then(function (response) {
                   if (response){
                     console.log(response.data);
@@ -168,7 +168,7 @@ export default {
               'Content-Type': 'multipart/form-data'
           }
       };
-      axios.post('http://localhost:5000/api/login',formData, config)
+      axios.post('http://localhost:5000/api/login/',formData, config)
           .then(function (response)  {
               if (response.data.message=='success') {
                   console.log("程坤")
