@@ -8,12 +8,12 @@
         </span>
         <span class="test">石墨烯文档</span>
       </div>
-      <router-link to="/">Home</router-link> |
-      <router-link @click.native='tolog()' to="/loginView" >Login</router-link>|
+      <router-link to="/">Home</router-link> 
+      <router-link v-if="showUserName == null " @click.native='tolog()' to="/loginView" >| Login</router-link>
        <router-link  to="/" >
  <a-dropdown>
-    <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-       <span><a-badge dot><a-avatar shape="square" size="large" icon="user" /> {{showUserName}}</a-badge></span><a-icon type="down" />
+    <a class="ant-dropdown-link" v-if="showUserName" @click="e => e.preventDefault()">
+       |    <span><a-badge dot><a-avatar shape="square" size="large" icon="user" /> {{showUserName}}</a-badge></span><a-icon type="down" />
     </a>
     <a-menu slot="overlay">
       <a-menu-item>
