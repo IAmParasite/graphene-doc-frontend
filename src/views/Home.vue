@@ -54,7 +54,6 @@
         <div style="margin-top:10px">
           <router-view></router-view>
         </div>
-
       </a-layout-content>
       <a-layout-footer style="text-align: center">
         石墨烯文档
@@ -72,7 +71,7 @@ export default {
     };
   },
   methods:{  
-        handleSelect(key, keyPath){
+        handleSelect(key){
             console.log(key)
             switch(key.key){
                 case "help":
@@ -111,19 +110,7 @@ export default {
           });
         },
   },
-  methods: {
-    openNotification() {
-      this.$notification.open({
-        message: 'Notification Title',
-        description:
-          'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-        onClick: () => {
-          console.log('Notification Clicked!');
-        },
-      });
-    },
-  },
-};
+}
 </script>
 
 <style>
