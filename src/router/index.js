@@ -6,8 +6,6 @@ import loginView from '../views/loginView.vue'
 import Home from '../views/Home.vue'
 import ElementUI from 'element-ui';
 import {Message} from 'element-ui'
-import Personal from '../views/Personal.vue'
-
 Vue.use(VueRouter)
 Vue.use(ElementUI)
 Vue.component(Message)
@@ -17,37 +15,7 @@ Vue.prototype.$message = Message
   {
     path: '/',
     name: 'Home',
-    component: Home,
-    children: [
-      {
-        path: '/team',
-        component: () => import('../components/menu/Team.vue')
-      },
-      {
-        path: '/help',
-        component: () => import('../components/menu/Help.vue')
-      },
-      {
-        path: '/recent-docs',
-        component: () => import('../components/menu/RecentDocs.vue')
-      },
-      {
-        path: '/enshrine-docs',
-        component: () => import('../components/menu/EnshrineDocs.vue')
-      },
-      {
-        path: '/own-docs',
-        component: () => import('../components/menu/OwnDocs.vue')
-      },
-      {
-        path: '/teams-mem',
-        component: () => import('../components/menu/TeamsMem.vue')
-      },
-      {
-        path: '/dustbin',
-        component: () => import('../components/menu/Dustbin.vue')
-      },
-    ]
+    component: Home
   },
 
   {
@@ -58,12 +26,6 @@ Vue.prototype.$message = Message
     // which is lazy-loaded when the route is visited.
     component: loginView
   },
-
-  {
-    path: '/Personal',
-    name: 'Personal',
-    component: Personal
-  }
 ]
 
 const router = new VueRouter({

@@ -181,7 +181,7 @@ export default {
           var _this=this
           axios.post('http://localhost:5000/api/regist',formData,config)
               .then(function (response) {
-                  if (response.data.message=="成功注册！"){
+                  if (response.data.message=="success"){
                     
                     //_this.$router.push('/loginView')
                     //_this.$router.go(0);
@@ -220,6 +220,7 @@ export default {
               if (response.data.message=='success') {
                   //alert(userData.wronglog1)
                   //userData.wronglog1 = !userData.wronglog1;
+                  alert(123)
                   _this.wronglog.wl=false;
                   _this.rightlog.rl=true;
                   localStorage.setItem('token',_this.loginForm.username);
@@ -228,6 +229,8 @@ export default {
                   _this.$router.go(0)
                   //this.openNotification() ;   
               }else {
+                console.log(response.data.message)
+                alert(0)
                   //alert(userData.wronglog1)
                   //userData.wronglog1 = true;
                   _this.wronglog.wl=true;

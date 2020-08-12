@@ -41,6 +41,7 @@
     </div>
    
     <router-view/>
+    <AppFooter></AppFooter>
   </div>
   
 </template>
@@ -105,10 +106,13 @@
 
 <script>
 
+import AppFooter from './components/Footer.vue';
 //import MessageSvg from './assets/message.svg';
 export default {
   
   components:{
+    
+    AppFooter,
   },
   data(){
     return{
