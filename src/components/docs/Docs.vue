@@ -14,6 +14,7 @@
       </a-config-provider>
   </div>
   </div>
+  
 </template>
 
 <script>
@@ -31,7 +32,7 @@
     },
     data() {
       return {
-        content: "<p> 请在这里开始你的?文档编辑</p>",
+        content: "<p> 请在这里开始你的文档编辑</p>",
         editorOption: {}
       }
     },

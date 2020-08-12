@@ -13,8 +13,6 @@
             <a-input-password placeholder="密码"  v-model="loginForm.password" style="margin-top:60px">
               <a-icon slot="prefix" type="info-circle" />
             </a-input-password>
-            <a-alert v-show="rightlog.rl" message="登陆成功" type="success" banner/>
-            <a-alert v-show="wronglog.wl" type="error" message="用户名或密码错误" banner />
             </a-form-model>
             <a-row type="flex" justify="center" style="margin-top:60px;margin-bottom:60px">
               <a-col :span="11">
@@ -193,7 +191,6 @@ export default {
                   console.log('wrong', error)
               });
         } else {
-          _this.signfail();
           console.log('error submit!!');
           return false;
         }
