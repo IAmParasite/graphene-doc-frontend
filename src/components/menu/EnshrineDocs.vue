@@ -1,6 +1,7 @@
 <template>
     <div>
-        这是我收藏的文档
+        
+        <a-empty />
     </div>
 </template>
 <script type="text/ecmascript-6">

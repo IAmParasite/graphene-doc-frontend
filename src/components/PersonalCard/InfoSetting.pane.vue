@@ -103,6 +103,7 @@ export default {
           formData.append('new_username', this.ruleForm.username);
           formData.append('new_password1', this.ruleForm.pass);
           formData.append('new_email', this.ruleForm.email);
+          formData.append('username',this.PreUsername);
           let config = {
               headers: {
                   'Content-Type': 'multipart/form-data'
@@ -128,12 +129,19 @@ export default {
   },
   mounted() {
     var _this=this;
-    this.PreUsername=localStorage.getItem('token');
-
-    axios.get('http://localhost:5000/api/get_user/')
+    let formData = new FormData();
+    formData.append('username', this.PreUsername);
+    let config = {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    };
+    axios.post('http://localhost:5000/api/get_user/',formData,config)
       .then(function(response) {
         if(response) {
-          _this.PreEmail=response.email;
+          _this.PreEmail=response.data.email;
+          _this.ruleForm.pass=response.data.password
+          _this.ruleForm.checkPass=response.data.password
           console.log(response);
         }else {
           alert("请先登录！");
