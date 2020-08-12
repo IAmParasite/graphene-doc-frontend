@@ -78,7 +78,7 @@
             'Content-Type': 'multipart/form-data'
           }
         };
-        var _this = this
+        //var _this = this
         axios.post('http://localhost:5000/api/modify_doc',formData, config)
           .then(function (response)  {
               console.log(response.data.message)
