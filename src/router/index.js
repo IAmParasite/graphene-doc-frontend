@@ -1,18 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Notifications from 'vue-notification'
 import loginView from '../views/loginView.vue'
 import Home from '../views/Home.vue'
-import ElementUI from 'element-ui';
-import {Message} from 'element-ui'
 import Personal from '../views/Personal.vue'
 
 Vue.use(VueRouter)
-Vue.use(ElementUI)
-Vue.component(Message)
-Vue.use(Notifications)
-Vue.prototype.$message = Message
   const routes = [
   {
     path: '/',
