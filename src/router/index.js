@@ -32,12 +32,16 @@ Vue.use(VueRouter)
         component: () => import('../components/menu/OwnDocs.vue')
       },
       {
-        path: '/teams-mem',
-        component: () => import('../components/menu/TeamsMem.vue')
+        path: '/teams-list/:id',
+        component: () => import('../components/menu/TeamsList.vue')
       },
       {
         path: '/dustbin',
         component: () => import('../components/menu/Dustbin.vue')
+      },
+      {
+        path: '/teamdocs-list/:id',
+        component: () => import('../components/team/groupdocs.vue')
       },
     ]
   },
@@ -62,6 +66,11 @@ Vue.use(VueRouter)
     // which is lazy-loaded when the route is visited.
     component: () => import('../components/docs/Docs.vue')
   },
+  {
+    path: '/docs2/:id',
+    name: 'Docs2',
+    component: () => import('../components/docs/Docs2.vue')
+  }
 ]
 
 const router = new VueRouter({

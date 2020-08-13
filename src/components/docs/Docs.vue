@@ -14,7 +14,6 @@
       </a-config-provider>
   </div>
   </div>
-  
 </template>
 
 <script>
@@ -32,7 +31,7 @@
     },
     data() {
       return {
-        content: "<p> 请在这里开始你的文档编辑</p>",
+        content: "<p> 请在这里开始你的?文档编辑</p>",
         editorOption: {}
       }
     },
@@ -44,14 +43,15 @@
       load_data(id) {
         console.log("Begin load_data" + id)
         let formData = new FormData();
-        formData.append('id', id);
+        formData.append('DocumentID', id);
+        formData.append('username',localStorage.getItem('token'));
         let config = {
         headers: {
             'Content-Type': 'multipart/form-data'
           }
         };
       var _this = this
-        axios.post('http://localhost:5000/api/get_doccontent',formData, config)
+        axios.post('http://localhost:5000/api/get_doccontent/',formData, config)
           .then(function (response)  {
             console.log(response.data.message)
               if (response.data.message=="success") {
@@ -73,13 +73,14 @@
         let formData = new FormData();
         formData.append('content', this.content);
         formData.append('DocumentID', this.$route.params.id);
+        formData.append('username',localStorage.getItem('token'))
         let config = {
         headers: {
             'Content-Type': 'multipart/form-data'
           }
         };
-        //var _this = this
-        axios.post('http://localhost:5000/api/modify_doc',formData, config)
+        
+        axios.post('http://localhost:5000/api/modify_doc/',formData, config)
           .then(function (response)  {
               console.log(response.data.message)
                 if (response.data.message == "success") {

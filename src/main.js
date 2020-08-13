@@ -20,7 +20,9 @@ import { Badge } from 'ant-design-vue';
 import { Avatar } from 'ant-design-vue';
 import { ConfigProvider } from 'ant-design-vue';
 import { List } from 'ant-design-vue';
-import { Empty } from 'ant-design-vue'
+import { Empty } from 'ant-design-vue';
+import { Popover } from 'ant-design-vue'
+import { Alert } from 'ant-design-vue';
 import Axios from 'axios'
 
 Vue.use(Button);
@@ -42,6 +44,8 @@ Vue.use(Avatar);
 Vue.use(ConfigProvider);
 Vue.use(List);
 Vue.use(Empty);
+Vue.use(Popover);
+Vue.use(Alert);
 
 Vue.config.productionTip = false
 Axios.interceptors.request.use(config => {  

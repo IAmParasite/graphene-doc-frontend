@@ -29,13 +29,13 @@
 <script type="text/ecmascript-6">
 const data = [
   {
-    title: '今日头条',
+    title: '啊',
   },
   {
     title: '啊这',
   },
   {
-    title: 'Title 3',
+    title: '团队文件列表',
   },
   {
     title: 'Title 4',
@@ -54,6 +54,10 @@ const data = [
                 data,
             }
         },
+        mounted: function() {
+          console.log(this.$route.params.id);
+          this.load_data(this.$route.params.id);
+    },
         methods: {
           toDocs() {
             this.$router.push('/docs/1');
