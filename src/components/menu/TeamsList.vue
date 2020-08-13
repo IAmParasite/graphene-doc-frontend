@@ -95,7 +95,7 @@ export default {
                 'Content-Type': 'multipart/form-data'
             }
         };
-        axios.post('http://localhost:5000/api/mygroup/',formData,config)
+        axios.post('http://localhost:5000/api/group_created_byme/',formData,config)
             .then(function(response) {
                 if(response) {
                   _this.data=response.data;
