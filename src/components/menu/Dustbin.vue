@@ -57,6 +57,7 @@ const data = [
           deleteDocs(item){
               console.log("删除该项" + item.id)
               this.data.splice(item, 1)
+              var _this = this
               let formData = new FormData();
               formData.append('DocumentID', item.id);
               formData.append('username', localStorage.getItem('token'));

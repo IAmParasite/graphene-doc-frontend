@@ -10,7 +10,7 @@
         <template slot="content">
           <span style="font-size:20px">点击创建属于你的文档! QuQ</span>
         </template>
-        <a-button type="primary" icon="plus"  size="large" block=true @click="newdoc()" >
+        <a-button type="primary" icon="plus"  size="large" block @click="newdoc()" >
     </a-button>
       </a-popover>
         </a-affix>
@@ -71,14 +71,17 @@ const data = [
           newdoc(){
             let formData = new FormData();
             formData.append('username', localStorage.getItem('token'));
-            formData.append('title','untitled');
-            formData.append('content','');
+            formData.append('title', '测试新建文档3');
+            formData.append('modify_right', 0);
+            formData.append('share_right', 0);
+            formData.append('discuss_right', 0);
+            formData.append('content', '真的强');
             let config = {
               headers: {
                 'Content-Type': 'multipart/form-data'
               }
             };
-            axios.post('http://localhost:5000/api/create_doc/',formData, config)
+            axios.post('http://localhost:5000/api/create_personal_doc/',formData, config)
               .then(function (response)  {
                 console.log(response.data.message)
                   if (response.data.message == "success") {
@@ -91,7 +94,11 @@ const data = [
               .catch(function (error) {
                 console.log("Fail", error)
               });
-              this.$root.reload();
+              this.$router.go(0);
+          },
+          toDocs(id) {
+            //这边判断是否能看，比如occupied
+            this.$router.push('/docs2/'+id);
           },
           toDocs(id) {
             //这边判断是否能看，比如occupied
@@ -101,28 +108,28 @@ const data = [
               console.log("删除该项" + item.id)
               this.data.splice(item, 1)
               
-            let formData = new FormData();
-            formData.append('DocumentID', item.id);
-            formData.append('username', localStorage.getItem('token'));
-            console.log(localStorage.getItem('token'))
-            let config = {
+              let formData = new FormData();
+              formData.append('DocumentID', item.id);
+              formData.append('username', localStorage.getItem('token'));
+              console.log(localStorage.getItem('token'))
+              let config = {
               headers: {
                 'Content-Type': 'multipart/form-data'
               }
             };
             axios.post('http://localhost:5000/api/recycle_doc/',formData, config)
-              .then(function (response)  {
-                console.log(response.data.message)
-                  if (response.data.message == "success") {
-                      console.log("删除程坤")
-                  }
-                  else {
-                      console.log("删除失败")
-                  }
-              })
-              .catch(function (error) {
-                console.log("Fail", error)
-              });
+          .then(function (response)  {
+              console.log(response.data.message)
+                if (response.data.message == "success") {
+                    console.log("删除程坤")
+                }
+                else {
+                    console.log("删除失败")
+                }
+            })
+            .catch(function (error) {
+              console.log("Fail", error)
+            });
           }
         },
         mounted(){
