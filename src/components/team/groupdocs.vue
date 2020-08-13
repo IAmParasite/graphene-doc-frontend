@@ -72,7 +72,7 @@ const data = [
             }
         },
         mounted: function() {
-          console.log(this.$route.params.id);
+          console.log('router info',this.$route.params.id);
           this.load_data(this.$route.params.id);
     },
         methods: {
