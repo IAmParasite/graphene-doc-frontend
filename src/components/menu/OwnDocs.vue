@@ -100,10 +100,6 @@ const data = [
             //这边判断是否能看，比如occupied
             this.$router.push('/docs2/'+id);
           },
-          toDocs(id) {
-            //这边判断是否能看，比如occupied
-            this.$router.push('/docs2/'+id);
-          },
           deleteDocs(item){
               console.log("删除该项" + item.id)
               this.data.splice(item, 1)
