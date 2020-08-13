@@ -12,10 +12,6 @@ Vue.use(VueRouter)
     component: Home,
     children: [
       {
-        path: '/team',
-        component: () => import('../components/menu/Team.vue')
-      },
-      {
         path: '/help',
         component: () => import('../components/menu/Help.vue')
       },

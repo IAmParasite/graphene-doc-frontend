@@ -23,6 +23,7 @@ import { List } from 'ant-design-vue';
 import { Empty } from 'ant-design-vue';
 import { Popover } from 'ant-design-vue'
 import { Alert } from 'ant-design-vue';
+import { Description, Divider} from 'ant-design-vue';
 import Axios from 'axios'
 
 Vue.use(Button);
@@ -46,6 +47,8 @@ Vue.use(List);
 Vue.use(Empty);
 Vue.use(Popover);
 Vue.use(Alert);
+Vue.use(Description);
+Vue.use(Divider);
 
 Vue.config.productionTip = false
 Axios.interceptors.request.use(config => {  
