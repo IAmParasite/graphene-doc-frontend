@@ -23,7 +23,7 @@ import { List } from 'ant-design-vue';
 import { Empty } from 'ant-design-vue';
 import { Popover } from 'ant-design-vue'
 import { Alert } from 'ant-design-vue';
-import { Description, Divider} from 'ant-design-vue';
+import { Descriptions, Divider} from 'ant-design-vue';
 import Axios from 'axios'
 import VueRouter from 'vue-router'
 
@@ -48,14 +48,8 @@ Vue.use(List);
 Vue.use(Empty);
 Vue.use(Popover);
 Vue.use(Alert);
-Vue.use(Description);
+Vue.use(Descriptions);
 Vue.use(Divider);
-
-Vue.config.productionTip = false
-const originalPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch(err => err)
-}
 
 Vue.config.productionTip = false
 const originalPush = VueRouter.prototype.push
