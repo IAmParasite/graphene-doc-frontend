@@ -69,7 +69,29 @@ const data = [
         },
         methods: {
           newdoc(){
-            alert("嘤嘤嘤")
+            let formData = new FormData();
+            formData.append('username', localStorage.getItem('token'));
+            formData.append('title','untitled');
+            formData.append('content','');
+            let config = {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            };
+            axios.post('http://localhost:5000/api/create_doc/',formData, config)
+              .then(function (response)  {
+                console.log(response.data.message)
+                  if (response.data.message == "success") {
+                      console.log("创建程坤")
+                  }
+                  else {
+                      console.log("创建失败")
+                  }
+              })
+              .catch(function (error) {
+                console.log("Fail", error)
+              });
+              this.$root.reload();
           },
           toDocs(id) {
             //这边判断是否能看，比如occupied
@@ -79,28 +101,28 @@ const data = [
               console.log("删除该项" + item.id)
               this.data.splice(item, 1)
               
-              let formData = new FormData();
-              formData.append('DocumentID', item.id);
-              formData.append('username', localStorage.getItem('token'));
-              console.log(localStorage.getItem('token'))
-              let config = {
+            let formData = new FormData();
+            formData.append('DocumentID', item.id);
+            formData.append('username', localStorage.getItem('token'));
+            console.log(localStorage.getItem('token'))
+            let config = {
               headers: {
                 'Content-Type': 'multipart/form-data'
               }
             };
             axios.post('http://localhost:5000/api/recycle_doc/',formData, config)
-          .then(function (response)  {
-              console.log(response.data.message)
-                if (response.data.message == "success") {
-                    console.log("删除程坤")
-                }
-                else {
-                    console.log("删除失败")
-                }
-            })
-            .catch(function (error) {
-              console.log("Fail", error)
-            });
+              .then(function (response)  {
+                console.log(response.data.message)
+                  if (response.data.message == "success") {
+                      console.log("删除程坤")
+                  }
+                  else {
+                      console.log("删除失败")
+                  }
+              })
+              .catch(function (error) {
+                console.log("Fail", error)
+              });
           }
         },
         mounted(){
