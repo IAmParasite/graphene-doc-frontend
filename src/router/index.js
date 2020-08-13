@@ -12,10 +12,6 @@ Vue.use(VueRouter)
     component: Home,
     children: [
       {
-        path: '/team',
-        component: () => import('../components/menu/Team.vue')
-      },
-      {
         path: '/help',
         component: () => import('../components/menu/Help.vue')
       },
@@ -38,6 +34,10 @@ Vue.use(VueRouter)
       {
         path: '/dustbin',
         component: () => import('../components/menu/Dustbin.vue')
+      },
+      {
+        path: '/teamdocs-list/:id',
+        component: () => import('../components/team/groupdocs.vue')
       },
     ]
   },
