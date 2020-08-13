@@ -26,10 +26,6 @@
     </a-list-item>
   </a-list>
     </div>
-    
-  
-
-
 </template>
 <script type="text/ecmascript-6">
 import axios from 'axios'
