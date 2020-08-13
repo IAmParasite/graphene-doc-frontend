@@ -1,7 +1,7 @@
 <template>
-      <a-layout>
-        <a-layout-content>
-          <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="data">
+      <div>
+        <a-col span="18">
+            <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="data">
             <a-list-item slot="renderItem" slot-scope="item">
               
               <a-card hoverable style="width: 190px" :title="item.title" @click="toDocs()">
@@ -24,11 +24,12 @@
           </a-card>
             </a-list-item>
           </a-list>
-        </a-layout-content>
-        <a-layout-sider>
+        </a-col>
+        <a-col span="6" id="sider-col">
           <TeamInfo :groupObj="groupObj"></TeamInfo>
-        </a-layout-sider>
-      </a-layout>
+        </a-col>
+        
+      </div>
 </template>
 <script type="text/ecmascript-6">
 import TeamInfo from './TeamInfo.vue';
@@ -64,7 +65,7 @@ const data = [
                   groupname: 'TEAMTESTINFO',
                   groupid: 111111111,
                   createdtime: 'Yesterday',
-                  description: '团队精神的形成并不要求团队成员牺牲自我，相反，挥洒个性、表现特长保证了成员共同完成任务目标，而明确的协作意愿和协作方式则产生了真正的内心动力。团队精神是组织文化的一部分，良好的管理可以通过合适的组织形态将每个人安排至合适的岗位，充分发挥集体的潜能。如果没有正确的管理文化，没有良好的从业心态和奉献精神，就不会有团队精神。',
+                  description: '团队精神的形成并不要求团队成员牺牲自我，相反，挥洒个性、表现特长保证了成员共同完成任务目标，',
                 },
             }
         },
@@ -78,4 +79,11 @@ const data = [
           }
         }
     }
-</script><style></style>
+</script>
+<style>
+#sider-col{
+  background-color: #dcdcdc;
+  border: solid rgb(136, 136, 136) 1px;
+  height: 100%
+}
+</style>

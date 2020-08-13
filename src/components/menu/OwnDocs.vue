@@ -60,6 +60,7 @@ export default {
   data() {
     return {
       data,
+      top: 0,
       visible: false,
       labelCol: { span: 4 },
       wrapperCol: { span: 14 },
@@ -84,6 +85,64 @@ export default {
       this.form.DocumentID = item.id;
       this.visible = true;
     },
+    toDocs(id) {
+            //这边判断是否能看，比如occupied
+            this.$router.push('/docs2/'+id);
+    },
+    newdoc(){
+      let formData = new FormData();
+      formData.append('username', localStorage.getItem('token'));
+      formData.append('title', '测试新建文档3');
+      formData.append('modify_right', 0);
+      formData.append('share_right', 0);
+      formData.append('discuss_right', 0);
+      formData.append('content', '真的强');
+      let config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      };
+      axios.post('http://localhost:5000/api/create_personal_doc/',formData, config)
+        .then(function (response)  {
+          console.log(response.data.message)
+            if (response.data.message == "success") {
+                console.log("创建程坤")
+            }
+            else {
+                console.log("创建失败")
+            }
+        })
+        .catch(function (error) {
+          console.log("Fail", error)
+        });
+        this.$router.go(0);
+      },
+    deleteDocs(item){
+      console.log("删除该项" + item.id)
+      this.data.splice(item, 1)
+      
+      let formData = new FormData();
+      formData.append('DocumentID', item.id);
+      formData.append('username', localStorage.getItem('token'));
+      console.log(localStorage.getItem('token'))
+      let config = {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    };
+    axios.post('http://localhost:5000/api/recycle_doc/',formData, config)
+      .then(function (response)  {
+          console.log(response.data.message)
+            if (response.data.message == "success") {
+                console.log("删除程坤")
+            }
+            else {
+                console.log("删除失败")
+            }
+        }).catch(function (error) {
+          console.log("Fail", error)
+        });
+      }
     handleOk(e) {
       var _this = this;
       let formData = new FormData();
@@ -94,8 +153,7 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
-      axios
-        .post("http://localhost:5000/api/modify_doc_basic/", formData, config)
+      axios.post("http://localhost:5000/api/modify_doc_basic/", formData, config)
         .then(function (response) {
           if (response) {
             _this.successmsg("修改成功！");
@@ -104,8 +162,7 @@ export default {
             }, 2000);
           } else {
             _this.errormsg("修改失败，请尝试刷新后再次修改！");
-          }
-        })
+           })
         .catch(function (error) {
           _this.errormsg("修改失败，请尝试刷新后再次修改！");
         });
