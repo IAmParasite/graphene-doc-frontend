@@ -1,9 +1,9 @@
 <template>
     <div>
         <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="data">
-    <a-list-item slot="renderItem" slot-scope="item"  >
+    <a-list-item slot="renderItem" slot-scope="item">
       
-      <a-card hoverable style="width: 190px" :title="item.title" @click="toGroupDocs($event)" :id="item.index">
+      <a-card hoverable style="width: 190px" :title="item.title" @click="toGroupDocs(item)">
     <img
       slot="cover"
       alt="example"
@@ -46,8 +46,9 @@ export default {
     },
 
     methods: {
-      toGroupDocs(){
+      toGroupDocs(item){
         console.log("亲，现在跳转不了哦")
+        this.$router.push('/teamdocs-list/' + item.groupid)
       },
 
       load_list(id) {
