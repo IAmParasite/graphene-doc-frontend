@@ -1,6 +1,6 @@
 <template>
     <div>
-        <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="data">
+        <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="teamList">
     <a-list-item slot="renderItem" slot-scope="item">
       
       <a-card hoverable style="width: 190px" :title="item.title">
@@ -29,31 +29,38 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-const data = [
-  {
-    title: 'Group 1',
-  },
-  {
-    title: 'Group 2',
-  },
-  {
-    title: 'Group 3',
-  },
-  {
-    title: 'Group 4',
-  },
-  {
-    title: 'Group 5',
-  },
-  {
-    title: 'Group 6',
-  },
-];
-    export default {
-        data(){
-            return {
-                data,
-            }
+export default {
+    data(){
+        return {
+            teamList:[
+              {title:'Group1'},
+              {title:'Group2'},
+              {title:'Group3'},
+              {title:'Group4'},
+              {title:'Group5'},
+              {title:'Group6'},
+              {title:'Group7'},
+            ],
+
         }
+    },
+
+    mounted() {
+      this.load_list(this.$route.params.id);
+    },
+
+    methods: {
+      load_list(id) {
+        switch(id) {
+          case 'founded-team': {
+            this.teamList.push({title:'Founded Team'});
+            break;
+          }
+          case 'joined-team': {
+            this.teamList.push({title:'Joined Team'});
+          }
+        }
+      }
     }
+}
 </script>

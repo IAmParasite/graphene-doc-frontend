@@ -4,11 +4,7 @@
       <div class="logo" />
       <a-menu theme="light" :default-selected-keys="['2']" mode="inline" @select="handleSelect"> 
        
-        <a-menu-item key="team-index">
-          <a-icon type="user" />
-          <span>我的团队</span>
-          
-        </a-menu-item>
+        
         <a-sub-menu key="sub1">
           <span slot="title"><a-icon type="edit" /><span>工作台</span></span>
           <a-menu-item key="recent-docs">
@@ -20,11 +16,23 @@
           <a-menu-item key="own-docs">
             自己创建的文档
           </a-menu-item>
-          <a-menu-item key="teams-mem">
+          <!--a-menu-item key="teams-mem">
             加入的团队
-          </a-menu-item>
+          </a-menu-item-->
         </a-sub-menu>
-        <a-sub-menu key="sub2">
+        <!--a-menu-item key="team-index">
+          <a-icon type="user" />
+          <span>我的团队</span>
+          
+        </a-menu-item-->
+
+        <a-sub-menu key="sub-team">
+          <span slot="title"><a-icon type="team"/><span>我的团队</span></span>
+          <a-menu-item key="founded-team" @click="reload">我创建的团队</a-menu-item>
+          <a-menu-item key="joined-team" @click="reload">我加入的团队</a-menu-item>
+        </a-sub-menu>
+
+        <!--a-sub-menu key="sub2">
           <span slot="title"><a-icon type="team" /><span>我创建的团队</span></span>
           <a-menu-item key="team1">
             团队1
@@ -32,7 +40,7 @@
           <a-menu-item key="team2">
             团队2
           </a-menu-item>
-        </a-sub-menu>
+        </a-sub-menu-->
         <a-menu-item key="dustbin">
           <a-icon type="delete" />
           <span>回收站</span>
@@ -52,7 +60,7 @@
         </a-breadcrumb>
         
         <div style="margin-top:10px">
-          <router-view></router-view>
+          <router-view v-if="isRouterAlive"></router-view>
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
@@ -67,10 +75,15 @@ export default {
   name: 'home',
   data() {
     return {
+      isRouterAlive: true,
       collapsed: false,
     };
   },
   methods:{  
+    reload () {
+      this.isRouterAlive = false
+      this.$nextTick(() => (this.isRouterAlive = true))
+    },   
         handleSelect(key){
             console.log(key)
             switch(key.key){
@@ -93,9 +106,12 @@ export default {
                 case "dustbin":
                     this.$router.push('/dustbin')
                     break;
-                case "teams-mem":
-                    this.$router.push('/teams-mem')
+                case "founded-team":
+                    this.$router.push('/teams-list/founded-team')
                     break;
+                case "joined-team":
+                  this.$router.push('/teams-list/joined-team');
+                  break;
                 default:
                   console.log("nothing")
             }

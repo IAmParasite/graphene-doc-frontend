@@ -115,7 +115,7 @@ export default {
                   if (response){
                     console.log(response.data);
                     localStorage.setItem('token',_this.ruleForm.username);
-                    _this.PreUsername=localStorage.getItem('token');
+                    _this.$router.go(0);
                   }else {
                       console.log('wrong')
                   }

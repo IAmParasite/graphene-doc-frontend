@@ -32,8 +32,8 @@ Vue.use(VueRouter)
         component: () => import('../components/menu/OwnDocs.vue')
       },
       {
-        path: '/teams-mem',
-        component: () => import('../components/menu/TeamsMem.vue')
+        path: '/teams-list/:id',
+        component: () => import('../components/menu/TeamsList.vue')
       },
       {
         path: '/dustbin',
