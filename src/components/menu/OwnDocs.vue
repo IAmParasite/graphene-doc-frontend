@@ -134,33 +134,7 @@ export default {
         });
         this.$router.go(0);
       },
-    deleteDocs(item){
-      console.log("删除该项" + item.id)
-      this.data.splice(item, 1)
-      
-      let formData = new FormData();
-      formData.append('DocumentID', item.id);
-      formData.append('username', localStorage.getItem('token'));
-      console.log(localStorage.getItem('token'))
-      let config = {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    };
-    axios.post('http://localhost:5000/api/recycle_doc/',formData, config)
-      .then(function (response)  {
-          console.log(response.data.message)
-            if (response.data.message == "success") {
-                console.log("删除程坤")
-            }
-            else {
-                console.log("删除失败")
-            }
-        }).catch(function (error) {
-          console.log("Fail", error)
-        });
-      },
-    handleOk(e) {
+    handleOk() {
       var _this = this;
       let formData = new FormData();
       formData.append("DocumentID", this.form.DocumentID);
@@ -181,21 +155,16 @@ export default {
             _this.errormsg("修改失败，请尝试刷新后再次修改！");
            }
         }) 
-        .catch(function (error) {
+        .catch(function () {
           _this.errormsg("修改失败，请尝试刷新后再次修改！");
         });
     },
-    handleCancel(e) {
+    handleCancel() {
       this.visible = false;
-    },
-    toDocs(id) {
-      //这边判断是否能看，比如occupied
-      this.$router.push("/docs2/" + id);
     },
     deleteDocs(item) {
       console.log("删除该项" + item.id);
       this.data.splice(item, 1);
-      var _this = this;
       let formData = new FormData();
       formData.append("DocumentID", item.id);
       formData.append("username", localStorage.getItem("token"));
