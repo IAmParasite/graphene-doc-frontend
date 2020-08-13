@@ -25,6 +25,7 @@ import { Popover } from 'ant-design-vue'
 import { Alert } from 'ant-design-vue';
 import { Description, Divider} from 'ant-design-vue';
 import Axios from 'axios'
+import VueRouter from 'vue-router'
 
 Vue.use(Button);
 Vue.use(Input);
@@ -51,6 +52,11 @@ Vue.use(Description);
 Vue.use(Divider);
 
 Vue.config.productionTip = false
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
 Axios.interceptors.request.use(config => {  
   if(config.push === '/'){
     console.log(1)
