@@ -24,9 +24,18 @@ import { Empty } from 'ant-design-vue';
 import { Popover } from 'ant-design-vue'
 import { Alert } from 'ant-design-vue';
 import { Descriptions, Divider} from 'ant-design-vue';
+import { Modal} from 'ant-design-vue';
 import { Affix } from 'ant-design-vue';
 import Axios from 'axios'
 import VueRouter from 'vue-router'
+
+import { message} from 'ant-design-vue'
+Vue.prototype.$message = message;
+message.config({
+    duration: 2,// 持续时间
+    top:`100px`, // 到页面顶部距离
+    maxCount: 3 // 最大显示数, 超过限制时，最早的消息会被自动关闭
+});
 
 Vue.use(Button);
 Vue.use(Input);
@@ -51,6 +60,7 @@ Vue.use(Popover);
 Vue.use(Alert);
 Vue.use(Descriptions);
 Vue.use(Divider);
+Vue.use(Modal);
 Vue.use(Affix);
 
 Vue.config.productionTip = false
