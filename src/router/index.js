@@ -39,6 +39,10 @@ Vue.use(VueRouter)
         path: '/dustbin',
         component: () => import('../components/menu/Dustbin.vue')
       },
+      {
+        path: '/teamdocs-list/:id',
+        component: () => import('../components/team/groupdocs.vue')
+      },
     ]
   },
   {

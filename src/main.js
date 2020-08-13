@@ -54,6 +54,7 @@ VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
 
+Vue.config.productionTip = false
 Axios.interceptors.request.use(config => {  
   if(config.push === '/'){
     console.log(1)

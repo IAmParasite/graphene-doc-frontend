@@ -1,9 +1,9 @@
 <template>
     <div>
         <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="teamList">
-    <a-list-item slot="renderItem" slot-scope="item">
+    <a-list-item slot="renderItem" slot-scope="item"  >
       
-      <a-card hoverable style="width: 190px" :title="item.title">
+      <a-card hoverable style="width: 190px" :title="item.title" @click="toGroupDocs($event)" :id="item.index">
     <img
       slot="cover"
       alt="example"
@@ -33,13 +33,13 @@ export default {
     data(){
         return {
             teamList:[
-              {title:'Group1'},
-              {title:'Group2'},
-              {title:'Group3'},
-              {title:'Group4'},
-              {title:'Group5'},
-              {title:'Group6'},
-              {title:'Group7'},
+              {title:'Group111',index:'1'},
+              {title:'Group2',index:'2'},
+              {title:'Group3',index:'3'},
+              {title:'Group4',index:'4'},
+              {title:'Group5',index:'5'},
+              {title:'Group6',index:'6'},
+              {title:'Group7',index:'7'},
             ],
 
         }
@@ -50,6 +50,10 @@ export default {
     },
 
     methods: {
+      toGroupDocs(e){
+        console.log(e);
+        this.$router.push('/teamdocs-list/'+e.currentTarget.id);
+      },
       load_list(id) {
         switch(id) {
           case 'founded-team': {
