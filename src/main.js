@@ -24,6 +24,7 @@ import { Empty } from 'ant-design-vue';
 import { Popover } from 'ant-design-vue'
 import { Alert } from 'ant-design-vue';
 import { Descriptions, Divider} from 'ant-design-vue';
+import { Modal} from 'ant-design-vue';
 import Axios from 'axios'
 import VueRouter from 'vue-router'
 
@@ -50,6 +51,7 @@ Vue.use(Popover);
 Vue.use(Alert);
 Vue.use(Descriptions);
 Vue.use(Divider);
+Vue.use(Modal);
 
 Vue.config.productionTip = false
 const originalPush = VueRouter.prototype.push

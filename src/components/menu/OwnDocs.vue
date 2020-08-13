@@ -13,7 +13,7 @@
     />
     <template slot="actions" class="ant-card-actions">
       <a-icon type="delete" @click="deleteDocs(item)"/>
-      <a-icon key="edit" type="edit" />
+      <a-icon type="edit" @click="showModal(item)"/>
       <a-icon key="ellipsis" type="ellipsis" />
     </template>
     <a-card-meta :title="item.created_time" :description="item.description">
@@ -25,7 +25,29 @@
   </a-card>
     </a-list-item>
   </a-list>
+      <div>
+      <a-modal
+          title="Title"
+          :visible="visible"
+          :confirm-loading="confirmLoading"
+          @ok="handleOk"
+          @cancel="handleCancel"
+        >
+        <template> 
+          <a-form-model :model="form" :label-col="labelCol" :wrapper-col="wrapperCol">
+            <a-form-model-item label="文档标题">
+              <a-input v-model="form.title" />
+            </a-form-model-item>
+            <a-form-model-item label="描述">
+              <a-input v-model="form.description" />
+            </a-form-model-item>
+          </a-form-model>
+        </template>
+        <p>{{ ModalText }}</p>
+      </a-modal>
+      </div>
     </div>
+    
 </template>
 <script type="text/ecmascript-6">
 import axios from 'axios'
@@ -48,9 +70,84 @@ const data = [
         data(){
             return {
                 data,
+                ModalText: 'Content of the modal',
+                visible: false,
+                confirmLoading: false,
+                labelCol: { span: 4 },
+                wrapperCol: { span: 14 },
+                form: {
+                  title: "标题1",
+                  description: "描述"
+                },
+                DocumentID: {
+                  type: Number,
+                }
             }
         },
         methods: {
+          showModal(item) {
+            console.log(item)
+            console.log("DocumentID = " + item.id)
+            this.data.DocumentID = item.id 
+            console.log("保存的文档id" + this.data.DocumentID)
+            var _this = this;
+            let formData = new FormData();
+            formData.append('DocumentID', item.id)
+            let config = {
+                headers: {
+              'Content-Type': 'multipart/form-data'
+              }
+            };
+            axios.post('url', formData, config)
+              .then(function(response) {
+                if(response) {
+                  _this.form.title = response.data.title;
+                  _this.form.description = response.data.description
+                }
+                else {
+                  alert("请先登录");
+                }
+              }).catch(function(error) {
+                console.log('wrong', error);
+              });
+            this.visible = true;
+          },
+          handleOk(e) {
+            this.ModalText = 'The modal will be closed after two seconds';
+            this.confirmLoading = true;
+            
+            var _this = this;
+            let formData = new FormData();
+            formData.append('DocumentID', this.data.DocumentID);
+            formData.append('new_title', this.form.title);
+            formData.append('new_description', this.form.description);
+            let config = {
+                headers: {
+              'Content-Type': 'multipart/form-data'
+              }
+            };
+            axios.post('url', formData, config)
+              .then(function(response) {
+                if(response) {
+                  console.log("修改成功")
+                }
+                else {
+                  alert("请先登录");
+                }
+              }).catch(function(error) {
+                console.log('wrong', error);
+              });
+            
+            setTimeout(() => {
+              this.visible = false;
+              this.confirmLoading = false;
+            }, 2000);
+
+          },
+          handleCancel(e) {
+            console.log('Clicked cancel button');
+            this.visible = false;
+          },
           toDocs(id) {
             //这边判断是否能看，比如occupied
             this.$router.push('/docs2/'+id);
