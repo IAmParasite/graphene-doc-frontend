@@ -1,5 +1,4 @@
 <template>
-    
       <a-layout>
         <a-layout-content>
           <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="data">
@@ -27,11 +26,9 @@
           </a-list>
         </a-layout-content>
         <a-layout-sider>
-          <team-info :groupObj="groupObj"></team-info>
+          <TeamInfo :groupObj="groupObj"></TeamInfo>
         </a-layout-sider>
       </a-layout>
-
-    
 </template>
 <script type="text/ecmascript-6">
 import TeamInfo from './TeamInfo.vue';
@@ -73,7 +70,7 @@ const data = [
         },
         mounted: function() {
           console.log('router info',this.$route.params.id);
-          this.load_data(this.$route.params.id);
+          //this.load_data(this.$route.params.id);
     },
         methods: {
           toDocs() {

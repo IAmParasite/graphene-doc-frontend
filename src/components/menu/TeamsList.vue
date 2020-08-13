@@ -51,7 +51,7 @@ export default {
 
     methods: {
       toGroupDocs(groupid){
-        console.log(groupid);
+        console.log('printing groupid',groupid);
         this.$router.push('/teamdocs-list/'+groupid);
       },
       load_list(filter) {

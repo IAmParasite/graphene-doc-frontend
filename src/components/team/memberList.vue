@@ -9,12 +9,15 @@
 <script>
 
 import memberAvatar from '../team/memberAvatar';
+import axios from 'axios';
 
 export default{
   name: 'memberList',
 
   props: {
-    groupid,
+    groupid: {
+      type: Number,
+    },
   },
 
   data(){
@@ -29,9 +32,9 @@ export default{
   },
 
   mounted(){
-    memberList=[];
+    this.memberList=[];
     let formData=new FormData();
-    formData.append('groupid',groupid);
+    formData.append('groupid',this.groupid);
     let config = {
       headers: {
         'Content-Type': 'multipart/form-data'
@@ -39,7 +42,7 @@ export default{
     };
     var _this=this;
     axios.post('http://localhost:5000/api/get_user_by_group/',formData,config)
-      .then(function(responseMsg) {
+      .then(function(response) {
         if(response) {
           _this.memberList=response.data;
         }
