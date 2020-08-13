@@ -1,5 +1,22 @@
 <template>
   <div>
+    <a-row>
+      <a-col :span="10" :offset="7">
+        
+      </a-col>
+      <a-col :span="2" :offset="5">
+        <a-affix :offset-top="top">
+          <a-popover placement="topRight">
+        <template slot="content">
+          <span style="font-size:20px">点击创建属于你的文档! QuQ</span>
+        </template>
+        <a-button type="primary" icon="plus"  size="large" block @click="newdoc()" >
+    </a-button>
+      </a-popover>
+        </a-affix>
+      </a-col>
+    </a-row>
+
     <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="data">
       <a-list-item slot="renderItem" slot-scope="item">
         <a-card hoverable style="width: 190px" :title="item.title">
@@ -142,7 +159,7 @@ export default {
         }).catch(function (error) {
           console.log("Fail", error)
         });
-      }
+      },
     handleOk(e) {
       var _this = this;
       let formData = new FormData();
@@ -162,7 +179,8 @@ export default {
             }, 2000);
           } else {
             _this.errormsg("修改失败，请尝试刷新后再次修改！");
-           })
+           }
+        }) 
         .catch(function (error) {
           _this.errormsg("修改失败，请尝试刷新后再次修改！");
         });
