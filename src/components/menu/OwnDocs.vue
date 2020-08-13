@@ -1,17 +1,33 @@
 <template>
     <div>
+          <a-row>
+      <a-col :span="10" :offset="7">
         
+      </a-col>
+      <a-col :span="2" :offset="5">
+        <a-affix :offset-top="top">
+          <a-popover placement="topRight">
+        <template slot="content">
+          <span style="font-size:20px">点击创建属于你的文档! QuQ</span>
+        </template>
+        <a-button type="primary" icon="plus"  size="large" block=true @click="newdoc()" >
+    </a-button>
+      </a-popover>
+        </a-affix>
+      </a-col>
+    </a-row>
     <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="data">
     <a-list-item slot="renderItem" slot-scope="item">
       
-      <a-card hoverable style="width: 190px" :title="item.title" @click="toDocs(item.id)">
+      <a-card hoverable style="width: 190px" :title="item.title">
     <img
       slot="cover"
       alt="example"
       src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+      @click="toDocs(item.id)"
     />
     <template slot="actions" class="ant-card-actions">
-      <a-icon key="setting" type="setting" />
+      <a-icon type="delete" @click="deleteDocs(item)"/>
       <a-icon key="edit" type="edit" />
       <a-icon key="ellipsis" type="ellipsis" />
     </template>
@@ -24,6 +40,7 @@
   </a-card>
     </a-list-item>
   </a-list>
+
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -43,17 +60,47 @@ const data = [
 //     modified_time:'',//上次修改时间，任意一个人修改都会改变上次修改时间
 //   },
 ];
-
     export default {
         data(){
             return {
                 data,
+                top: 0,
             }
         },
         methods: {
+          newdoc(){
+            alert("嘤嘤嘤")
+          },
           toDocs(id) {
             //这边判断是否能看，比如occupied
             this.$router.push('/docs2/'+id);
+          },
+          deleteDocs(item){
+              console.log("删除该项" + item.id)
+              this.data.splice(item, 1)
+              
+              let formData = new FormData();
+              formData.append('DocumentID', item.id);
+              formData.append('username', localStorage.getItem('token'));
+              console.log(localStorage.getItem('token'))
+              let config = {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            };
+            axios.post('http://localhost:5000/api/recycle_doc/',formData, config)
+          .then(function (response)  {
+              console.log(response.data.message)
+                if (response.data.message == "success") {
+                    console.log("删除程坤")
+                }
+                else {
+                    console.log("删除失败")
+                }
+            })
+            .catch(function (error) {
+              console.log("Fail", error)
+            });
           }
         },
         mounted(){
@@ -70,12 +117,15 @@ const data = [
                 if(response) {
                 _this.data=response.data;
                 console.log(response.data);
-                }else {
-                alert("请先登录！");
+                }
+                else {
+                    alert("请先登录！");
                 }
             }).catch(function(error) {
             console.log('wrong',error);
             });
         },
     }
-</script><style></style>
+</script>
+<style>
+</style>
