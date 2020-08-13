@@ -62,6 +62,11 @@ Vue.use(VueRouter)
     // which is lazy-loaded when the route is visited.
     component: () => import('../components/docs/Docs.vue')
   },
+  {
+    path: '/docs2/:id',
+    name: 'Docs2',
+    component: () => import('../components/docs/Docs2.vue')
+  }
 ]
 
 const router = new VueRouter({

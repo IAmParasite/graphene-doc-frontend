@@ -1,6 +1,7 @@
 <template>
     <div>
-        这里是我最近删除的文档
+        
+        <a-empty />
     </div>
 </template>
 <script type="text/ecmascript-6">

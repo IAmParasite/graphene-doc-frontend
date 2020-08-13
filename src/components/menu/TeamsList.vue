@@ -29,6 +29,7 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
+import axios from 'axios';
 export default {
     data(){
         return {
@@ -50,16 +51,35 @@ export default {
     },
 
     methods: {
-      load_list(id) {
-        switch(id) {
-          case 'founded-team': {
-            this.teamList.push({title:'Founded Team'});
-            break;
+      load_list(filter) {
+        this.teamList=[];
+        let formData=new FormData();
+        formData.append('username',localStorage.getItem('token'));
+        let config = {
+          headers: {
+            'Content-Type': 'multipart/form-data'
           }
-          case 'joined-team': {
-            this.teamList.push({title:'Joined Team'});
-          }
-        }
+        };
+        var _this=this;
+        axios.post('http://localhost:5000/api/mygroup/',formData, config)
+          .then(function (response)  {
+            for (let index = 0; index < response.data.length; index++) {
+              let confirmData=new FormData();
+              confirmData.append('username',localStorage.getItem('token'));
+              confirmData.append('groupid',response.data[index].groupid);
+              axios.post('http://localhost:5000/api/groupiscreatedbyme/',confirmData,config)
+                .then(function(responseMsg) {
+                  if((responseMsg.data.message=='success'&&filter=='founded-team')||(responseMsg.data.message=='fail'&&filter=='joined-team')) {
+                    _this.teamList.push(response.data[index]);
+                  }
+                }).catch(error=> {
+                  console.log('error',error);
+                })
+            }
+          })
+          .catch(function (error) {
+             console.log("fail", error)
+          });
       }
     }
 }
