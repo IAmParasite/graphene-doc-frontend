@@ -1,15 +1,26 @@
 <template>
     <div>
-        <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="teamList">
+    <a-row v-if="this.$route.params.id=='founded-team'">
+      <a-col :span="10" :offset="7"></a-col>
+      <a-col :span="2" :offset="5">
+        <a-affix :offset-top="top">
+          <a-popover placement="topRight">
+            <template slot="content">
+              <span style="font-size:20px">点击创建一个属于你的团队! QvQ</span>
+            </template>
+            <a-button type="primary" icon="plus" size="large" block @click="shownewteamform"></a-button>
+          </a-popover>
+        </a-affix>
+      </a-col>
+    </a-row>
+        <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="data">
     <a-list-item slot="renderItem" slot-scope="item">
       
-      <a-card hoverable style="width: 190px" :title="item.groupname">
+      <a-card hoverable style="width: 190px" :title="item.title" @click="toGroupDocs(item)">
     <img
       slot="cover"
       alt="example"
       src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2480950301,2664962215&fm=26&gp=0.jpg"
-      @click="toGroupDocs(item.groupid)"
-      
     />
     <template slot="actions" class="ant-card-actions">
       <a-icon key="setting" type="setting" />
@@ -26,64 +37,236 @@
     </a-list-item>
   </a-list>
     
+    <div>
+      <a-modal title="创建团队" :visible="newteamvisible" @ok="createteam" @cancel="cancelcreate">
+        <template>
+          <a-form-model :model="newteamform" :label-col="labelCol" :wrapper-col="wrapperCol">
+            <a-form-model-item label="团队队名">
+              <a-input v-model="newteamform.groupname" />
+            </a-form-model-item>
+            <a-form-model-item label="团队简介">
+              <a-input v-model="newteamform.description" />
+            </a-form-model-item>
+            <!-- <a-form-model-item label="协作者权限">
+              <div>
+                <div :style="{ borderBottom: '1px solid #E9E9E9' }">
+                  <a-checkbox
+                    :indeterminate="indeterminate"
+                    :checked="checkAll"
+                    @change="onCheckAllChange"
+                  >Check all</a-checkbox>
+                </div>
+                <br />
+                <a-checkbox-group v-model="checkedList" :options="plainOptions" @change="onChange" />
+              </div>
+            </a-form-model-item> -->
+          </a-form-model>
+        </template>
+      </a-modal>
+    </div>
     </div>
 </template>
 <script type="text/ecmascript-6">
-import axios from 'axios';
+import axios from 'axios'
+const data= [
+  //
+  //
+  //
+
+];
+function myrefresh() {
+  window.location.reload();
+}
+// const plainOptions = ['修改', '评论', '分享'];
+// const defaultCheckedList = ['修改', '评论'];
 export default {
     data(){
         return {
-            teamList:[
-              {groupname: 'group01', groupid: 1, createdtime: '', description: '',},
-              {groupname: 'group02', groupid: 2, createdtime: '', description: '',},
-              {groupname: 'group03', groupid: 3, createdtime: '', description: '',},
-              {groupname: 'group04', groupid: 4, createdtime: '', description: '',},
-              {groupname: 'group05', groupid: 5, createdtime: '', description: '',},
-              {groupname: 'group06', groupid: 6, createdtime: '', description: '',}
-            ],
-
+          data,
+          // checkedList: defaultCheckedList,
+          indeterminate: true,
+          checkAll: false,
+          // plainOptions,
+          newteamvisible:false,
+          top: 0,
+          visible: false,
+          labelCol: { span: 4 },
+          wrapperCol: { span: 14 },
+          form: {
+            DocumentID: "",
+            title: "",
+          },
+          DocumentID: {
+            type: Number,
+          },
+          newteamform:{
+            groupname:"",
+            description:"",
+          }
         }
     },
 
-    mounted() {
-      //this.load_list(this.$route.params.id);
-    },
+    
 
     methods: {
-      toGroupDocs(groupid){
-        console.log('printing groupid',groupid);
-        this.$router.push('/teamdocs-list/'+groupid);
+      successmsg(message) {
+      this.$message.success(message);
       },
-      load_list(filter) {
-        this.teamList=[];
-        let formData=new FormData();
-        formData.append('username',localStorage.getItem('token'));
+      errormsg(message) {
+        this.$message.error(message);
+      },
+      // onChange(checkedList) {
+      //   this.indeterminate = !!checkedList.length && checkedList.length < plainOptions.length;
+      //   this.checkAll = checkedList.length === plainOptions.length;
+      // },
+      // onCheckAllChange(e) {
+      //   Object.assign(this, {
+      //     checkedList: e.target.checked ? plainOptions : [],
+      //     indeterminate: false,
+      //     checkAll: e.target.checked,
+      //   });
+      // },
+      createteam(){
+        // this.checkedList.forEach(element => {
+        //   if(element=="修改")this.newteamform.modify_right=1;
+        //   if(element=="评论")this.newteamform.discuss_right=1;
+        //   if(element=="分享")this.newteamform.share_right=1;
+        // });
+        
+        this.newteam();
+      },
+      toGroupDocs(item){
+        console.log("亲，现在跳转不了哦")
+        this.$router.push('/teamdocs-list/' + item.groupid)
+      },
+      cancelcreate(){
+        this.newteamvisible=false;
+      },
+      shownewteamform(){
+        this.newteamvisible=true;
+      },
+      newteam() {
+        var _this=this;
+        let formData = new FormData();
+        formData.append("username", localStorage.getItem("token"));
+        formData.append("groupname", this.newteamform.groupname);
+        // formData.append("modify_right", this.newdocform.modify_right);
+        // formData.append("share_right", this.newdocform.share_right);
+        // formData.append("discuss_right", this.newdocform.discuss_right);
+        formData.append("description", this.newteamform.description);
         let config = {
           headers: {
-            'Content-Type': 'multipart/form-data'
-          }
+            "Content-Type": "multipart/form-data",
+          },
         };
-        var _this=this;
-        axios.post('http://localhost:5000/api/mygroup/',formData, config)
-          .then(function (response)  {
-            for (let index = 0; index < response.data.length; index++) {
-              let confirmData=new FormData();
-              confirmData.append('username',localStorage.getItem('token'));
-              confirmData.append('groupid',response.data[index].groupid);
-              axios.post('http://localhost:5000/api/groupiscreatedbyme/',confirmData,config)
-                .then(function(responseMsg) {
-                  if((responseMsg.data.message=='success'&&filter=='founded-team')||(responseMsg.data.message=='fail'&&filter=='joined-team')) {
-                    _this.teamList.push(response.data[index]);
-                  }
-                }).catch(error=> {
-                  console.log('error',error);
-                })
+        
+        axios
+          .post(
+            "http://localhost:5000/api/creategroup/",
+            formData,
+            config
+          )
+          .then(function (response) {
+            if (response.data.message == "success") {
+              _this.successmsg("创建成功");
+              setTimeout(() => {
+                myrefresh();
+              }, 2000);
+            } else {
+              _this.errormsg("创建失败，请尝试刷新后再次创建");
             }
           })
-          .catch(function (error) {
-             console.log("fail", error)
+          .catch(function () {
+            _this.errormsg("创建失败，请尝试刷新后再次创建");
           });
+      },
+      load_list(id) {
+        switch(id) {
+          case 'founded-team': {
+            //this.teamList.push({title:'Founded Team'});
+            this.get_my_founded_teams()
+            break;
+          }
+          case 'joined-team': {
+            //this.teamList.push({title:'Joined Team'});
+            
+            this.get_my_joined_teams()
+            break
+          }
+        }
+      },
+      get_my_joined_teams() {
+        var _this = this;
+        let formData = new FormData();
+        formData.append('username', localStorage.getItem('token'));
+        let config = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        };
+        axios.post('http://localhost:5000/api/mygroup/',formData,config)
+            .then(function(response) {
+                if(response) {
+                  _this.data=response.data;
+                  console.log(response.data);
+                }
+                else {
+                    alert("请先登录！");
+                }
+            }).catch(function(error) {
+            console.log('wrong',error);
+            });
+      },
+      get_my_founded_teams() {
+        var _this = this;
+        let formData = new FormData();
+        formData.append('username', localStorage.getItem('token'));
+        let config = {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        };
+        axios.post('http://localhost:5000/api/group_created_byme/',formData,config)
+            .then(function(response) {
+                if(response) {
+                  _this.data=response.data;
+                  console.log("创建团队列表加载完成1");
+                  console.log(response);
+                  console.log("创建团队列表加载完成2");
+                }
+                else {
+                    alert("请先登录！");
+                }
+            }).catch(function(error) {
+            console.log('wrong',error);
+            });
       }
-     }
+     },
+     mounted() {
+      var _this = this;
+      this.load_list(this.$route.params.id);
+      let formData = new FormData();
+      formData.append("username", localStorage.getItem("token"));
+      let config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      axios
+        .post("http://localhost:5000/api/my_created_docs/", formData, config)
+        .then(function (response) {
+          if (response) {
+            _this.data = response.data;
+            console.log(response.data);
+          } else {
+            alert("请先登录！");
+          }
+        })
+        .catch(function (error) {
+          console.log("wrong", error);
+        });
+    },
 }
 </script>
+<style>
+</style>
