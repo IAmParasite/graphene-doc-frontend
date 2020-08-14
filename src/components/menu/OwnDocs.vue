@@ -195,7 +195,7 @@ export default {
             _this.errormsg("创建失败，请尝试刷新后再次创建");
           }
         })
-        .catch(function (error) {
+        .catch(function () {
           _this.errormsg("创建失败，请尝试刷新后再次创建");
         });
     },
@@ -225,11 +225,11 @@ export default {
             _this.errormsg("删除失败，请尝试刷新后重试");
           }
         })
-        .catch(function (error) {
+        .catch(function () {
           _this.errormsg("删除失败，请尝试刷新后重试");
         });
     },
-    handleOk(e) {
+    handleOk() {
       var _this = this;
       let formData = new FormData();
       formData.append("DocumentID", this.form.DocumentID);
@@ -251,16 +251,12 @@ export default {
             _this.errormsg("修改失败，请尝试刷新后再次修改！");
           }
         })
-        .catch(function (error) {
+        .catch(function () {
           _this.errormsg("修改失败，请尝试刷新后再次修改！");
         });
     },
-    handleCancel(e) {
+    handleCancel() {
       this.visible = false;
-    },
-    toDocs(id) {
-      //这边判断是否能看，比如occupied
-      this.$router.push("/docs2/" + id);
     },
   },
   mounted() {
