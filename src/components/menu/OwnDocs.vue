@@ -16,38 +16,9 @@
 
     <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="data">
       <a-list-item slot="renderItem" slot-scope="item">
-        <a-card hoverable style="width: 190px" :title="item.title">
-          <img
-            slot="cover"
-            alt="example"
-            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-            @click="toDocs(item.id)"
-          />
-          <template slot="actions" class="ant-card-actions">
-            <a-icon type="delete" @click="deleteDocs(item)" />
-            <a-icon type="edit" @click="showModal(item)" />
-            <a-icon key="ellipsis" type="ellipsis" />
-          </template>
-          <a-card-meta :title="item.created_time">
-            <a-avatar
-              slot="avatar"
-              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            />
-          </a-card-meta>
-        </a-card>
+        <docCard :docObj="item"></docCard>
       </a-list-item>
     </a-list>
-    <div>
-      <a-modal title="修改文档信息" :visible="visible" @ok="handleOk" @cancel="handleCancel">
-        <template>
-          <a-form-model :model="form" :label-col="labelCol" :wrapper-col="wrapperCol">
-            <a-form-model-item label="文档标题">
-              <a-input v-model="form.title" />
-            </a-form-model-item>
-          </a-form-model>
-        </template>
-      </a-modal>
-    </div>
     <div>
       <a-modal title="创建文档" :visible="newdocvisible" @ok="createdoc" @cancel="cancelcreate">
         <template>
@@ -76,6 +47,7 @@
 </template>
 <script type="text/ecmascript-6">
 import axios from "axios";
+import docCard from '../docs/docCard.vue'
 const data = [
   //   {
   //     id:'',//文档id
@@ -97,6 +69,9 @@ function myrefresh() {
 const plainOptions = ['修改', '评论', '分享'];
 const defaultCheckedList = ['修改', '评论'];
 export default {
+  components: {
+    docCard,
+  },
   data() {
     return {
       checkedList: defaultCheckedList,
@@ -107,12 +82,6 @@ export default {
       data,
       top: 0,
       visible: false,
-      labelCol: { span: 4 },
-      wrapperCol: { span: 14 },
-      form: {
-        DocumentID: "",
-        title: "",
-      },
       DocumentID: {
         type: Number,
       },
@@ -121,7 +90,9 @@ export default {
         modify_right:0,
         share_right:0,
         discuss_right:0
-      }
+      },
+      labelCol: { span: 4 },
+      wrapperCol: { span: 14 },
     };
   },
   methods: {
@@ -156,15 +127,6 @@ export default {
     shownewdocform(){
       this.newdocvisible=true;
     },
-    showModal(item) {
-      this.form.title = item.title;
-      this.form.DocumentID = item.id;
-      this.visible = true;
-    },
-    toDocs(id) {
-      //这边判断是否能看，比如occupied
-      this.$router.push("/docs2/" + id);
-    },
     newdoc() {
       var _this=this;
       let formData = new FormData();
@@ -198,65 +160,6 @@ export default {
         .catch(function () {
           _this.errormsg("创建失败，请尝试刷新后再次创建");
         });
-    },
-    deleteDocs(item) {
-      console.log("删除该项" + item.id);
-      this.data.splice(item, 1);
-      var _this=this;
-      let formData = new FormData();
-      formData.append("DocumentID", item.id);
-      formData.append("username", localStorage.getItem("token"));
-      console.log(localStorage.getItem("token"));
-      let config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-      axios
-        .post("http://localhost:5000/api/recycle_doc/", formData, config)
-        .then(function (response) {
-          console.log(response.data.message);
-          if (response.data.message == "success") {
-            _this.successmsg("删除成功");
-            setTimeout(() => {
-              myrefresh();
-            }, 2000);
-          } else {
-            _this.errormsg("删除失败，请尝试刷新后重试");
-          }
-        })
-        .catch(function () {
-          _this.errormsg("删除失败，请尝试刷新后重试");
-        });
-    },
-    handleOk() {
-      var _this = this;
-      let formData = new FormData();
-      formData.append("DocumentID", this.form.DocumentID);
-      formData.append("title", this.form.title);
-      let config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-      axios
-        .post("http://localhost:5000/api/modify_doc_basic/", formData, config)
-        .then(function (response) {
-          if (response) {
-            _this.successmsg("修改成功！");
-            setTimeout(() => {
-              myrefresh();
-            }, 2000);
-          } else {
-            _this.errormsg("修改失败，请尝试刷新后再次修改！");
-          }
-        })
-        .catch(function () {
-          _this.errormsg("修改失败，请尝试刷新后再次修改！");
-        });
-    },
-    handleCancel() {
-      this.visible = false;
     },
   },
   mounted() {
