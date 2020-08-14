@@ -85,7 +85,7 @@ export default {
             _this.errormsg("恢复失败，请稍后重试");
           }
         })
-        .catch(function (error) {
+        .catch(function () {
            _this.errormsg("恢复失败，请稍后重试");
         });
     },

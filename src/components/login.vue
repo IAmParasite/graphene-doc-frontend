@@ -171,7 +171,7 @@ export default {
                     _this.errormessage("未知错误，请稍后再试")
                   }
               })
-              .catch(function (error) {
+              .catch(function () {
                 _this.errormessage("未知错误，请稍后再试")
               });
         } else {
@@ -202,7 +202,7 @@ export default {
                   _this.rightlog.rl=false;
               }
           })
-          .catch(function (error) {
+          .catch(function () {
              _this.errormessage("未知错误，请稍后再试")
           });
     },

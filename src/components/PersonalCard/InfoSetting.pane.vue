@@ -134,7 +134,7 @@ export default {
                     _this.errormsg("用户名或邮箱已存在")
                   }
               })
-              .catch(function (error) {
+              .catch(function () {
                   _this.errormsg("未知错误，请稍后重试")
               });
         } else {
@@ -164,7 +164,7 @@ export default {
         }else {
           _this.errormsg("请先登录")
         }
-    }).catch(function(error) {
+    }).catch(function() {
       _this.errormsg("未知错误，请稍后重试")
     });
   }
