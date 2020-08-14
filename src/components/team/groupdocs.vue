@@ -1,7 +1,6 @@
 <template>
       <div>
 
-
         <a-row>
           <a-col :span="10" :offset="7"></a-col>
           <a-col :span="2" :offset="5">
@@ -15,18 +14,36 @@
             </a-affix>
           </a-col>
         </a-row>
-        
+
         <a-col span="18">
-          <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="data">
+            <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="data">
             <a-list-item slot="renderItem" slot-scope="item">
-              <docCard :docObj="item"></docCard>
+              
+              <a-card hoverable style="width: 190px" :title="item.title" @click="toDocs()">
+            <img
+              slot="cover"
+              alt="example"
+              src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+            />
+            <template slot="actions" class="ant-card-actions">
+              <a-icon key="setting" type="setting" />
+              <a-icon key="edit" type="edit" />
+              <a-icon key="ellipsis" type="ellipsis" />
+            </template>
+            <a-card-meta title="Card title" description="This is the description">
+              <a-avatar
+                slot="avatar"
+                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+              />
+            </a-card-meta>
+          </a-card>
             </a-list-item>
           </a-list>
         </a-col>
         <a-col span="6" id="sider-col">
           <TeamInfo :groupObj="groupObj"></TeamInfo>
         </a-col>
-        <div>
+          <div>
             <a-modal title="创建文档" :visible="newdocvisible" @ok="createdoc" @cancel="handleCancel">
               <template>
                 <a-form-model :model="newdocform" :label-col="labelCol" :wrapper-col="wrapperCol">
@@ -50,18 +67,15 @@
               </template>
             </a-modal>
           </div>  
+
+
       </div>
 </template>
 <script type="text/ecmascript-6">
-
-
 const plainOptions = ['修改', '评论', '分享'];
 const defaultCheckedList = ['修改', '评论'];
 import TeamInfo from './TeamInfo.vue';
-import docCard from '../docs/docCard.vue';
 import axios from 'axios'
-
-
 const data = [
   {
     title: '啊',
@@ -88,7 +102,6 @@ function myrefresh() {
     export default {
       components: {
         TeamInfo,
-        docCard,
       },
         data(){
             return {

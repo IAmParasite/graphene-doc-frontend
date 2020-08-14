@@ -7,7 +7,7 @@
             <a-tab-pane key="1" tab="评论" style="margin-left:20px, margin-right:20px">
               <a-input-search placeholder="输入评论" v-model="keyword" enter-button="评论" size="small" @search="onSearch"/>
                 <a-list item-layout="horizontal" :data-source="comment">
-                  <a-list-item slot="renderItem" slot-scope="item">
+                  <a-list-item slot="renderItem" slot-scope="item, index">
                     <a-list-item-meta
                       description="评论者：xp"
                     >
@@ -73,9 +73,6 @@ export default {
       this.html = render;
     },
     // 提交
-    callback() {
-
-    },
     save_docs() {
       console.log(this.content);
       console.log(this.$route.params.id);
