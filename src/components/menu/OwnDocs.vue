@@ -132,7 +132,7 @@ export default {
       this.$message.error(message);
     },
     onChange(checkedList) {
-      this.indeterminate = !!checkedList.length && checkedList.length < plainOptions.length;
+      this.indeterminate = !! checkedList.length && checkedList.length < plainOptions.length;
       this.checkAll = checkedList.length === plainOptions.length;
     },
     onCheckAllChange(e) {

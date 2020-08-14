@@ -137,7 +137,6 @@ export default {
         this.newteam();
       },
       toGroupDocs(item){
-        console.log("亲，现在跳转不了哦")
         this.$router.push('/teamdocs-list/' + item.groupid)
       },
       cancelcreate(){
