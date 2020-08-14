@@ -1,6 +1,6 @@
 <template>
     <div>
-        我好怕，快来帮帮我
+        我好怕，快帮我
     </div>
 </template>
 <script type="text/ecmascript-6">

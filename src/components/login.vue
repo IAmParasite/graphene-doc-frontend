@@ -60,6 +60,9 @@
 
 <script>
 import axios from 'axios'
+function myrefresh() {
+  window.location.reload();
+}
 export default {
   name: "login",
 
@@ -131,26 +134,6 @@ export default {
   },
 
   methods: {
-    signfail() {
-      this.$notification.open({
-        message: '注册失败',
-        description:
-          '注册信息有一些问题哦！',
-        onClick: () => {
-          console.log('Notification Clicked!');
-        },
-      });
-    },
-    signsus() {
-      this.$notification.open({
-        message: '注册成功',
-        description:
-          '恭喜你，快来登录体验石墨烯文档吧！',
-        onClick: () => {
-          console.log('Notification Clicked!');
-        },
-      });
-    },
     callback(key) {
       console.log(key);
     },
@@ -176,25 +159,22 @@ export default {
           axios.post('http://localhost:5000/api/regist/',formData,config)
               .then(function (response) {
                   if (response.data.message=="success"){
-                    
-                    //_this.$router.push('/loginView')
-                    //_this.$router.go(0);
-                    _this.signsus();
-                    //console.log(response.data);
+                    _this.successmessage("注册成功");
+                    setTimeout(() => {
+                      myrefresh();
+                    }, 2000);
+                  }
+                  else if(response.data.message=="fail"){
+                    _this.errormessage("用户名或者邮箱已存在");
                   }
                   else {
-                    _this.signfail();
-                    console.log(response.data.message)
-                    console.log('wrong')
+                    _this.errormessage("未知错误，请稍后再试")
                   }
               })
-              .catch(function (error) {
-                _this.signfail();
-                  console.log('wrong', error)
+              .catch(function () {
+                _this.errormessage("未知错误，请稍后再试")
               });
         } else {
-          _this.signfail();
-          console.log('error submit!!');
           return false;
         }
       });
@@ -212,31 +192,18 @@ export default {
       axios.post('http://localhost:5000/api/login/',formData, config)
           .then(function (response)  {
               if (response.data.message=='success') {
-                  //alert(userData.wronglog1)
-                  //userData.wronglog1 = !userData.wronglog1;
-                  //alert(123)
                   _this.wronglog.wl = false;
                   _this.rightlog.rl = true;
                   localStorage.setItem('token',_this.loginForm.username);
-                  
                   _this.$router.push('/');
                   _this.$router.go(0)
-                  //this.openNotification() ;   
               }else {
-                
-                console.log(response.data)
-                //alert(0)
-                  //alert(userData.wronglog1)
-                  //userData.wronglog1 = true;
                   _this.wronglog.wl=true;
                   _this.rightlog.rl=false;
-                  //response.openNotification() ;
-                  //this.wronglog=true;
-                  
               }
           })
-          .catch(function (error) {
-             console.log("Fail", error)
+          .catch(function () {
+             _this.errormessage("未知错误，请稍后再试")
           });
     },
     resetForm(formName) {
