@@ -90,7 +90,9 @@ export default {
         modify_right:0,
         share_right:0,
         discuss_right:0
-      }
+      },
+      labelCol: { span: 4 },
+      wrapperCol: { span: 14 },
     };
   },
   methods: {
