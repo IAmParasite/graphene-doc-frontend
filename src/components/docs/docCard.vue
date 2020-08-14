@@ -83,8 +83,7 @@ export default {
 
   watch: {
     docObj: {
-      handler(newVal,oldVal) {
-        console.log("watch saw changes in docObj",newVal,oldVal);
+      handler(newVal) {
         this.form.DocumentID=newVal.id;
         this.form.title=newVal.title;
       },
