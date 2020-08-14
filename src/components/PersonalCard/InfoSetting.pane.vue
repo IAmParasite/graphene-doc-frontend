@@ -1,13 +1,13 @@
 <template>
   <a-form-model ref="ruleForm" :model="ruleForm" :rules="rules">
     <a-form-model-item has-feedback prop="email" style="marginBottom:0"  :wrapper-col="wrapperCol">
-      <a-input :placeholder="PreEmail" v-model="ruleForm.email" style="margin-top:30px">
+      <a-input  v-model="ruleForm.email" style="margin-top:30px">
           <a-icon slot="prefix" type="mail" />
       </a-input>
     </a-form-model-item>
 
     <a-form-model-item has-feedback prop="username" style="marginBottom:0" :wrapper-col="wrapperCol">
-      <a-input :placeholder="PreUsername" v-model="ruleForm.username" style="margin-top:30px">
+      <a-input  v-model="ruleForm.username" style="margin-top:30px">
           <a-icon slot="prefix" type="user" />
       </a-input>
     </a-form-model-item>
@@ -30,7 +30,9 @@
 <script>
 //import axios from 'axios'
 import axios from 'axios'
-
+function myrefresh() {
+  window.location.reload();
+}
 export default {
   name: 'InfoSetting',
 
@@ -69,18 +71,15 @@ export default {
       }
     }
     return {
-      PreEmail: '',
-      PreUsername: localStorage.getItem('token'),
-
+      PreUsername:'',
       ruleForm: {
         pass: '',
         checkPass: '',
         email:'',
         username:''
       },
-      loginForm:{
-        username:'',
-        password:''
+      data:{
+
       },
       rules: {
         pass: [{ validator: validatePass, trigger: 'change' }],
@@ -96,8 +95,18 @@ export default {
   },
 
   methods: {
+    successmsg(message) {
+      this.$message.success(message);
+    },
+    errormsg(message) {
+      this.$message.error(message);
+    },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+      this.ruleForm.username=this.data.username;
+      this.ruleForm.checkPass=this.data.password;
+      this.ruleForm.pass=this.data.password;
+      this.ruleForm.email=this.data.email;
     },
     changeInfo(formName) {
       var _this=this;
@@ -115,19 +124,20 @@ export default {
           };
           axios.post('http://localhost:5000/api/modify_user_info/',formData,config)
               .then(function (response) {
-                  if (response){
-                    console.log(response.data);
+                  if (response.data.message=="success"){
                     localStorage.setItem('token',_this.ruleForm.username);
-                    _this.$router.go(0);
+                    _this.successmsg("修改成功")
+                    setTimeout(() => {
+                      myrefresh();
+                    }, 2000);
                   }else {
-                      console.log('wrong')
+                    _this.errormsg("用户名或邮箱已存在")
                   }
               })
-              .catch(function (error) {
-                  console.log('wrong', error)
+              .catch(function () {
+                  _this.errormsg("未知错误，请稍后重试")
               });
         } else {
-          console.log('error submit!!');
           return false;
         }
       });
@@ -136,6 +146,7 @@ export default {
   mounted() {
     var _this=this;
     let formData = new FormData();
+    this.PreUsername=localStorage.getItem('token');
     formData.append('username', this.PreUsername);
     let config = {
         headers: {
@@ -147,14 +158,14 @@ export default {
         if(response) {
           _this.ruleForm.username=response.data.username;
           _this.ruleForm.email=response.data.email;
-          _this.ruleForm.pass=response.data.password
-          _this.ruleForm.checkPass=response.data.password
-          console.log(response);
+          _this.ruleForm.pass=response.data.password;
+          _this.ruleForm.checkPass=response.data.password;
+          _this.data=response.data;
         }else {
-          alert("请先登录！");
+          _this.errormsg("请先登录")
         }
-    }).catch(function(error) {
-      console.log('wrong',error);
+    }).catch(function() {
+      _this.errormsg("未知错误，请稍后重试")
     });
   }
 }
