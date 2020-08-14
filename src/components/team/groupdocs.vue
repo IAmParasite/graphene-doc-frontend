@@ -59,7 +59,7 @@ const plainOptions = ['修改', '评论', '分享'];
 const defaultCheckedList = ['修改', '评论'];
 import TeamInfo from './TeamInfo.vue';
 import docCard from '../docs/docCard.vue';
-
+import axios from 'axios'
 
 
 const data = [

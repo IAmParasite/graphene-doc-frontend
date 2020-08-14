@@ -73,6 +73,9 @@ export default {
       this.html = render;
     },
     // 提交
+    callback() {
+
+    },
     save_docs() {
       console.log(this.content);
       console.log(this.$route.params.id);
