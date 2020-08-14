@@ -101,7 +101,7 @@ export default {
       this.$message.error(message);
     },
     onChange(checkedList) {
-      this.indeterminate = !!checkedList.length && checkedList.length < plainOptions.length;
+      this.indeterminate = !! checkedList.length && checkedList.length < plainOptions.length;
       this.checkAll = checkedList.length === plainOptions.length;
     },
     onCheckAllChange(e) {
@@ -125,7 +125,6 @@ export default {
     shownewdocform(){
       this.newdocvisible=true;
     },
-
     newdoc() {
       var _this=this;
       let formData = new FormData();
@@ -160,7 +159,6 @@ export default {
           _this.errormsg("创建失败，请尝试刷新后再次创建");
         });
     },
-
   },
   mounted() {
     var _this = this;
@@ -185,7 +183,6 @@ export default {
         console.log("wrong", error);
       });
   },
-
 };
 </script>
 <style>
