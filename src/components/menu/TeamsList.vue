@@ -16,14 +16,15 @@
         <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="data">
     <a-list-item slot="renderItem" slot-scope="item">
       
-      <a-card hoverable style="width: 190px" :title="item.title" @click="toGroupDocs(item)">
+      <a-card hoverable style="width: 190px" :title="item.title" >
     <img
       slot="cover"
       alt="example"
       src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2480950301,2664962215&fm=26&gp=0.jpg"
+      @click="toGroupDocs(item)"
     />
     <template slot="actions" class="ant-card-actions">
-      <a-icon key="setting" type="setting" />
+      <a-icon key="delete" type="delete" @click="delete_group(item)"/>
       <a-icon key="edit" type="edit" />
       <a-icon key="ellipsis" type="ellipsis" />
     </template>
@@ -239,7 +240,36 @@ export default {
             }).catch(function(error) {
             console.log('wrong',error);
             });
-      }
+      },
+      delete_group(item) {
+          console.log("删除该项" + item.groupid);
+          this.data.splice(item, 1);
+          var _this=this;
+          let formData = new FormData();
+          formData.append("groupid", item.groupid);
+          console.log(localStorage.getItem("token"));
+          let config = {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          };
+          axios
+            .post("http://localhost:5000/api/delete_group/", formData, config)
+            .then(function (response) {
+              console.log(response.data.message);
+              if (response.data.message == "success") {
+                _this.successmsg("删除成功");
+                setTimeout(() => {
+                  myrefresh();
+                }, 2000);
+              } else {
+                _this.errormsg("删除失败，请尝试刷新后重试");
+              }
+            })
+            .catch(function () {
+              _this.errormsg("删除失败，请尝试刷新后重试");
+            });
+        },
      },
      mounted() {
       this.load_list(this.$route.params.id);
