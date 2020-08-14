@@ -33,6 +33,7 @@
 </template>
 <script type="text/ecmascript-6">
 import TeamInfo from './TeamInfo.vue';
+import axios from 'axios'
 const data = [
   {
     title: '啊',
@@ -71,8 +72,28 @@ const data = [
         },
         mounted: function() {
           console.log('router info',this.$route.params.id);
-          //this.load_data(this.$route.params.id);
-    },
+          var _this = this;
+          let formData = new FormData();
+          formData.append("group_id", this.$route.params.id);
+          let config = {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          };
+          axios
+            .post("http://localhost:5000/api/get_group_docs/", formData, config)
+            .then(function (response) {
+              if (response) {
+                _this.data = response.data;
+                console.log(response.data);
+              } else {
+                alert("请先登录！");
+              }
+            })
+            .catch(function (error) {
+              console.log("wrong", error);
+            });
+        },
         methods: {
           toDocs() {
             this.$router.push('/docs/1');
