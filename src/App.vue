@@ -1,7 +1,59 @@
 <template>
+  <a-layout id="components-layout-demo-top-side-2">
 
-  <div id="app">
-   
+    <a-layout-header class="header">
+      <div class="logo" > 
+        <span class="icon-juzhentanyuansujiegou" style="font-size: 100px; " >
+        </span>
+        <span class="test">石墨烯文档</span>
+      </div>
+      <div class="logo" />
+      <a-menu
+        theme="dark"
+        mode="horizontal"
+        :default-selected-keys="['2']"
+        :style="{ lineHeight: '64px' }"
+      >
+        <a-menu-item key="1">
+          <router-link to="/">Home</router-link>
+        </a-menu-item>
+        <a-menu-item key="2">
+          <router-link v-if="showUserName == null " @click.native='tolog()' to="/loginView" >| Login</router-link>
+          <router-link  to="/" >
+          <a-dropdown v-if="renderDropdown">
+            <a class="ant-dropdown-link" v-if="showUserName"  @click="e => e.preventDefault()">
+              <span><a-badge dot><a-avatar shape="square" size="large" icon="user" /> {{showUserName}}</a-badge></span><a-icon type="down" />
+            </a>
+            <a-menu slot="overlay">
+              <a-menu-item>
+                <router-link to="/Personal">个人信息设置</router-link>
+              </a-menu-item>
+              <a-menu-item disabled>
+                <a href="javascript:;" >石墨烯小程序(还未开通)</a>
+              </a-menu-item>
+              <a-menu-divider />
+                <a-menu-item>
+                  <a href="javascript:;" style="color:#cf2a14;"  @click="logout">退出登陆,{{showUserName}}</a>
+                </a-menu-item>
+              </a-menu>
+            </a-dropdown>
+          </router-link>
+        </a-menu-item>
+        <a-menu-item key="3">
+          nav 3
+        </a-menu-item>
+        <a-menu-item key="4">
+          nav 4
+        </a-menu-item>
+        <a-menu-item key="5">
+          nav 5
+        </a-menu-item>
+        <a-menu-item key="6">
+          nav 6
+        </a-menu-item>
+      </a-menu>
+    </a-layout-header>
+
     <div id="nav" v-if="islog" :style="backgroundDiv" >
       <div style=" font-size:2px;text-align: left;" >  
       <span class="icon-juzhentanyuansujiegou" style="font-size: 85px; max-width:150px" >
@@ -13,25 +65,25 @@
         
       <router-link to="/">Home</router-link> 
       <router-link v-if="showUserName == null " @click.native='tolog()' to="/loginView" >| Login</router-link>
-       <router-link  to="/" >
-  <a-dropdown v-if="renderDropdown">
-    <a class="ant-dropdown-link" v-if="showUserName"  @click="e => e.preventDefault()">
-       |    <span><a-badge dot><a-avatar shape="square" size="large" icon="user" /> {{showUserName}}</a-badge></span><a-icon type="down" />
-    </a>
-    <a-menu slot="overlay">
-      <a-menu-item>
-        <router-link to="/Personal">个人信息设置</router-link>
-      </a-menu-item>
-      <a-menu-item disabled>
-        <a href="javascript:;" >石墨烯小程序(还未开通)</a>
-      </a-menu-item>
-      <a-menu-divider />
-      <a-menu-item>
-        <a href="javascript:;" style="color:#cf2a14;"  @click="logout">退出登陆,{{showUserName}}</a>
-      </a-menu-item>
-    </a-menu>
-  </a-dropdown>
-  </router-link>
+          <router-link  to="/" >
+          <a-dropdown v-if="renderDropdown">
+            <a class="ant-dropdown-link" v-if="showUserName"  @click="e => e.preventDefault()">
+              <span><a-badge dot><a-avatar shape="square" size="large" icon="user" /> {{showUserName}}</a-badge></span><a-icon type="down" />
+            </a>
+            <a-menu slot="overlay">
+              <a-menu-item>
+                <router-link to="/Personal">个人信息设置</router-link>
+              </a-menu-item>
+              <a-menu-item disabled>
+                <a href="javascript:;" >石墨烯小程序(还未开通)</a>
+              </a-menu-item>
+              <a-menu-divider />
+                <a-menu-item>
+                  <a href="javascript:;" style="color:#cf2a14;"  @click="logout">退出登陆,{{showUserName}}</a>
+                </a-menu-item>
+              </a-menu>
+            </a-dropdown>
+          </router-link>
 
     </div>
   <div id="nav" v-if="islogging" :style="backgroundDiv" >
@@ -45,7 +97,7 @@
     </div>
    
     <router-view/>
-  </div>
+  </a-layout>
   
 </template>
 
@@ -88,6 +140,15 @@
   color: #336cb8;
 }
 
+#components-layout-demo-top-side-2 .logo {
+  width: 180px;
+  height: 31px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px 28px 16px 0;
+  float: left;
+}
+
+
 @font-face {
   font-family: 'webfont';
   font-display: swap;
@@ -115,6 +176,7 @@ export default {
   },
   data(){
     return{
+      collapsed: false,
       renderDropdown:false,
     islog:true,
     islogging:false,
