@@ -42,7 +42,7 @@
               v-model="content"
               ref="md"
               @change="change"
-              style="min-height: 600px;"
+              style="min-height: 600px; z-index:1"
               @save="save_docs()"
             />
           </a-layout-content>
@@ -123,7 +123,6 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
-      var _this = this;
       axios
         .post("http://localhost:5000/api/create_comment/", formData, config)
         .then(function (response) {

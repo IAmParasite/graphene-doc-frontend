@@ -14,7 +14,7 @@
       <router-link to="/">Home</router-link> 
       <router-link v-if="showUserName == null " @click.native='tolog()' to="/loginView" >| Login</router-link>
        <router-link  to="/" >
-  <a-dropdown v-if="renderDropdown">
+  <a-dropdown v-if="renderDropdown" style="z-index:100">
     <a class="ant-dropdown-link" v-if="showUserName"  @click="e => e.preventDefault()">
        |    <span><a-badge dot><a-avatar shape="square" size="large" icon="user" /> {{showUserName}}</a-badge></span><a-icon type="down" />
     </a>
