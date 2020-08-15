@@ -16,7 +16,7 @@
 
     <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="data">
       <a-list-item slot="renderItem" slot-scope="item">
-        <docCard :docObj="item"></docCard>
+        <docCard :docObj="item" :fav="0"></docCard>
       </a-list-item>
     </a-list>
     <div>
@@ -96,9 +96,6 @@ export default {
     };
   },
   methods: {
-    successmsg(message) {
-      this.$message.success(message);
-    },
     errormsg(message) {
       this.$message.error(message);
     },
