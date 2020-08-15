@@ -96,6 +96,9 @@ export default {
     };
   },
   methods: {
+    successmsg(message) {
+      this.$message.success(message);
+    },
     errormsg(message) {
       this.$message.error(message);
     },
@@ -138,24 +141,21 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
-      axios
-        .post(
-          "http://localhost:5000/api/create_personal_doc/",
-          formData,
-          config
-        )
+      axios.post("http://localhost:5000/api/create_personal_doc/", formData, config)
         .then(function (response) {
           if (response.data.message == "success") {
             _this.successmsg("创建成功");
             setTimeout(() => {
               myrefresh();
             }, 2000);
-          } else {
-            _this.errormsg("创建失败，请尝试刷新后再次创建");
+          } 
+          else {
+            _this.errormsg("创建失败，请尝试刷新后再次创建1");
           }
         })
-        .catch(function () {
-          _this.errormsg("创建失败，请尝试刷新后再次创建");
+        .catch(function (error) {
+          console.log(error)
+          _this.errormsg("创建失败，请尝试刷新后再次创建2");
         });
     },
   },
