@@ -22,8 +22,8 @@
                 <a-list-item slot="renderItem" slot-scope="item" style="height:80px;">
                   <a-comment :author="item.username" :avatar="avatar">
                     <p align="left" slot="content">{{ item.content }}</p>
-                    <a-tooltip slot="datetime" :title="moment(item.datetime).format('YYYY-MM-DD HH:mm:ss')">
-                      <span>{{ moment(item.datetime).fromNow()}}</span>
+                    <a-tooltip slot="datetime" :title="moment(item.datetime).subtract(8,'hours').format('YYYY-MM-DD HH:mm:ss')">
+                      <span>{{ moment(item.datetime).subtract(8,'hours').fromNow()}}</span>
                     </a-tooltip>
                   </a-comment>
                 </a-list-item>
@@ -113,7 +113,8 @@ export default {
     // 新的评论
     newComment() {
       console.log(this.keyword);
-      this.comment.push({ content: this.keyword,username:localStorage.getItem("token"),datatime:moment().add(8,'hours')});
+      this.comment.push({ content: this.keyword,username:localStorage.getItem("token"),datetime:moment().add(8,'hours')});
+      console.log(moment().add(8,'hours').calendar())
       let formData=new FormData();
       formData.append("DocumentID", this.$route.params.id);
       formData.append("username", localStorage.getItem("token"));
