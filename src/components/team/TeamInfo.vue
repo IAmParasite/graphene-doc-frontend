@@ -9,13 +9,13 @@
       <memberList :propGroupid="groupObj.groupid"></memberList>
       <a-divider>详细信息</a-divider>
       <a-descriptions layout="vertical" bordered>
-        <a-descriptions-item label="团队ID" span="2">
+        <a-descriptions-item label="团队ID" span="1">
           {{groupObj.groupid}}
         </a-descriptions-item>
         <a-descriptions-item label="建立时间" span="2">
           {{groupObj.createdtime}}
         </a-descriptions-item>
-        <a-descriptions-item label="描述" span="2">
+        <a-descriptions-item label="描述" span="1">
           {{groupObj.description}}
         </a-descriptions-item>
         

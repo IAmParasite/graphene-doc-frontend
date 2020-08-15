@@ -1,6 +1,6 @@
 <template>
 <div>
-  <span v-for="user in memberList" :key="user">
+  <span v-for="(user,index) in memberList" :key="index">
     <memberAvatar :username="user.username"></memberAvatar>
   </span>
 </div>
