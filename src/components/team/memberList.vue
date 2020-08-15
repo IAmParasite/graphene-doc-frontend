@@ -1,6 +1,6 @@
 <template>
 <div>
-  <span v-for="user in memberList" :key="user">
+  <span v-for="(user,index) in memberList" :key="index">
     <memberAvatar :username="user.username"></memberAvatar>
   </span>
 </div>
@@ -15,13 +15,24 @@ export default{
   name: 'memberList',
 
   props: {
-    groupid: {
+    propGroupid: {
       type: Number,
     },
   },
 
+  watch: {
+    propGroupid: {
+      handler(newVal) {
+        this.groupid=newVal;
+      },
+      deep: true,
+      immediate: true,
+    }
+  },
+
   data(){
     return{
+      groupid:'',
       memberList: [],
     };
     
@@ -41,7 +52,7 @@ export default{
       }
     };
     var _this=this;
-    axios.post('http://localhost:5000/api/get_user_by_group/',formData,config)
+    axios.post('http://localhost:5000/api/get_user_bygroup/',formData,config)
       .then(function(response) {
         if(response) {
           _this.memberList=response.data;
