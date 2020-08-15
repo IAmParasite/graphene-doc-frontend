@@ -47,14 +47,9 @@ export default {
 
     methods: {
       toGroupDocs(item){
-<<<<<<< Updated upstream
-        console.log("亲，现在跳转不了哦")
-        this.$router.push('/teamdocs-list/' + item.groupid)
-=======
         this.$router.push('/teamdocs-list/' + item.groupid);
 
         localStorage.setItem('groupInfo'+item.groupid,JSON.stringify(item));
->>>>>>> Stashed changes
       },
 
       load_list(id) {
