@@ -14,8 +14,8 @@
       <router-link to="/">Home</router-link> 
       <router-link v-if="showUserName == null " @click.native='tolog()' to="/loginView" >| Login</router-link>
        <router-link  to="/" >
- <a-dropdown>
-    <a class="ant-dropdown-link" v-if="showUserName" @click="e => e.preventDefault()">
+  <a-dropdown v-if="renderDropdown">
+    <a class="ant-dropdown-link" v-if="showUserName"  @click="e => e.preventDefault()">
        |    <span><a-badge dot><a-avatar shape="square" size="large" icon="user" /> {{showUserName}}</a-badge></span><a-icon type="down" />
     </a>
     <a-menu slot="overlay">
@@ -111,11 +111,11 @@
 
 //import MessageSvg from './assets/message.svg';
 export default {
-  
   components:{
   },
   data(){
     return{
+      renderDropdown:false,
     islog:true,
     islogging:false,
     size:'large',
@@ -124,6 +124,12 @@ export default {
     }
     }
   },
+
+  mounted(){
+    if(localStorage.getItem('token')!=null) this.renderDropdown=true;
+    else this.renderDropdown=false;
+  },
+
   methods:{
     logout(){
       localStorage.removeItem('token');
