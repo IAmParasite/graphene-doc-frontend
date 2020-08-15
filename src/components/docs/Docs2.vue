@@ -221,7 +221,37 @@ export default {
         .catch(function (error) {
           console.log("Fail", error);
         });
-    }
+    },
+    initWebSocket(){ //初始化weosocket
+      const wsuri = "ws://49.235.221.218:8888/conn";
+      this.websock = new WebSocket(wsuri);
+      this.websock.onmessage = this.websocketonmessage;
+      this.websock.onopen = this.websocketonopen;
+      this.websock.onerror = this.websocketonerror;
+      this.websock.onclose = this.websocketclose;
+    },
+    websocketonopen(){ //连接建立之后执行send方法发送数据
+      console.log('连接成功！')
+    },
+    sendcontent(){
+      this.websocketsend(JSON.stringify(this.content));
+    },
+    websocketonerror(){//连接建立失败重连
+      this.initWebSocket();
+    },
+    websocketonmessage(e){ //数据接收
+      console.log(JSON.parse(e.data))
+      this.content=JSON.parse(e.data)
+    },
+    websocketsend(Data){//数据发送
+      this.websock.send(Data);
+    },
+    websocketclose(e){  //关闭
+      console.log('断开连接',e);
+    },
+  },
+  destroyed() {
+    this.websock.close() //离开路由之后断开websocket连接
   },
   destroyed() {
     this.websock.close(); //离开路由之后断开websocket连接

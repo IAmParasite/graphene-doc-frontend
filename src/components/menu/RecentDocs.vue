@@ -9,25 +9,9 @@
 </template>
 <script type="text/ecmascript-6">
 import docCard from '../docs/docCard.vue'
+import axios from "axios";
 const data = [
-  {
-    title: '今日头条',
-  },
-  {
-    title: '啊这',
-  },
-  {
-    title: 'Title 3',
-  },
-  {
-    title: 'Title 4',
-  },
-  {
-    title: 'Title 5',
-  },
-  {
-    title: 'Title 6',
-  },
+  
 ];
 export default {
   components: {
@@ -42,6 +26,29 @@ export default {
     toDocs() {
       this.$router.push('/docs/1');
     }
-  }
+  },
+  mounted() {
+    var _this = this;
+    let formData = new FormData();
+    formData.append("username", localStorage.getItem("token"));
+    let config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    axios
+      .post("http://localhost:5000/api/show_recent_doc/", formData, config)
+      .then(function (response) {
+        if (response) {
+          _this.data = response.data;
+          console.log(response.data);
+        } else {
+          alert("请先登录！");
+        }
+      })
+      .catch(function (error) {
+        console.log("wrong", error);
+      });
+  },
 }
 </script><style></style>
