@@ -170,6 +170,11 @@ export default {
     console.log(this.$route.params.id);
     this.load_data(this.$route.params.id);
     this.initWebSocket();
+  },
+  watch:{
+    content(){
+      this.sendcontent()
+    }
   }
 };
 </script>
