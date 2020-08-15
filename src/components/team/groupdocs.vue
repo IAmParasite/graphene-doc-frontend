@@ -8,7 +8,7 @@
           </a-list>
         </a-col>
         <a-col span="6" id="sider-col">
-          <TeamInfo :groupObj="groupObj"></TeamInfo>
+          <TeamInfo :groupid="this.$route.params.id"></TeamInfo>
         </a-col>
         
       </div>
