@@ -2,31 +2,14 @@
   <div>
     <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="data">
       <a-list-item slot="renderItem" slot-scope="item">
-        <a-card hoverable style="width: 190px" :title="item.title">
-          <img
-            slot="cover"
-            alt="example"
-            src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-            @click="toDocs(item.id)"
-          />
-          <template slot="actions" class="ant-card-actions">
-            <a-icon type="unlock" @click="deleteDocs(item)" />
-            <a-icon key="edit" type="edit" />
-            <a-icon key="ellipsis" type="ellipsis" />
-          </template>
-          <a-card-meta :title="item.created_time" :description="item.description">
-            <a-avatar
-              slot="avatar"
-              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            />
-          </a-card-meta>
-        </a-card>
+        <docCard :docObj="item" :fav="2"></docCard>
       </a-list-item>
     </a-list>
   </div>
 </template>
 <script type="text/ecmascript-6">
 import axios from "axios";
+import docCard from '../docs/docCard.vue';
 const data = [
   //   {
   //     id:'',//文档id
@@ -46,49 +29,15 @@ function myrefresh() {
   window.location.reload();
 }
 export default {
+  components: {
+    docCard,
+  },
   data() {
     return {
       data,
     };
   },
   methods: {
-    successmsg(message) {
-      this.$message.success(message);
-    },
-    errormsg(message) {
-      this.$message.error(message);
-    },
-    toDocs(id) {
-      this.$router.push("/docs2/" + id);
-    },
-    deleteDocs(item) {
-      console.log("删除该项" + item.id);
-      this.data.splice(item, 1);
-      var _this = this;
-      let formData = new FormData();
-      formData.append("DocumentID", item.id);
-      formData.append("username", localStorage.getItem("token"));
-      let config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-      axios
-        .post("http://localhost:5000/api/recover_doc/", formData, config)
-        .then(function (response) {
-          if (response.data.message == "success") {
-            _this.successmsg("恢复成功");
-            setTimeout(() => {
-              myrefresh();
-            }, 2000);
-          } else {
-            _this.errormsg("恢复失败，请稍后重试");
-          }
-        })
-        .catch(function () {
-           _this.errormsg("恢复失败，请稍后重试");
-        });
-    },
   },
   mounted() {
     var _this = this;

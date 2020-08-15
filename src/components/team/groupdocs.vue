@@ -24,7 +24,7 @@
           </a-list>
         </a-col>
         <a-col span="6" id="sider-col">
-          <TeamInfo :groupObj="groupObj"></TeamInfo>
+          <TeamInfo :groupid="this.$route.params.id"></TeamInfo>
         </a-col>
         <div>
             <a-modal title="创建文档" :visible="newdocvisible" @ok="createdoc" @cancel="handleCancel">
@@ -61,27 +61,6 @@ import TeamInfo from './TeamInfo.vue';
 import docCard from '../docs/docCard.vue';
 import axios from 'axios'
 
-
-const data = [
-  {
-    title: '啊',
-  },
-  {
-    title: '啊这',
-  },
-  {
-    title: '团队文件列表',
-  },
-  {
-    title: 'Title 4',
-  },
-  {
-    title: 'Title 5',
-  },
-  {
-    title: 'Title 6',
-  },
-];
 function myrefresh() {
   window.location.reload();
 }
@@ -92,7 +71,7 @@ function myrefresh() {
       },
         data(){
             return {
-                data,
+                data:[],
                 groupObj: {
                   groupname: 'TEAMTESTINFO',
                   groupid: 111111111,

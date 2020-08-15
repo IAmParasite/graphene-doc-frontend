@@ -8,8 +8,10 @@
         @click="toDocs(docObj.id)"
       />
       <template slot="actions" class="ant-card-actions">
-        <a-icon type="delete" @click="deleteDocs()" />
-        <a-icon type="edit" @click="showModal()" />
+        <a-icon type="delete" @click="deleteDocs(1)" v-if="fav!=2"/>
+        <a-icon type="unlock" @click="revoverDoc()" v-if="fav==2"/>
+        <a-icon type="edit" @click="showModal()" v-if="fav!=2"/>
+        <a-icon type="delete" @click="deleteDocs(2)" v-if="fav==2"/>
         <a-icon type="file-add" @click="addFavorDocs()" v-if="fav==0" />
         <a-icon type="minus-square" @click="delFavorDocs()" v-if="fav==1" />
         
@@ -99,7 +101,7 @@ export default {
       //这边判断是否能看，比如occupied
       this.$router.push("/docs2/" + id);
     },
-    deleteDocs() {
+    deleteDocs(flag) {
       console.log("删除该项" + this.form.DocumentID);
       var _this=this;
       let formData = new FormData();
@@ -112,8 +114,8 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
-      axios
-        .post("http://localhost:5000/api/recycle_doc/", formData, config)
+      if(flag == 1) {
+          axios.post("http://localhost:5000/api/recycle_doc/", formData, config)
         .then(function (response) {
           console.log(response.data.message);
           if (response.data.message == "success") {
@@ -128,7 +130,27 @@ export default {
         .catch(function () {
           _this.errormsg("删除失败，请尝试刷新后重试");
         });
+      }
+      else {
+        axios.post("http://localhost:5000/api/del_doc/", formData, config)
+          .then(function (response) {
+            console.log(response.data.message);
+            if (response.data.message == "success") {
+              _this.successmsg("彻底删除成功");
+              setTimeout(() => {
+                myrefresh();
+              }, 2000);
+            } else {
+              _this.errormsg("彻底删除失败，请尝试刷新后重试");
+            }
+          })
+          .catch(function () {
+            _this.errormsg("彻底删除失败，请尝试刷新后重试");
+          });
+      }
+      
     },
+
     addFavorDocs() {
       console.log("收藏该项" + this.form.DocumentID);
       var _this=this;
@@ -184,6 +206,32 @@ export default {
         })
         .catch(function () {
           _this.errormsg("取消收藏失败，请尝试刷新后重试");
+        });
+    },
+    revoverDoc(item) {
+      var _this = this;
+      let formData = new FormData();
+      formData.append("DocumentID", item.id);
+      formData.append("username", localStorage.getItem("token"));
+      let config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      axios
+        .post("http://localhost:5000/api/recover_doc/", formData, config)
+        .then(function (response) {
+          if (response.data.message == "success") {
+            _this.successmsg("恢复成功");
+            setTimeout(() => {
+              myrefresh();
+            }, 2000);
+          } else {
+            _this.errormsg("恢复失败，请稍后重试");
+          }
+        })
+        .catch(function () {
+           _this.errormsg("恢复失败，请稍后重试");
         });
     },
     showModal() {
