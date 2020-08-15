@@ -24,7 +24,7 @@
           </a-list>
         </a-col>
         <a-col span="6" id="sider-col">
-          <TeamInfo :groupObj="groupObj"></TeamInfo>
+          <TeamInfo :groupid="this.$route.params.id"></TeamInfo>
         </a-col>
         <div>
             <a-modal title="创建文档" :visible="newdocvisible" @ok="createdoc" @cancel="handleCancel">
