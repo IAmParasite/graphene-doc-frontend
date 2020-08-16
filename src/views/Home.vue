@@ -2,9 +2,7 @@
   <a-layout id="components-layout-demo-side" style="min-height: 100vh;">
     <a-layout-sider style="background: #fff;" v-model="collapsed" collapsible>
       <div class="logo" />
-      <a-menu theme="light" :default-selected-keys="['2']" mode="inline" @select="handleSelect"> 
-       
-        
+      <a-menu theme="light" :default-selected-keys="['recent-docs']" mode="inline" @select="handleSelect"> 
         <a-sub-menu key="sub1">
           <span slot="title"><a-icon type="edit" /><span>工作台</span></span>
           <a-menu-item key="recent-docs">
