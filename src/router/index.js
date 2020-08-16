@@ -39,6 +39,10 @@ Vue.use(VueRouter)
         path: '/teamdocs-list/:id',
         component: () => import('../components/team/groupdocs.vue')
       },
+      {
+        path: '/my-cor-docs',
+        component: () => import('../components/menu/CorporateDocs.vue')
+      }
     ]
   },
   {
@@ -85,7 +89,12 @@ Vue.use(VueRouter)
         component: () => import('../components/notice/PrivateMessage.vue')
       },
     ]
-  }
+  },
+  {
+    path: '/userInfo/:username',
+    name: 'userInfo',
+    component: () => import('../components/userInfo.vue')
+  },
 ]
 
 const router = new VueRouter({

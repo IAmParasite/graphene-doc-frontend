@@ -1,7 +1,5 @@
 <template>
       <div>
-
-
         <a-row>
           <a-col :span="10" :offset="7"></a-col>
           <a-col :span="2" :offset="5">
@@ -187,7 +185,7 @@ function myrefresh() {
             this.newdocvisible=true;
           },
           handleCancel() {
-            this.visible = false;
+            this.newdocvisible = false;
           },
           successmsg(message) {
             this.$message.success(message);

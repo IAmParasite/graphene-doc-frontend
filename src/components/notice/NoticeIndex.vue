@@ -44,7 +44,7 @@ export default {
     handleSelect(key) {
         console.log(key)
         switch(key.key){
-            case "invitaion":
+            case "invitation":
                 this.$router.push('/invitation')
                 break;
             case "private-message":

@@ -2,14 +2,14 @@
   <div>
     <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="data">
       <a-list-item slot="renderItem" slot-scope="item">
-        <docCard :docObj="item" :fav="2"></docCard>
+        <docCard :docObj="item" :fav="3"></docCard>
       </a-list-item>
     </a-list>
   </div>
 </template>
 <script type="text/ecmascript-6">
 import axios from "axios";
-import docCard from '../docs/docCard.vue';
+import docCard from '../docs/docCard.vue'
 const data = [
   //   {
   //     id:'',//文档id
@@ -32,6 +32,8 @@ export default {
   data() {
     return {
       data,
+      labelCol: { span: 4 },
+      wrapperCol: { span: 14 },
     };
   },
   methods: {
@@ -46,7 +48,7 @@ export default {
       },
     };
     axios
-      .post("http://localhost:5000/api/my_deleted_docs/", formData, config)
+      .post("url", formData, config)
       .then(function (response) {
         if (response) {
           _this.data = response.data;
