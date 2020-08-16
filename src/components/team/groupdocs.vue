@@ -160,6 +160,7 @@ function myrefresh() {
             }
         },
         mounted: function() {
+
           console.log('router info',this.$route.params.id);
           var _this = this;
           let formData = new FormData();
