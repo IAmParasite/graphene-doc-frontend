@@ -27,11 +27,11 @@ import { Descriptions, Divider} from 'ant-design-vue';
 import { Modal} from 'ant-design-vue';
 import { Affix } from 'ant-design-vue';
 import { Checkbox } from 'ant-design-vue';
-import { Comment } from 'ant-design-vue';
+import {Comment} from 'ant-design-vue';
 import {Tooltip} from 'ant-design-vue';
 import { Radio } from 'ant-design-vue';
-import { Table } from 'ant-design-vue';
-import { Tag } from 'ant-design-vue';
+import {Table} from 'ant-design-vue';
+import {Tag} from 'ant-design-vue';
 import Axios from 'axios'
 import VueRouter from 'vue-router'
 
