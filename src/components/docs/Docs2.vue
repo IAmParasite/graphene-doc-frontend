@@ -70,6 +70,7 @@
               @save="save_docs()"
             />
           </a-layout-content>
+          <a-icon type="download" @click="exportWord()"/>
         </a-layout>
       </a-layout>
     </a-layout>
@@ -82,6 +83,13 @@ import memberAvatar from '../team/memberAvatar';
 import "mavon-editor/dist/css/index.css";
 import axios from "axios";
 import moment from "moment";
+import "@/utils/htmlToPdf.js"
+import docxtemplater from 'docxtemplater'
+import PizZip from 'pizzip'
+import JSZipUtils from 'jszip-utils'
+import JSZip from 'jszip'
+import {saveAs} from 'file-saver'
+ 
 function myrefresh() {
   window.location.reload();
 }
@@ -93,7 +101,11 @@ export default {
   },
   data() {
     return {
-      content: "",
+      form: {
+        content: "",
+        username: ""
+      },
+      content: "?啊浙",
       html: "",
       configs: {},
       collapsed: false,
@@ -110,6 +122,52 @@ export default {
     };
   },
   methods: {
+    exportWord: function() {
+      let _this = this;
+      // 读取并获得模板文件的二进制内容
+      JSZipUtils.getBinaryContent("/template.docx", function(error, content) {
+        // input.docx是模板。我们在导出的时候，会根据此模板来导出对应的数据
+        // 抛出异常
+        if (error) {
+          console.log(error)
+          throw error;
+        }
+        
+        // 创建一个JSZip实例，内容为模板的内容
+        let zip = new PizZip(content);
+        // 创建并加载docxtemplater实例对象
+        let doc = new docxtemplater().loadZip(zip);
+        // 设置模板变量的值
+        doc.setData({
+          ..._this.form,
+          table: _this.tableData
+        });
+        
+        try {
+          // 用模板变量的值替换所有模板变量
+          doc.render();
+        } catch (error) {
+          // 抛出异常
+          let e = {
+            message: error.message,
+            name: error.name,
+            stack: error.stack,
+            properties: error.properties
+          };
+          console.log(JSON.stringify({ error: e }));
+          throw error;
+        }
+        
+        // 生成一个代表docxtemplater对象的zip文件（不是一个真实的文件，而是在内存中的表示）
+        let out = doc.getZip().generate({
+          type: "blob",
+          mimeType:
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        });
+        // 将目标文件对象保存为目标类型的文件，并命名
+        saveAs(out, "Docs.docx");
+      });
+    },
     // 所有操作都会被解析重新渲染
     change(value, render) {
       // render 为 markdown 解析后的结果[html]
@@ -199,6 +257,9 @@ export default {
             console.log("程坤");
             console.log(response.data.content);
             _this.content = response.data.content;
+            _this.form.content = response.data.content;
+            _this.form.username = localStorage.getItem("token");
+            console.log("表格中的信息" +  _this.form.content)
           } else {
             console.log("失败");
           }
