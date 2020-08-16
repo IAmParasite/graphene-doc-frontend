@@ -36,6 +36,7 @@ import Axios from 'axios'
 import VueRouter from 'vue-router'
 
 import { message} from 'ant-design-vue'
+Vue.prototype.$confirm = Modal.confirm;
 Vue.prototype.$message = message;
 message.config({
     duration: 2,// 持续时间
