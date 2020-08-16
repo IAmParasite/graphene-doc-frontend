@@ -87,7 +87,6 @@ import "@/utils/htmlToPdf.js"
 import docxtemplater from 'docxtemplater'
 import PizZip from 'pizzip'
 import JSZipUtils from 'jszip-utils'
-import JSZip from 'jszip'
 import {saveAs} from 'file-saver'
  
 function myrefresh() {
@@ -103,7 +102,8 @@ export default {
     return {
       form: {
         content: "",
-        username: ""
+        username: "",
+        title: ""
       },
       content: "?啊浙",
       html: "",
