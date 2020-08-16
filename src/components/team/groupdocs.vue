@@ -87,7 +87,8 @@ function myrefresh() {
                   title:"",
                   modify_right: 0,
                   share_right: 0,
-                  discuss_right: 0
+                  discuss_right: 0,
+                  content:""
                 },
                 labelCol: { span: 4 },
                 wrapperCol: { span: 14 },
@@ -96,6 +97,7 @@ function myrefresh() {
             }
         },
         mounted: function() {
+
           console.log('router info',this.$route.params.id);
           var _this = this;
           let formData = new FormData();
@@ -160,6 +162,16 @@ function myrefresh() {
               if(element=="评论")this.newdocform.discuss_right=1;
               if(element=="分享")this.newdocform.share_right=1;
             });
+            switch(this.templateValue){
+              case 1:
+                break;
+              case 2:
+                this.newdocform.content=this.content2;
+                break;
+              case 3:
+                this.newdocform.content=this.content3;
+                break;
+            }
             this.newdoc();
           },
           onCheckAllChange(e) {
@@ -178,7 +190,7 @@ function myrefresh() {
             formData.append("modify_right", this.newdocform.modify_right);
             formData.append("share_right", this.newdocform.share_right);
             formData.append("discuss_right", this.newdocform.discuss_right);
-            formData.append("content", "");
+            formData.append("content",this.newdocform.content);
             let config = {
               headers: {
                 "Content-Type": "multipart/form-data",

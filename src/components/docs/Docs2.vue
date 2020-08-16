@@ -4,8 +4,10 @@
       <a-layout>
         <a-layout-sider width="300" style="background: #fff">
           <a-tabs type="card" @change="callback">
+            <!-- 评论tab -->
             <a-tab-pane key="1" tab="评论">
-              <div style="margin-left:20px;margin-right:20px;"> 
+              <!-- 新的评论 -->
+              <div style="margin-left:5px;margin-right:5px;"> 
               <a-input-search
                 placeholder="输入评论"
                 v-model="keyword"
@@ -29,7 +31,25 @@
                 </a-list-item>
               </a-list>
             </a-tab-pane>
-            <a-tab-pane key="2" tab="历史">Content of Tab Pane 2</a-tab-pane>
+            <!-- 历史修改记录tab -->
+            <a-tab-pane key="2" tab="历史">
+              <!-- 历史列表 -->
+              <a-list
+                class="comment-list"
+                item-layout="horizontal"
+                :data-source="modify_history"
+              >
+                <a-list-item slot="renderItem" slot-scope="item" style="height:70px;float:left;">
+                  <memberAvatar :username="item.username"></memberAvatar>
+                  <a-comment style="margin-right:10px;width:200px">
+                    <p align="left" slot="content">修改了文档</p>
+                    <a-tooltip slot="datetime" :title="moment(item.datetime).subtract(8,'hours').format('YYYY-MM-DD HH:mm:ss')">
+                      <span>{{ moment(item.datetime).subtract(8,'hours').fromNow()}}</span>
+                    </a-tooltip>
+                  </a-comment>
+                </a-list-item>
+              </a-list></a-tab-pane>
+            <!-- 分享tab -->
             <a-tab-pane key="3" tab="分享">Content of Tab Pane 3</a-tab-pane>
           </a-tabs>
         </a-layout-sider>
@@ -57,6 +77,15 @@ import { mavonEditor } from "mavon-editor";
 import "mavon-editor/dist/css/index.css";
 import axios from "axios";
 import moment from "moment";
+import "@/utils/htmlToPdf.js"
+import docxtemplater from 'docxtemplater'
+import PizZip from 'pizzip'
+import JSZipUtils from 'jszip-utils'
+import {saveAs} from 'file-saver'
+ 
+function myrefresh() {
+  window.location.reload();
+}
 export default {
   name: "Home",
   components: {
@@ -64,7 +93,12 @@ export default {
   },
   data() {
     return {
-      content: "<p> 请在这里开始你的?文档编辑</p>",
+      form: {
+        content: "",
+        username: "",
+        title: ""
+      },
+      content: "?啊浙",
       html: "",
       configs: {},
       collapsed: false,
@@ -73,6 +107,12 @@ export default {
       comment: [
       ],
       avatar:'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+      modify_history:[
+        {
+          'username':localStorage.getItem('token'),
+          'datetime':moment()
+        }
+      ],
     };
   },
   methods: {
@@ -80,6 +120,12 @@ export default {
     change(value, render) {
       // render 为 markdown 解析后的结果[html]
       this.html = render;
+    },
+    successmsg(message) {
+      this.$message.success(message);
+    },
+    errormsg(message) {
+      this.$message.error(message);
     },
     // 提交
     callback() {},
@@ -158,6 +204,9 @@ export default {
             console.log("程坤");
             console.log(response.data.content);
             _this.content = response.data.content;
+            _this.form.content = response.data.content;
+            _this.form.username = localStorage.getItem("token");
+            console.log("表格中的信息" +  _this.form.content)
           } else {
             console.log("失败");
           }
@@ -226,6 +275,7 @@ export default {
     console.log(this.$route.params.id);
     this.load_data(this.$route.params.id);
     this.load_comment(this.$route.params.id);
+    this.load_modify_history(this.$route.params.id);
     //this.initWebSocket();
   },
   watch: {

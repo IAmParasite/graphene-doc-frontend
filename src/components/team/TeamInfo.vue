@@ -21,15 +21,22 @@
         
       </a-descriptions>
       <a-divider>团队管理</a-divider>
-      <a-button type="primary" block style="margin-top:10px">邀请成员加入团队</a-button>
-      <a-button type="primary" block style="margin-top:10px">管理成员权限</a-button>
-      <a-button type="danger" block style="margin-top:10px;margin-bottom=10px">解散团队</a-button>
+      {{iamfounder}}
+      <div v-if="iamfounder">
+        <a-button type="primary" block style="margin-top:10px">邀请成员加入团队</a-button>
+        <a-button type="primary" block style="margin-top:10px">管理成员权限</a-button>
+        <a-button type="danger" block style="margin-top:10px;margin-bottom=10px">解散团队</a-button>
+      </div>
+      <div v-else>
+        <a-button type="danger" block style="margin-top:10px;margin-bottom=10px">退出团队</a-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import memberList from './memberList';
+import axios from 'axios';
 export default {
   name: 'TeamInfo',
 
@@ -54,14 +61,37 @@ export default {
         else {
           alert('路由跳转失效，检查localStorage');
         }
+        console.log("watch saw changes with groupid");
+        var _this = this;
+          let formData = new FormData();
+          formData.append("groupid", this.$route.params.id);
+          formData.append("username",localStorage.getItem('token'));
+          let config = {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          };
+          axios
+            .post("http://localhost:5000/api/groupiscreatedbyme/", formData, config)
+            .then(function (response) {
+              if (response) {
+                _this.iamfounder=(response.data.message=='yes');
+              } else {
+                alert("请先登录！");
+              }
+            })
+            .catch(function (error) {
+              console.log("wrong", error);
+            });
       },
       deep: true,
       immediate: true,
-    }
+    },
   },
 
   data() {
     return {
+      iamfounder:false,
       groupObj: {
 
       },
