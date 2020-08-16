@@ -1,0 +1,5 @@
+jszip
+docxtemplater
+pizzip
+jszip-utils
+file-saver

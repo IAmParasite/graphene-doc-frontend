@@ -35,8 +35,20 @@
                     @change="onCheckAllChange"
                   >Check all</a-checkbox>
                 </div>
-                <br />
                 <a-checkbox-group v-model="checkedList" :options="plainOptions" @change="onChange" />
+              </div>
+            </a-form-model-item>
+            <a-form-model-item label="模版选择">
+              <div>
+                <a-radio-group v-model="templateValue" @change="onChangeTem">
+                  <a-radio :value="1">空白文档
+                  </a-radio>
+                  <a-radio :value="2">模版 1
+                  </a-radio>
+                  <a-radio :value="3">模版 2
+                  </a-radio>
+                  
+                </a-radio-group>
               </div>
             </a-form-model-item>
           </a-form-model>
@@ -74,8 +86,10 @@ export default {
   },
   data() {
     return {
+      templateValue:1,
       checkedList: defaultCheckedList,
       indeterminate: true,
+      indeterminateTem: true,
       checkAll: false,
       plainOptions,
       newdocvisible:false,
@@ -89,10 +103,42 @@ export default {
         title:"",
         modify_right:0,
         share_right:0,
-        discuss_right:0
+        discuss_right:0,
+        content:""
       },
       labelCol: { span: 4 },
       wrapperCol: { span: 14 },
+      content2:"# 欢迎使用 石墨烯文档模版1\n"+
+        " ------\n"+
+        "为了更好的使用文档,**graphene Markdown** 提供了两套模版系统 \n"+
+        "> * 整理知识，学习笔记\n"+
+        "> * 发布日记，杂文，所见所想\n"+
+        "> * 撰写发布技术文稿（代码支持）\n"+
+        "> * 撰写发布学术论文\n"+
+        "![cmd-markdown-logo](https://www.zybuluo.com/static/img/logo.png)\n",
+      content3:
+        "# 欢迎使用 石墨烯文档模版2\n"+
+        " ------\n"+
+        "为了更好的使用文档,**graphene Markdown** 提供了两套模版系统 \n"+
+        "以下是markdown简要使用说明\n"+
+        "# Title1\n"+
+        "## Title2\n"+
+        "### Title3\n"+
+        "content\n"+
+        "==\n"+
+        "content2\n"+
+        "--\n"+
+        "content3\n"+
+        "--\n"+
+        "* name\n"+
+        "- name\n"+
+        "+ name\n"+
+        "* [I'm an inline-style link](https://www.google.com)\n"+
+        "* Inline `code` has `back-ticks around` it.\n"+
+        "```javascript\n"+
+        "var s = \"JavaScript syntax highlighting\";\n"+
+        "alert(s);\n"+
+        "```"  
     };
   },
   methods: {
@@ -105,6 +151,9 @@ export default {
     onChange(checkedList) {
       this.indeterminate = !! checkedList.length && checkedList.length < plainOptions.length;
       this.checkAll = checkedList.length === plainOptions.length;
+    },
+    onChangeTem(e){
+      console.log('radio checked',e.target.templateValue);
     },
     onCheckAllChange(e) {
       Object.assign(this, {
@@ -119,6 +168,16 @@ export default {
         if(element=="评论")this.newdocform.discuss_right=1;
         if(element=="分享")this.newdocform.share_right=1;
       });
+      switch(this.templateValue){
+        case 1:
+          break;
+        case 2:
+          this.newdocform.content=this.content2;
+          break;
+        case 3:
+          this.newdocform.content=this.content3;
+          break;
+      }
       this.newdoc();
     },
     cancelcreate(){
@@ -135,7 +194,7 @@ export default {
       formData.append("modify_right", this.newdocform.modify_right);
       formData.append("share_right", this.newdocform.share_right);
       formData.append("discuss_right", this.newdocform.discuss_right);
-      formData.append("content", "");
+      formData.append("content", this.newdocform.content);
       let config = {
         headers: {
           "Content-Type": "multipart/form-data",

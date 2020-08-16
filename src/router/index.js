@@ -39,6 +39,10 @@ Vue.use(VueRouter)
         path: '/teamdocs-list/:id',
         component: () => import('../components/team/groupdocs.vue')
       },
+      {
+        path: '/my-cor-docs',
+        component: () => import('../components/menu/CorporateDocs.vue')
+      }
     ]
   },
   {
@@ -68,10 +72,29 @@ Vue.use(VueRouter)
     component: () => import('../components/docs/Docs2.vue')
   },
   {
+    path: '/notice',
+    name: 'NoticeIndex',
+    component: () => import('../components/notice/NoticeIndex.vue'),
+    children: [
+      {
+        path: '/invitation',
+        component: () => import('../components/notice/Invitation.vue')
+      },
+      {
+        path: '/application',
+        component: () => import('../components/notice/Application.vue')
+      },
+      {
+        path: '/private-message',
+        component: () => import('../components/notice/PrivateMessage.vue')
+      },
+    ]
+  },
+  {
     path: '/userInfo/:username',
     name: 'userInfo',
     component: () => import('../components/userInfo.vue')
-  }
+  },
 ]
 
 const router = new VueRouter({
