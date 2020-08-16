@@ -1,7 +1,9 @@
 <template>
   <a-layout id="components-layout-demo-fixed-sider">
     <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
-      <div class="logo" />
+      <div class="logo"> 
+          石墨文档 
+        </div>
       <a-menu theme="dark" mode="inline" :default-selected-keys="['1']"  @select="handleSelect">
         <a-menu-item key="private-message">
           <a-icon type="user" />
