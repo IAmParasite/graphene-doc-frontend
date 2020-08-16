@@ -39,6 +39,10 @@ Vue.use(VueRouter)
         path: '/teamdocs-list/:id',
         component: () => import('../components/team/groupdocs.vue')
       },
+      {
+        path: '/my-cor-docs',
+        component: () => import('../components/menu/CorporateDocs.vue')
+      }
     ]
   },
   {

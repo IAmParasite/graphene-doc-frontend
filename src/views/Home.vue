@@ -16,6 +16,9 @@
           <a-menu-item key="own-docs">
             自己创建的文档
           </a-menu-item>
+          <a-menu-item key="my-cor-docs">
+            我协作的文档
+          </a-menu-item>
           <!--a-menu-item key="teams-mem">
             加入的团队
           </a-menu-item-->
@@ -111,6 +114,9 @@ export default {
                     break;
                 case "joined-team":
                   this.$router.push('/teams-list/joined-team');
+                  break;
+                case "my-cor-docs":
+                  this.$router.push('/my-cor-docs');
                   break;
                 default:
                   console.log("nothing")
