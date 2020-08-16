@@ -27,6 +27,9 @@ import { Descriptions, Divider} from 'ant-design-vue';
 import { Modal} from 'ant-design-vue';
 import { Affix } from 'ant-design-vue';
 import { Checkbox } from 'ant-design-vue';
+import {Comment} from 'ant-design-vue';
+import {Tooltip} from 'ant-design-vue';
+import { Radio } from 'ant-design-vue';
 import Axios from 'axios'
 import VueRouter from 'vue-router'
 
@@ -64,7 +67,9 @@ Vue.use(Divider);
 Vue.use(Modal);
 Vue.use(Affix);
 Vue.use(Checkbox);
-
+Vue.use(Comment);
+Vue.use(Tooltip);
+Vue.use(Radio);
 Vue.config.productionTip = false
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {

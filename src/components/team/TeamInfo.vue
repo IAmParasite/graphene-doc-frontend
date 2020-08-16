@@ -6,16 +6,16 @@
       <h1 id='grouptitle'> {{groupObj.groupname}}</h1>
     <div>
       <a-divider>成员列表</a-divider>
-      <memberList :groupid="groupObj.groupid"></memberList>
+      <memberList :propGroupid="groupObj.groupid"></memberList>
       <a-divider>详细信息</a-divider>
       <a-descriptions layout="vertical" bordered>
-        <a-descriptions-item label="团队ID" span="2">
+        <a-descriptions-item label="团队ID" span="1">
           {{groupObj.groupid}}
         </a-descriptions-item>
         <a-descriptions-item label="建立时间" span="2">
           {{groupObj.createdtime}}
         </a-descriptions-item>
-        <a-descriptions-item label="描述" span="2">
+        <a-descriptions-item label="描述" span="1">
           {{groupObj.description}}
         </a-descriptions-item>
         
@@ -39,17 +39,32 @@ export default {
   },
 
   props: {
-    groupObj: {
-      groupname: '',
-      groupid: 0,
-      createdtime: '',
-      description: '',
-    }
+    groupid: {
+      type: String,
+      default: '',
+    },
+  },
 
+  watch:{
+    groupid: {
+      handler(newVal) {
+        if(localStorage.getItem('groupInfo'+newVal)) {
+          this.groupObj=JSON.parse(localStorage.getItem('groupInfo'+newVal));
+        }
+        else {
+          alert('路由跳转失效，检查localStorage');
+        }
+      },
+      deep: true,
+      immediate: true,
+    }
   },
 
   data() {
     return {
+      groupObj: {
+
+      },
       backgroundDiv:{
         backgroundImage:'url('+require('../../assets/teaminfopic.jpg')+')',
       },

@@ -4,21 +4,30 @@
       <a-layout>
         <a-layout-sider width="300" style="background: #fff">
           <a-tabs type="card" @change="callback">
-            <a-tab-pane key="1" tab="评论" style="margin-left:20px, margin-right:20px">
-              <a-input-search placeholder="输入评论" v-model="keyword" enter-button="评论" size="small" @search="onSearch"/>
-                <a-list item-layout="horizontal" :data-source="comment">
-                  <a-list-item slot="renderItem" slot-scope="item">
-                    <a-list-item-meta
-                      description="评论者：xp"
-                    >
-                      <a slot="title" href="https://www.antdv.com/">{{ item.content }}</a>
-                      <a-avatar
-                        slot="avatar"
-                        src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                      />
-                    </a-list-item-meta>
-                  </a-list-item>
-                </a-list>
+            <a-tab-pane key="1" tab="评论">
+              <div style="margin-left:20px;margin-right:20px;"> 
+              <a-input-search
+                placeholder="输入评论"
+                v-model="keyword"
+                enter-button="评论"
+                size="large"
+                @search="newComment"
+              />
+              </div>
+              <a-list
+                class="comment-list"
+                item-layout="horizontal"
+                :data-source="comment"
+              >
+                <a-list-item slot="renderItem" slot-scope="item" style="height:80px;">
+                  <a-comment :author="item.username" :avatar="avatar">
+                    <p align="left" slot="content">{{ item.content }}</p>
+                    <a-tooltip slot="datetime" :title="moment(item.datetime).subtract(8,'hours').format('YYYY-MM-DD HH:mm:ss')">
+                      <span>{{ moment(item.datetime).subtract(8,'hours').fromNow()}}</span>
+                    </a-tooltip>
+                  </a-comment>
+                </a-list-item>
+              </a-list>
             </a-tab-pane>
             <a-tab-pane key="2" tab="历史">Content of Tab Pane 2</a-tab-pane>
             <a-tab-pane key="3" tab="分享">Content of Tab Pane 3</a-tab-pane>
@@ -33,7 +42,7 @@
               v-model="content"
               ref="md"
               @change="change"
-              style="min-height: 600px;"
+              style="min-height: 600px; z-index:1"
               @save="save_docs()"
             />
           </a-layout-content>
@@ -51,7 +60,7 @@ import moment from "moment";
 export default {
   name: "Home",
   components: {
-    mavonEditor
+    mavonEditor,
   },
   data() {
     return {
@@ -60,10 +69,10 @@ export default {
       configs: {},
       collapsed: false,
       moment,
-      keyword:"",
-      comment:[{
-        "content":"nb"
-      }]
+      keyword: "",
+      comment: [
+      ],
+      avatar:'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
     };
   },
   methods: {
@@ -73,9 +82,7 @@ export default {
       this.html = render;
     },
     // 提交
-    callback() {
-
-    },
+    callback() {},
     save_docs() {
       console.log(this.content);
       console.log(this.$route.params.id);
@@ -85,13 +92,13 @@ export default {
       formData.append("username", localStorage.getItem("token"));
       let config = {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
+          "Content-Type": "multipart/form-data",
+        },
       };
 
       axios
         .post("http://localhost:5000/api/modify_doc/", formData, config)
-        .then(function(response) {
+        .then(function (response) {
           console.log(response.data.message);
           if (response.data.message == "success") {
             console.log("程坤");
@@ -99,14 +106,38 @@ export default {
             console.log("失败");
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log("Fail", error);
         });
     },
-    onSearch(){
-      console.log(this.keyword)
-      this.comment.push({"content":this.keyword})
-      this.keyword="";
+    // 新的评论
+    newComment() {
+      console.log(this.keyword);
+      this.comment.push({ content: this.keyword,username:localStorage.getItem("token"),datetime:moment().add(8,'hours')});
+      console.log(moment().add(8,'hours').calendar())
+      let formData=new FormData();
+      formData.append("DocumentID", this.$route.params.id);
+      formData.append("username", localStorage.getItem("token"));
+      formData.append("content",this.keyword);
+      let config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      axios
+        .post("http://localhost:5000/api/create_comment/", formData, config)
+        .then(function (response) {
+          console.log(response.data.message);
+          if (response.data.message == "success") {
+            console.log("程坤");
+          } else {
+            console.log("失败");
+          }
+        })
+        .catch(function (error) {
+          console.log("Fail", error);
+        });
+      this.keyword = "";
     },
     load_data(id) {
       console.log("Begin load_data" + id);
@@ -115,13 +146,13 @@ export default {
       formData.append("username", localStorage.getItem("token"));
       let config = {
         headers: {
-          "Content-Type": "multipart/form-data"
-        }
+          "Content-Type": "multipart/form-data",
+        },
       };
       var _this = this;
       axios
         .post("http://localhost:5000/api/get_doccontent/", formData, config)
-        .then(function(response) {
+        .then(function (response) {
           console.log(response.data.message);
           if (response.data.message == "success") {
             console.log("程坤");
@@ -131,7 +162,31 @@ export default {
             console.log("失败");
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
+          console.log("Fail", error);
+        });
+    },
+    
+    load_comment(id){
+      let formData = new FormData();
+      formData.append("DocumentID", id);
+      let config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      var _this = this;
+      axios
+        .post("http://localhost:5000/api/get_all_comment/", formData, config)
+        .then(function (response) {
+          if (response) {
+            console.log(response.data);
+            _this.comment=response.data;
+          } else {
+            console.log("失败");
+          }
+        })
+        .catch(function (error) {
           console.log("Fail", error);
         });
     },
@@ -163,14 +218,21 @@ export default {
       console.log('断开连接',e);
     },
   },
+  
   destroyed() {
-    this.websock.close() //离开路由之后断开websocket连接
+    this.websock.close(); //离开路由之后断开websocket连接
   },
-  mounted: function() {
+  mounted: function () {
     console.log(this.$route.params.id);
     this.load_data(this.$route.params.id);
-    this.initWebSocket();
-  }
+    this.load_comment(this.$route.params.id);
+    //this.initWebSocket();
+  },
+  watch: {
+    content() {
+      //this.sendcontent();
+    },
+  },
 };
 </script>
 <style>

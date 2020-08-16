@@ -137,7 +137,9 @@ export default {
         this.newteam();
       },
       toGroupDocs(item){
-        this.$router.push('/teamdocs-list/' + item.groupid)
+        this.$router.push('/teamdocs-list/' + item.groupid);
+
+        localStorage.setItem('groupInfo'+item.groupid,JSON.stringify(item));
       },
       cancelcreate(){
         this.newteamvisible=false;
