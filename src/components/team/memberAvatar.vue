@@ -1,6 +1,6 @@
 <template>
   <a-popover
-    style="width: 64px"
+    style="width: 40px"
     title="简要信息"
     trigger="hover"
     :visible="hovered"
@@ -10,7 +10,7 @@
       这里展示简要信息<br/>{{username}}
     </div>
     <a-popover
-      style="width: 64px"
+      style="width: 32px"
       title="详细信息"
       trigger="click"
       :visible="clicked"
@@ -21,7 +21,7 @@
           这里展示详细信息<br/>{{username}}<br/>邮箱
         </div>
       </div>
-      <a-avatar :size="64"  style="margin-left:5px;margin-right:5px">{{username}}</a-avatar>
+      <a-avatar :size="40"  style="margin-left:5px;margin-right:5px">{{username}}</a-avatar>
     </a-popover>
   </a-popover>
 </template>

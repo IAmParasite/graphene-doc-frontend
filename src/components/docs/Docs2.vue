@@ -2,25 +2,29 @@
   <div class="home">
     <a-layout id="components-layout-demo-top-side-2">
       <a-layout>
+        <!-- 左侧边栏 -->
         <a-layout-sider width="300" style="background: #fff">
           <a-tabs type="card" @change="callback">
+            <!-- 评论tab -->
             <a-tab-pane key="1" tab="评论">
-              <div style="margin-left:20px;margin-right:20px;"> 
+              <!-- 新的评论 -->
+              <div style="margin-left:5px;margin-right:5px;"> 
               <a-input-search
                 placeholder="输入评论"
                 v-model="keyword"
                 enter-button="评论"
-                size="large"
                 @search="newComment"
               />
               </div>
+              <!-- 评论列表 -->
               <a-list
                 class="comment-list"
                 item-layout="horizontal"
                 :data-source="comment"
               >
-                <a-list-item slot="renderItem" slot-scope="item" style="height:80px;">
-                  <a-comment :author="item.username" :avatar="avatar">
+                <a-list-item slot="renderItem" slot-scope="item" style="height:70px;float:left;">
+                  <memberAvatar :username="item.username"></memberAvatar>
+                  <a-comment style="margin-right:10px;width:200px">
                     <p align="left" slot="content">{{ item.content }}</p>
                     <a-tooltip slot="datetime" :title="moment(item.datetime).subtract(8,'hours').format('YYYY-MM-DD HH:mm:ss')">
                       <span>{{ moment(item.datetime).subtract(8,'hours').fromNow()}}</span>
@@ -28,11 +32,31 @@
                   </a-comment>
                 </a-list-item>
               </a-list>
+              
             </a-tab-pane>
-            <a-tab-pane key="2" tab="历史">Content of Tab Pane 2</a-tab-pane>
+            <!-- 历史修改记录tab -->
+            <a-tab-pane key="2" tab="历史">
+              <!-- 历史列表 -->
+              <a-list
+                class="comment-list"
+                item-layout="horizontal"
+                :data-source="modify_history"
+              >
+                <a-list-item slot="renderItem" slot-scope="item" style="height:70px;float:left;">
+                  <memberAvatar :username="item.username"></memberAvatar>
+                  <a-comment style="margin-right:10px;width:200px">
+                    <p align="left" slot="content">修改了文档</p>
+                    <a-tooltip slot="datetime" :title="moment(item.datetime).subtract(8,'hours').format('YYYY-MM-DD HH:mm:ss')">
+                      <span>{{ moment(item.datetime).subtract(8,'hours').fromNow()}}</span>
+                    </a-tooltip>
+                  </a-comment>
+                </a-list-item>
+              </a-list></a-tab-pane>
+            <!-- 分享tab -->
             <a-tab-pane key="3" tab="分享">Content of Tab Pane 3</a-tab-pane>
           </a-tabs>
         </a-layout-sider>
+        <!-- 主编辑区 -->
         <a-layout style="padding: 0 24px 24px">
           <a-breadcrumb style="margin: 16px 0"></a-breadcrumb>
           <a-layout-content
@@ -54,17 +78,22 @@
 
 <script>
 import { mavonEditor } from "mavon-editor";
+import memberAvatar from '../team/memberAvatar';
 import "mavon-editor/dist/css/index.css";
 import axios from "axios";
 import moment from "moment";
+function myrefresh() {
+  window.location.reload();
+}
 export default {
   name: "Home",
   components: {
     mavonEditor,
+    memberAvatar
   },
   data() {
     return {
-      content: "<p> 请在这里开始你的?文档编辑</p>",
+      content: "",
       html: "",
       configs: {},
       collapsed: false,
@@ -72,7 +101,12 @@ export default {
       keyword: "",
       comment: [
       ],
-      avatar:'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+      modify_history:[
+        {
+          'username':localStorage.getItem('token'),
+          'datetime':moment()
+        }
+      ],
     };
   },
   methods: {
@@ -81,11 +115,16 @@ export default {
       // render 为 markdown 解析后的结果[html]
       this.html = render;
     },
+    successmsg(message) {
+      this.$message.success(message);
+    },
+    errormsg(message) {
+      this.$message.error(message);
+    },
     // 提交
     callback() {},
     save_docs() {
-      console.log(this.content);
-      console.log(this.$route.params.id);
+      var _this=this
       let formData = new FormData();
       formData.append("content", this.content);
       formData.append("DocumentID", this.$route.params.id);
@@ -95,13 +134,15 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
-
       axios
         .post("http://localhost:5000/api/modify_doc/", formData, config)
         .then(function (response) {
           console.log(response.data.message);
           if (response.data.message == "success") {
-            console.log("程坤");
+            _this.successmsg("保存成功");
+            setTimeout(() => {
+              myrefresh();
+            }, 2000);
           } else {
             console.log("失败");
           }
@@ -113,7 +154,7 @@ export default {
     // 新的评论
     newComment() {
       console.log(this.keyword);
-      this.comment.push({ content: this.keyword,username:localStorage.getItem("token"),datetime:moment().add(8,'hours')});
+      this.comment.unshift({ content: this.keyword,username:localStorage.getItem("token"),datetime:moment().add(8,'hours')});
       console.log(moment().add(8,'hours').calendar())
       let formData=new FormData();
       formData.append("DocumentID", this.$route.params.id);
@@ -190,6 +231,28 @@ export default {
           console.log("Fail", error);
         });
     },
+    load_modify_history(id){
+      let formData = new FormData();
+      formData.append("DocumentID", id);
+      let config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      var _this = this;
+      axios
+        .post("http://localhost:5000/api/get_all_modified_time/", formData, config)
+        .then(function (response) {
+          if (response) {
+            _this.modify_history=response.data;
+          } else {
+            console.log("失败");
+          }
+        })
+        .catch(function (error) {
+          console.log("Fail", error);
+        });
+    },
     initWebSocket(){ //初始化weosocket
       const wsuri = "ws://49.235.221.218:8888/conn";
       this.websock = new WebSocket(wsuri);
@@ -226,6 +289,7 @@ export default {
     console.log(this.$route.params.id);
     this.load_data(this.$route.params.id);
     this.load_comment(this.$route.params.id);
+    this.load_modify_history(this.$route.params.id);
     //this.initWebSocket();
   },
   watch: {
