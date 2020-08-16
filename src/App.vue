@@ -37,7 +37,7 @@
             </a>
             <a-menu slot="overlay">
               <a-menu-item>
-                <router-link to="/">通知</router-link>
+                <router-link to="/notice">通知</router-link>
               </a-menu-item>
               <a-menu-item>
                 <router-link to="/">邀请</router-link>
