@@ -249,7 +249,6 @@ function myrefresh() {
           },
           onChangeTem(e) {
             console.log('radio checked', e.target.value);
-          },
           others_onCheckAllChange(e) {
             Object.assign(this, {
               others_checkedList: e.target.checked ? others_plainOptions : [],
