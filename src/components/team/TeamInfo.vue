@@ -21,7 +21,6 @@
         
       </a-descriptions>
       <a-divider>团队管理</a-divider>
-      {{iamfounder}}
       <div v-if="iamfounder">
         <a-button type="primary" block style="margin-top:10px">邀请成员加入团队</a-button>
         <a-button type="primary" block style="margin-top:10px">管理成员权限</a-button>
