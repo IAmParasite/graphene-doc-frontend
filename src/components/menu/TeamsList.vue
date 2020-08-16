@@ -1,8 +1,8 @@
 <template>
     <div>
     <a-row v-if="this.$route.params.id=='founded-team'">
-      <a-col :span="11" :offset="7"></a-col>
-      <a-col :span="1" :offset="5">
+      <a-col :span="10" :offset="7"></a-col>
+      <a-col :span="2" :offset="5">
         <a-affix :offset-top="top">
           <a-popover placement="topRight">
             <template slot="content">
@@ -13,9 +13,9 @@
         </a-affix>
       </a-col>
     </a-row>
-    <a-row v-if="this.$route.params.id=='joined-team'">
-      <a-col :span="11" :offset="7"></a-col>
-      <a-col :span="1" :offset="5">
+        <a-row v-if="this.$route.params.id=='joined-team'">
+      <a-col :span="10" :offset="7"></a-col>
+      <a-col :span="2" :offset="5">
         <a-affix :offset-top="top">
           <a-popover placement="topRight">
             <template slot="content">
@@ -61,11 +61,24 @@
             <a-form-model-item label="团队简介">
               <a-input v-model="newteamform.description" />
             </a-form-model-item>
+            <!-- <a-form-model-item label="协作者权限">
+              <div>
+                <div :style="{ borderBottom: '1px solid #E9E9E9' }">
+                  <a-checkbox
+                    :indeterminate="indeterminate"
+                    :checked="checkAll"
+                    @change="onCheckAllChange"
+                  >Check all</a-checkbox>
+                </div>
+                <br />
+                <a-checkbox-group v-model="checkedList" :options="plainOptions" @change="onChange" />
+              </div>
+            </a-form-model-item> -->
           </a-form-model>
         </template>
       </a-modal>
     </div>
-    <div>
+     <div>
       <a-modal title="申请加入团队" :visible="newaddteamvisible" @ok="addteam" @cancel="canceladd">
         <template>
           <a-form-model :model="newteamform" :label-col="labelCol" :wrapper-col="wrapperCol">
@@ -126,6 +139,12 @@ export default {
       errormsg(message) {
         this.$message.error(message);
       },
+      canceladd(){
+        this.newaddteamvisible=false;
+      },
+      showjointeamform(){
+        this.newaddteamvisible=true;
+      },
       // onChange(checkedList) {
       //   this.indeterminate = !!checkedList.length && checkedList.length < plainOptions.length;
       //   this.checkAll = checkedList.length === plainOptions.length;
@@ -151,20 +170,14 @@ export default {
 
         localStorage.setItem('groupInfo'+item.groupid,JSON.stringify(item));
       },
-      canceladd(){
-        this.newaddteamvisible=false;
-      },
-      showjointeamform(){
-        this.newaddteamvisible=true;
-      },
       cancelcreate(){
         this.newteamvisible=false;
       },
-      shownewteamform(){
-        this.newteamvisible=true;
-      },
       addteam(){
         this.errormsg("api还没写")
+      },
+      shownewteamform(){
+        this.newteamvisible=true;
       },
       newteam() {
         var _this=this;
