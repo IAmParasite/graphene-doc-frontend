@@ -9,10 +9,10 @@
             最近浏览的文档
           </a-menu-item>
           <a-menu-item key="enshrine-docs">
-            收藏的文档
+            我收藏的文档
           </a-menu-item>
           <a-menu-item key="own-docs">
-            自己创建的文档
+            我创建的文档
           </a-menu-item>
           <a-menu-item key="my-cor-docs">
             我协作的文档
