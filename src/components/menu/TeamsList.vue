@@ -13,7 +13,7 @@
         </a-affix>
       </a-col>
     </a-row>
-        <a-row v-if="this.$route.params.id=='joined-team'">
+      <a-row v-if="this.$route.params.id=='joined-team'">
       <a-col :span="10" :offset="7"></a-col>
       <a-col :span="2" :offset="5">
         <a-affix :offset-top="top">
@@ -275,46 +275,33 @@ export default {
             });
       },
       delete_group(item) {
-        var _this=this;
-        this.$confirm({
-          title: <div style="font-weight:bold">确认解散团队？</div>,
-          content: <div style="color:red;font-weight:bold"><p>团队将被解散！</p><p>团队文档将会 永 远 消 失 ！</p></div>,
-          okText: '删除',
-          okType: 'danger',
-          cancelText: '取消',
-          onOk() {
-            console.log("删除该项" + item.groupid);
-            _this.data.splice(item, 1);
-            
-            let formData = new FormData();
-            formData.append("groupid", item.groupid);
-            console.log(localStorage.getItem("token"));
-            let config = {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            };
-            axios
-              .post("http://localhost:5000/api/delete_group/", formData, config)
-              .then(function (response) {
-                console.log(response.data.message);
-                if (response.data.message == "success") {
-                  _this.successmsg("删除成功");
-                  setTimeout(() => {
-                    myrefresh();
-                  }, 2000);
-                } else {
-                  _this.errormsg("删除失败，请尝试刷新后重试");
-                }
-              })
-              .catch(function () {
+          console.log("删除该项" + item.groupid);
+          this.data.splice(item, 1);
+          var _this=this;
+          let formData = new FormData();
+          formData.append("groupid", item.groupid);
+          console.log(localStorage.getItem("token"));
+          let config = {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          };
+          axios
+            .post("http://localhost:5000/api/delete_group/", formData, config)
+            .then(function (response) {
+              console.log(response.data.message);
+              if (response.data.message == "success") {
+                _this.successmsg("删除成功");
+                setTimeout(() => {
+                  myrefresh();
+                }, 2000);
+              } else {
                 _this.errormsg("删除失败，请尝试刷新后重试");
-              });
-          },
-          onCancel() {
-            console.log('Cancel');
-          },
-        });
+              }
+            })
+            .catch(function () {
+              _this.errormsg("删除失败，请尝试刷新后重试");
+            });
         },
      },
      mounted() {
