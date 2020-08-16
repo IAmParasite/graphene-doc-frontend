@@ -14,7 +14,7 @@
         :style="{ lineHeight: '64px' }"
       >
         <a-menu-item key="Home" > 
-          <a style="color:#545454;margin-left:64px" >
+          <a style="color:#545454;" >
             <a-icon type="home" />Home
           </a>
           <router-link to="/">
@@ -25,12 +25,12 @@
           <a-icon type="left" />
           
         </a-menu-item>
-        <a-menu-item key="star" style="float:right">
+        <a-menu-item key="star" style="margin-left:800px;">
           <a-icon type="star" />
           <router-link to="/">
           </router-link>
         </a-menu-item>
-        <a-menu-item key="bell" style="margin-right:0px;float:right">
+        <a-menu-item key="bell" style="margin-right:0px;">
           <a-dropdown v-if="renderDropdown">
             <a class="ant-dropdown-link" @click="e => e.preventDefault()">
               <a-icon type="bell" /><a-icon type="down" />
@@ -48,13 +48,13 @@
             </a-menu>
           </a-dropdown>
         </a-menu-item>
-        <a-menu-item key="self" style="float:right">
+        <a-menu-item key="self">
           <div id="navNew" v-if="islog">
           <router-link v-if="showUserName == null " @click.native='tolog()' to="/loginView" >Login</router-link>
           <router-link  to="/" >
           <a-dropdown v-if="renderDropdown">
             <a class="ant-dropdown-link" v-if="showUserName"  @click="e => e.preventDefault()">
-              <span><a-badge dot><a-avatar shape="square" size="large">{{showUserName}}</a-avatar> {{showUserName}}</a-badge></span><a-icon type="down" />
+              <span><a-badge dot><a-avatar shape="square" size="large" icon="user" /> {{showUserName}}</a-badge></span><a-icon type="down" />
             </a>
             <a-menu slot="overlay">
               <a-menu-item>
