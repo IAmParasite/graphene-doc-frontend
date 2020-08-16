@@ -66,6 +66,11 @@ Vue.use(VueRouter)
     path: '/docs2/:id',
     name: 'Docs2',
     component: () => import('../components/docs/Docs2.vue')
+  },
+  {
+    path: '/userInfo/:username',
+    name: 'userInfo',
+    component: () => import('../components/userInfo.vue')
   }
 ]
 
