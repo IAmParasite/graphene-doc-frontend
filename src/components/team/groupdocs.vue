@@ -31,14 +31,27 @@
                   <a-form-model-item label="文档标题">
                     <a-input v-model="newdocform.title" />
                   </a-form-model-item>
-                  <a-form-model-item label="协作者权限">
+                  <a-form-model-item label="协作权限">
+                    <div>
+                      <div :style="{ borderBottom: '1px solid #E9E9E9' }">
+                        <a-checkbox
+                          :indeterminate="others_indeterminate"
+                          :checked="others_checkAll"
+                          @change="others_onCheckAllChange"
+                        >全选</a-checkbox>
+                      </div>
+                      <br />
+                      <a-checkbox-group v-model="others_checkedList" :options="others_plainOptions" @change="others_onChange" />
+                    </div>
+                  </a-form-model-item>
+                  <a-form-model-item label="团队权限">
                     <div>
                       <div :style="{ borderBottom: '1px solid #E9E9E9' }">
                         <a-checkbox
                           :indeterminate="indeterminate"
                           :checked="checkAll"
                           @change="onCheckAllChange"
-                        >Check all</a-checkbox>
+                        >全选</a-checkbox>
                       </div>
                       <br />
                       <a-checkbox-group v-model="checkedList" :options="plainOptions" @change="onChange" />
@@ -67,6 +80,7 @@
 
 
 const plainOptions = ['修改', '评论', '分享'];
+const others_plainOptions = ['修改', '评论', '分享'];
 const defaultCheckedList = ['修改', '评论'];
 import TeamInfo from './TeamInfo.vue';
 import docCard from '../docs/docCard.vue';
@@ -91,15 +105,22 @@ function myrefresh() {
                   description: '团队精神的形成并不要求团队成员牺牲自我，相反，挥洒个性、表现特长保证了成员共同完成任务目标，',
                 },
                 indeterminate: true,
+                others_indeterminate:true,
                 checkedList: defaultCheckedList,
+                others_checkedList:defaultCheckedList,
+                others_checkAll:false,
                 checkAll: false,
                 plainOptions,
+                others_plainOptions,
                 newdocvisible:false,
                 newdocform:{
                   title:"",
                   modify_right: 0,
                   share_right: 0,
                   discuss_right: 0,
+                  others_modify_right: 0,
+                  others_share_right: 0,
+                  others_discuss_right: 0,
                   content:""
                 },
                 labelCol: { span: 4 },
@@ -192,11 +213,20 @@ function myrefresh() {
             this.indeterminate = !!checkedList.length && checkedList.length < plainOptions.length;
             this.checkAll = checkedList.length === plainOptions.length;
           },
+          others_onChange(others_checkedList) {
+            this.others_indeterminate = !!others_checkedList.length && others_checkedList.length < others_plainOptions.length;
+            this.others_checkAll = others_checkedList.length === others_plainOptions.length;
+          },
           createdoc(){
             this.checkedList.forEach(element => {
               if(element=="修改")this.newdocform.modify_right=1;
               if(element=="评论")this.newdocform.discuss_right=1;
               if(element=="分享")this.newdocform.share_right=1;
+            });
+            this.others_checkedList.forEach(element=>{
+              if(element=="修改")this.newdocform.others_modify_right=1;
+              if(element=="评论")this.newdocform.others_discuss_right=1;
+              if(element=="分享")this.newdocform.others_share_right=1;
             });
             switch(this.templateValue){
               case 1:
@@ -219,6 +249,12 @@ function myrefresh() {
           },
           onChangeTem(e) {
             console.log('radio checked', e.target.value);
+          others_onCheckAllChange(e) {
+            Object.assign(this, {
+              others_checkedList: e.target.checked ? others_plainOptions : [],
+              others_indeterminate: false,
+              others_checkAll: e.target.checked,
+            });
           },
           newdoc() {
             var _this = this;
@@ -230,6 +266,9 @@ function myrefresh() {
             formData.append("share_right", this.newdocform.share_right);
             formData.append("discuss_right", this.newdocform.discuss_right);
             formData.append("content",this.newdocform.content);
+            formData.append("others_modify_right", this.newdocform.others_modify_right);
+            formData.append("others_share_right", this.newdocform.others_share_right);
+            formData.append("others_discuss_right", this.newdocform.others_discuss_right);
             let config = {
               headers: {
                 "Content-Type": "multipart/form-data",
