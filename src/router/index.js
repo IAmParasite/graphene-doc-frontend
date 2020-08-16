@@ -66,6 +66,11 @@ Vue.use(VueRouter)
     path: '/docs2/:id',
     name: 'Docs2',
     component: () => import('../components/docs/Docs2.vue')
+  },
+  {
+    path: '/notice',
+    name: 'NoticeIndex',
+    component: () => import('../components/notice/NoticeIndex.vue')
   }
 ]
 
