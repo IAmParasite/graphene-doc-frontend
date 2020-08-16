@@ -13,6 +13,19 @@
         </a-affix>
       </a-col>
     </a-row>
+      <a-row v-if="this.$route.params.id=='joined-team'">
+      <a-col :span="10" :offset="7"></a-col>
+      <a-col :span="2" :offset="5">
+        <a-affix :offset-top="top">
+          <a-popover placement="topRight">
+            <template slot="content">
+              <span style="font-size:20px">点击申请加入一个团队! QwQ</span>
+            </template>
+            <a-button type="primary" icon="plus" size="large" block @click="showjointeamform"></a-button>
+          </a-popover>
+        </a-affix>
+      </a-col>
+    </a-row>
         <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="data">
     <a-list-item slot="renderItem" slot-scope="item">
       
@@ -65,6 +78,15 @@
         </template>
       </a-modal>
     </div>
+     <div>
+      <a-modal title="申请加入团队" :visible="newaddteamvisible" @ok="addteam" @cancel="canceladd">
+        <template>
+          <a-form-model :model="newteamform" :label-col="labelCol" :wrapper-col="wrapperCol">
+            
+          </a-form-model>
+        </template>
+      </a-modal>
+    </div>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -89,6 +111,7 @@ export default {
           checkAll: false,
           // plainOptions,
           newteamvisible:false,
+          newaddteamvisible:false,
           top: 0,
           visible: false,
           labelCol: { span: 4 },
@@ -115,6 +138,12 @@ export default {
       },
       errormsg(message) {
         this.$message.error(message);
+      },
+      canceladd(){
+        this.newaddteamvisible=false;
+      },
+      showjointeamform(){
+        this.newaddteamvisible=true;
       },
       // onChange(checkedList) {
       //   this.indeterminate = !!checkedList.length && checkedList.length < plainOptions.length;
@@ -143,6 +172,9 @@ export default {
       },
       cancelcreate(){
         this.newteamvisible=false;
+      },
+      addteam(){
+        this.errormsg("api还没写")
       },
       shownewteamform(){
         this.newteamvisible=true;

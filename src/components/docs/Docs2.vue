@@ -312,6 +312,9 @@ export default {
         .then(function (response) {
           if (response.data.message == "success") {
             _this.content = response.data.content;
+            _this.form.content = response.data.content;
+            _this.form.username = localStorage.getItem("token");
+            console.log("表格中的信息" +  _this.form.content)
           } else {
             console.log("失败");
           }
@@ -397,6 +400,11 @@ export default {
     this.websock.close(); //离开路由之后断开websocket连接
   },
   mounted: function () {
+    console.log(this.$route.params.id);
+    this.load_data(this.$route.params.id);
+    this.load_comment(this.$route.params.id);
+    this.load_modify_history(this.$route.params.id);
+    //this.initWebSocket();
     this.load_right(this.$route.params.id);
   },
   watch: {

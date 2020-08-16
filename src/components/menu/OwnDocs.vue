@@ -162,12 +162,17 @@ export default {
         checkAll: e.target.checked,
       });
     },
+    
     createdoc(){
       this.checkedList.forEach(element => {
         if(element=="修改")this.newdocform.modify_right=1;
         if(element=="评论")this.newdocform.discuss_right=1;
         if(element=="分享")this.newdocform.share_right=1;
       });
+      if (this.newdocform.title == ""){
+              this.errormsg("标题为空");
+              return;
+            }
       switch(this.templateValue){
         case 1:
           break;

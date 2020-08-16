@@ -114,7 +114,7 @@ function myrefresh() {
                 others_plainOptions,
                 newdocvisible:false,
                 newdocform:{
-                  title:"",
+                  title:"默认标题",
                   modify_right: 0,
                   share_right: 0,
                   discuss_right: 0,
@@ -160,6 +160,7 @@ function myrefresh() {
             }
         },
         mounted: function() {
+
           console.log('router info',this.$route.params.id);
           var _this = this;
           let formData = new FormData();
@@ -234,6 +235,10 @@ function myrefresh() {
               if(element=="评论")this.newdocform.others_discuss_right=1;
               if(element=="分享")this.newdocform.others_share_right=1;
             });
+            if (this.newdocform.title == ""){
+              this.errormsg("标题为空");
+              return;
+            }
             switch(this.templateValue){
               case 1:
                 break;
