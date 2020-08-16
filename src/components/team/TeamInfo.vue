@@ -24,7 +24,7 @@
       <div v-if="iamfounder">
         <a-button type="primary" block style="margin-top:10px">邀请成员加入团队</a-button>
         <a-button type="primary" block style="margin-top:10px">管理成员权限</a-button>
-        <a-button type="danger" block style="margin-top:10px;margin-bottom=10px">解散团队</a-button>
+        <a-button type="danger" block style="margin-top:10px;margin-bottom=10px" @click="delete_group">解散团队</a-button>
       </div>
       <div v-else>
         <a-button type="danger" block style="margin-top:10px;margin-bottom=10px">退出团队</a-button>
@@ -98,6 +98,56 @@ export default {
         backgroundImage:'url('+require('../../assets/teaminfopic.jpg')+')',
       },
     };
+  },
+
+  methods: {
+     successmsg(message) {
+      this.$message.success(message);
+      },
+      errormsg(message) {
+        this.$message.error(message);
+      },
+    delete_group() {
+        var _this=this;
+        this.$confirm({
+          title: <div style="font-weight:bold">确认解散团队？</div>,
+          content: <div style="color:red;font-weight:bold"><p>团队将被解散！</p><p>团队文档将会 永 远 消 失 ！</p></div>,
+          okText: '删除',
+          okType: 'danger',
+          cancelText: '取消',
+          onOk() {
+            console.log("删除该项" + _this.groupObj.groupid);
+            
+            let formData = new FormData();
+            formData.append("groupid", _this.groupObj.groupid);
+            console.log(localStorage.getItem("token"));
+            let config = {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            };
+            axios
+              .post("http://localhost:5000/api/delete_group/", formData, config)
+              .then(function (response) {
+                console.log(response.data.message);
+                if (response.data.message == "success") {
+                  _this.successmsg("删除成功");
+                  setTimeout(() => {
+                    _this.$router.go(-1);
+                  }, 2000);
+                } else {
+                  _this.errormsg("删除失败，请尝试刷新后重试");
+                }
+              })
+              .catch(function () {
+                _this.errormsg("删除失败，请尝试刷新后重试");
+              });
+          },
+          onCancel() {
+            console.log('Cancel');
+          },
+        });
+        },
   }
 }
 </script>
