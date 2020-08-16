@@ -1,8 +1,8 @@
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 export default{
-    install (Vue, options) {
-        Vue.prototype.getPdf = function (htmlTitle,currentTime) {
+    install (Vue) {
+        Vue.prototype.getPdf = function (htmlTitle) {
             var element = document.getElementById("file");
             html2canvas(element, {
                 logging:false

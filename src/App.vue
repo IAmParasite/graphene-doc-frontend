@@ -21,10 +21,9 @@
       
           </router-link>
         </a-menu-item>
-        <a-menu-item key="goback" >
+        <a-menu-item key="goback" @click="back()" v-show="isShow">
           <a-icon type="left" />
-          <router-link to="/">
-          </router-link>
+          
         </a-menu-item>
         <a-menu-item key="star" style="margin-left:800px;">
           <a-icon type="star" />
@@ -172,6 +171,7 @@ export default {
     islog:true,
     islogging:false,
     size:'large',
+    isShow:false,
     backgroundDiv:{
       backgroundImage:'url('+require('./assets/timg1.jpg')+')'
     }
@@ -184,6 +184,10 @@ export default {
   },
 
   methods:{
+    back(){
+      this.$router.go(-1);
+      //this.$router.go(0);
+    },
     logout(){
       localStorage.removeItem('token');
       this.$router.push('/loginView');
@@ -209,8 +213,16 @@ export default {
     showUserName(){
       return localStorage.getItem('token')
     }
+  },
+  watch:{
+  $route(now){     //监控路由变换，控制返回按钮的显示
+     if(now.path=="/"){
+            this.isShow=false;
+     } else{
+         this.isShow=true;
+     }
   }
-  
+  }
   
 };
 
