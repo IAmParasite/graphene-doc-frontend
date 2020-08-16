@@ -25,9 +25,6 @@ const data = [
   //     modified_time:'',//上次修改时间，任意一个人修改都会改变上次修改时间
   //   },
 ];
-function myrefresh() {
-  window.location.reload();
-}
 export default {
   components: {
     docCard,

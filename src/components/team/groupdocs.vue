@@ -1,7 +1,5 @@
 <template>
       <div>
-
-
         <a-row>
           <a-col :span="10" :offset="7"></a-col>
           <a-col :span="2" :offset="5">
@@ -177,17 +175,12 @@ function myrefresh() {
             
             this.newteam();
           },
-          cancelcreate(){
-            this.newteamvisible=false;
-          },
-          shownewteamform(){
-            this.newteamvisible=true;
-          },
+          
           shownewdocform(){
             this.newdocvisible=true;
           },
           handleCancel() {
-            this.visible = false;
+            this.newdocvisible = false;
           },
           successmsg(message) {
             this.$message.success(message);
@@ -224,6 +217,9 @@ function myrefresh() {
               checkAll: e.target.checked,
             });
           },
+          onChangeTem(e) {
+            console.log('radio checked', e.target.value);
+          },
           newdoc() {
             var _this = this;
             let formData = new FormData();
@@ -239,6 +235,7 @@ function myrefresh() {
                 "Content-Type": "multipart/form-data",
               },
             };
+            console.log("kaishi");
             axios.post(
                 "http://localhost:5000/api/create_group_doc/",
                 formData,

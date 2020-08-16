@@ -71,6 +71,11 @@ Vue.use(VueRouter)
     path: '/notice',
     name: 'NoticeIndex',
     component: () => import('../components/notice/NoticeIndex.vue')
+  },
+  {
+    path: '/userInfo/:username',
+    name: 'userInfo',
+    component: () => import('../components/userInfo.vue')
   }
 ]
 

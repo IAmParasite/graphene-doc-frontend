@@ -1,14 +1,27 @@
 <template>
     <div>
     <a-row v-if="this.$route.params.id=='founded-team'">
-      <a-col :span="10" :offset="7"></a-col>
-      <a-col :span="2" :offset="5">
+      <a-col :span="11" :offset="7"></a-col>
+      <a-col :span="1" :offset="5">
         <a-affix :offset-top="top">
           <a-popover placement="topRight">
             <template slot="content">
               <span style="font-size:20px">点击创建一个属于你的团队! QvQ</span>
             </template>
             <a-button type="primary" icon="plus" size="large" block @click="shownewteamform"></a-button>
+          </a-popover>
+        </a-affix>
+      </a-col>
+    </a-row>
+    <a-row v-if="this.$route.params.id=='joined-team'">
+      <a-col :span="11" :offset="7"></a-col>
+      <a-col :span="1" :offset="5">
+        <a-affix :offset-top="top">
+          <a-popover placement="topRight">
+            <template slot="content">
+              <span style="font-size:20px">点击申请加入一个团队! QwQ</span>
+            </template>
+            <a-button type="primary" icon="plus" size="large" block @click="showjointeamform"></a-button>
           </a-popover>
         </a-affix>
       </a-col>
@@ -48,19 +61,15 @@
             <a-form-model-item label="团队简介">
               <a-input v-model="newteamform.description" />
             </a-form-model-item>
-            <!-- <a-form-model-item label="协作者权限">
-              <div>
-                <div :style="{ borderBottom: '1px solid #E9E9E9' }">
-                  <a-checkbox
-                    :indeterminate="indeterminate"
-                    :checked="checkAll"
-                    @change="onCheckAllChange"
-                  >Check all</a-checkbox>
-                </div>
-                <br />
-                <a-checkbox-group v-model="checkedList" :options="plainOptions" @change="onChange" />
-              </div>
-            </a-form-model-item> -->
+          </a-form-model>
+        </template>
+      </a-modal>
+    </div>
+    <div>
+      <a-modal title="申请加入团队" :visible="newaddteamvisible" @ok="addteam" @cancel="canceladd">
+        <template>
+          <a-form-model :model="newteamform" :label-col="labelCol" :wrapper-col="wrapperCol">
+            
           </a-form-model>
         </template>
       </a-modal>
@@ -89,6 +98,7 @@ export default {
           checkAll: false,
           // plainOptions,
           newteamvisible:false,
+          newaddteamvisible:false,
           top: 0,
           visible: false,
           labelCol: { span: 4 },
@@ -141,11 +151,20 @@ export default {
 
         localStorage.setItem('groupInfo'+item.groupid,JSON.stringify(item));
       },
+      canceladd(){
+        this.newaddteamvisible=false;
+      },
+      showjointeamform(){
+        this.newaddteamvisible=true;
+      },
       cancelcreate(){
         this.newteamvisible=false;
       },
       shownewteamform(){
         this.newteamvisible=true;
+      },
+      addteam(){
+        this.errormsg("api还没写")
       },
       newteam() {
         var _this=this;

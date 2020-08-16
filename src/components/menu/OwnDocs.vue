@@ -1,8 +1,8 @@
 <template>
   <div>
     <a-row>
-      <a-col :span="10" :offset="7"></a-col>
-      <a-col :span="2" :offset="5">
+      <a-col :span="11" :offset="7"></a-col>
+      <a-col :span="1" :offset="5">
         <a-affix :offset-top="top">
           <a-popover placement="topRight">
             <template slot="content">
