@@ -13,7 +13,7 @@
         </a-affix>
       </a-col>
     </a-row>
-        <a-row v-if="this.$route.params.id=='joined-team'">
+      <a-row v-if="this.$route.params.id=='joined-team'">
       <a-col :span="10" :offset="7"></a-col>
       <a-col :span="2" :offset="5">
         <a-affix :offset-top="top">
