@@ -59,19 +59,19 @@
           </router-link>
         </a-menu-item>
         <a-menu-item key="bell" style="margin-right:0px;float:right">
-          <a-dropdown v-if="renderDropdown">
-            <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+          <a-dropdown v-if="renderDropdown" >
+            <a class="ant-dropdown-link" @click="e => e.preventDefault()" >
               <a-icon type="bell" /><a-icon type="down" />
             </a>
-            <a-menu slot="overlay">
+            <a-menu slot="overlay" >
               <a-menu-item>
-                <router-link to="/notice">通知</router-link>
+                <router-link to="/notice">｜    通知  ｜</router-link>
               </a-menu-item>
               <a-menu-item>
-                <router-link to="/">邀请</router-link>
+                <router-link to="/">｜    邀请  ｜</router-link>
               </a-menu-item>
               <a-menu-item>
-                <router-link to="/">私信</router-link>
+                <router-link to="/">｜    私信  ｜</router-link>
               </a-menu-item>
             </a-menu>
           </a-dropdown>
