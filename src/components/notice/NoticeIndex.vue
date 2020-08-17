@@ -1,10 +1,8 @@
 <template>
-  <a-layout id="components-layout-demo-fixed-sider">
-    <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
-      <div class="logo"> 
-          石墨文档 
-        </div>
-      <a-menu theme="dark" mode="inline" :default-selected-keys="['1']"  @select="handleSelect">
+  <a-layout id="components-layout-demo-side" style="min-height: 100vh;">
+    <a-layout-sider style="background: #fff;" v-model="collapsed" collapsible>
+      <div class="logo" />
+      <a-menu theme="light" mode="inline" :default-selected-keys="['1']"  @select="handleSelect">
         <a-menu-item key="private-message">
           <a-icon type="user" />
           <span class="nav-text">用户私信</span>
@@ -23,7 +21,7 @@
         </a-menu-item>
       </a-menu>
     </a-layout-sider>
-    <a-layout :style="{ marginLeft: '400px' }">
+    <a-layout :style="{ marginLeft: '50px' }">
       <div style="margin-top:30px;height:590px;">
           <router-view v-if="isRouterAlive"></router-view>
       </div>
@@ -61,19 +59,10 @@ export default {
                 break;
             case "notice":
                 this.$router.push('/notice')
-                break
+                break;
             default:
               console.log("nothing")
         }
-    },
-    openNotification() {
-      this.$notification.open({
-        description:
-      'This is the content of the notification. This is the content of the notification. This is the content of the notification.',
-    onClick: () => {
-      console.log('Notification Clicked!');
-      },
-      });
     },
   },
 }

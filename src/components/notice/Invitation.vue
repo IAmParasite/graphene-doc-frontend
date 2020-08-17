@@ -1,9 +1,6 @@
 <template>
   <div>
     <a-table :columns="columns" :data-source="data" style="margin-right:170px;margin-top:30px" rowKey="id">
-      <a slot="name" slot-scope="text">{{ text }}</a>
-      <span slot="customTitle">
-      </span>
       <span slot="action" slot-scope="text,item">
         <a-button type="primary" size="large"  @click="agree_invitation(item.id)">
             <a-icon type="check"/>
@@ -42,15 +39,15 @@ const columns = [
     width: 150,
   },
   {
-    title: "邀请信息",
-    dataIndex: "content",
-    key: "content",
+    title: "邀请时间",
+    dataIndex: "datetime",
+    key: "datetime",
     ellipsis: false,
     width: 200,
   },
   {
     title: "Action",
-    key: "action",
+    key:"action",
     scopedSlots: { customRender: "action" },
     width: 300,
   },
@@ -105,7 +102,6 @@ export default {
       axios
         .post("http://localhost:5000/api/addgroupmember/", formData, config)
         .then(function (response) {
-            console.log(response.data.message);
              _this.data=_this.data.filter((record)=>record.id!=item.id)
         })
         .catch(function (error) {
@@ -130,7 +126,6 @@ export default {
       axios
         .post("http://localhost:5000/api/refuse_groupmember/", formData, config)
         .then(function (response) {
-            console.log(response.data.message);
             _this.data=_this.data.filter((record)=>record.id!=item.id)
         })
         .catch(function (error) {

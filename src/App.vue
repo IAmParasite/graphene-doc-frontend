@@ -32,11 +32,14 @@
           <router-link  to="/" >
           <a-dropdown v-if="renderDropdown">
             <a class="ant-dropdown-link" v-if="showUserName"  @click="e => e.preventDefault()">
-              <span><a-badge dot><a-avatar shape="square" size="large">{{showUserName}}</a-avatar> {{showUserName}}</a-badge></span><a-icon type="down" />
+              <a-avatar shape="circle" size="large">{{showUserName}}</a-avatar> {{showUserName}}<a-icon type="down" />
             </a>
             <a-menu slot="overlay">
               <a-menu-item>
                 <router-link to="/Personal">个人信息设置</router-link>
+              </a-menu-item>
+              <a-menu-item>
+                <a  @click="gotoUserInfo">个人主页</a>
               </a-menu-item>
               <a-menu-item disabled>
                 <a href="javascript:;" >石墨烯小程序(还未开通)</a>
@@ -53,28 +56,9 @@
             <router-link to="/" @click.native="logback">Back</router-link> 
           </div>
         </a-menu-item>
-                <a-menu-item key="star" style="float:right">
-          <a-icon type="star" />
-          <router-link to="/">
-          </router-link>
         </a-menu-item>
         <a-menu-item key="bell" style="margin-right:0px;float:right">
-          <a-dropdown v-if="renderDropdown" >
-            <a class="ant-dropdown-link" @click="e => e.preventDefault()" >
-              <a-icon type="bell" /><a-icon type="down" />
-            </a>
-            <a-menu slot="overlay" >
-              <a-menu-item>
-                <router-link to="/notice">｜    通知  ｜</router-link>
-              </a-menu-item>
-              <a-menu-item>
-                <router-link to="/">｜    邀请  ｜</router-link>
-              </a-menu-item>
-              <a-menu-item>
-                <router-link to="/">｜    私信  ｜</router-link>
-              </a-menu-item>
-            </a-menu>
-          </a-dropdown>
+                <router-link to="/notice"><a-badge :count="noticenum" :number-style="{ backgroundColor: '#52c41a' }"><a-icon type="bell" /></a-badge></router-link>
         </a-menu-item>
       </a-menu>
     </a-layout-header>
@@ -160,7 +144,7 @@
 
 
 <script>
-
+import axios from "axios";
 //import MessageSvg from './assets/message.svg';
 export default {
   components:{
@@ -169,22 +153,29 @@ export default {
     return{
       collapsed: false,
       renderDropdown:false,
-    islog:true,
-    islogging:false,
-    size:'large',
-    isShow:false,
-    backgroundDiv:{
-      backgroundImage:'url('+require('./assets/timg1.jpg')+')'
-    }
+      noticenum:0,
+      islog:true,
+      islogging:false,
+      size:'large',
+      isShow:false,
+      backgroundDiv:{
+        backgroundImage:'url('+require('./assets/timg1.jpg')+')'
+      }
     }
   },
 
   mounted(){
-    if(localStorage.getItem('token')!=null) this.renderDropdown=true;
+    if(localStorage.getItem('token')!=null) {
+      this.renderDropdown=true;
+      this.getnoticenum();
+    }
     else this.renderDropdown=false;
   },
 
   methods:{
+     gotoUserInfo() {
+      this.$router.push('/userInfo/'+localStorage.getItem('token'));
+    },
     back(){
       this.$router.go(-1);
       //this.$router.go(0);
@@ -208,6 +199,24 @@ export default {
       this.islogging=!this.islogging;
       this.islog=!this.islog;
       this.$router.push('/');
+    },
+    getnoticenum(){
+      let formData = new FormData();
+      formData.append("receiver_username", localStorage.getItem("token"));
+      let config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      var _this = this;
+      axios
+        .post("http://localhost:5000/api/num_of_notice/", formData, config)
+        .then(function (response) {
+            _this.noticenum=response.data.notice_cnt;
+        })
+        .catch(function (error) {
+          console.log("Fail", error);
+        });
     }
   },
   computed:{
