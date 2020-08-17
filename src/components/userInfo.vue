@@ -4,7 +4,7 @@
       <div style="width: 100%">
         <a-layout>
           <a-row>
-            <a-col :span=6> 
+            <a-col :span=6 align='middle'> 
               <a-avatar :size="64"  style="margin-top:60px">{{userObj.username}}</a-avatar>
             </a-col>
             <a-col :span=18 align='left'>
