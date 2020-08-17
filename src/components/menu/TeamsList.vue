@@ -13,7 +13,7 @@
         </a-affix>
       </a-col>
     </a-row>
-        <a-row v-if="this.$route.params.id=='joined-team'">
+      <a-row v-if="this.$route.params.id=='joined-team'">
       <a-col :span="10" :offset="7"></a-col>
       <a-col :span="2" :offset="5">
         <a-affix :offset-top="top">
@@ -79,10 +79,14 @@
       </a-modal>
     </div>
      <div>
-      <a-modal title="申请加入团队" :visible="newaddteamvisible" @ok="addteam" @cancel="canceladd">
+      <a-modal title="申请加入团队" :visible="newaddteamvisible" :footer="null" @cancel="canceladd">
         <template>
           <a-form-model :model="newteamform" :label-col="labelCol" :wrapper-col="wrapperCol">
-            
+            <a-input placeholder="团队名称" v-model="addgroup"/>
+              <a-button type="primary" block style="margin-top:10px;margin-bottom=10px" @click="searchgroup">搜索团队</a-button>
+              <a-table rowKey="groupname" v-show="adddata != null " :columns="addColumns" :data-source="adddata" size="small" >
+                <a slot="action" slot-scope="text" href="javascript:;" @click="addteam(text.groupname)">Apply</a>
+              </a-table>
           </a-form-model>
         </template>
       </a-modal>
@@ -97,6 +101,26 @@ const data= [
   //
 
 ];
+const addColumns = [
+  {
+    title:'Group',
+    dataIndex:'groupname',
+    key:'groupname'
+  },
+  {
+    title:'GroupId',
+    dataIndex:'groupid',
+    key:'groupid',
+  },
+  { 
+    title: 'Action',
+    dataIndex: '',
+    key: 'x',
+     scopedSlots: { 
+       customRender: 'action' 
+       }
+  },
+];
 function myrefresh() {
   window.location.reload();
 }
@@ -106,6 +130,9 @@ export default {
     data(){
         return {
           data,
+          addColumns,
+          adddata:[],
+          addgroup:"",
           // checkedList: defaultCheckedList,
           indeterminate: true,
           checkAll: false,
@@ -126,7 +153,8 @@ export default {
           newteamform:{
             groupname:"",
             description:"",
-          }
+          },
+          userId:"",
         }
     },
 
@@ -173,8 +201,67 @@ export default {
       cancelcreate(){
         this.newteamvisible=false;
       },
-      addteam(){
-        this.errormsg("api还没写")
+      searchgroup(){
+        var _this = this;
+      let formData = new FormData();
+      formData.append("keyword",_this.addgroup);
+      formData.append("username", _this.userId);
+      let config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      };
+      axios.post(
+        "http://localhost:5000/api/search_group/",
+        formData,
+        config
+      )
+      .then(function (response) {
+        if (response.data != null) {
+          //_this.successmsg("zhao成功");
+          //console.log(response.data)
+          _this.adddata = response.data;
+        } 
+        else {
+          console.log(response.data)
+          _this.errormsg("查找失败，请尝试刷新后再次创建");
+        }
+      })
+      .catch(function () {
+        _this.errormsg("查找失败，请尝试刷新后再次创建");
+      });
+          
+      },
+      addteam(e){
+        
+      var _this = this;
+      let formData = new FormData();
+      formData.append("username", _this.userId);
+      formData.append("groupname",e);
+      
+      // console.log("文档id 被邀请人id 邀请者id")
+      
+      // console.log(e)
+      // console.log(_this.userId)
+      // console.log("b")
+      let config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      axios.post("http://localhost:5000/api/apply_in_group/", formData, config)
+        .then(function (response) {
+          //console.log(response.data)
+          if (response) {
+            _this.successmsg("申请成功");
+          } else {
+            _this.errormsg("申请失败");
+          }
+        })
+        .catch(function (error) {
+          console.log("wrong", error);
+        });
+
       },
       shownewteamform(){
         this.newteamvisible=true;
@@ -274,6 +361,9 @@ export default {
             console.log('wrong',error);
             });
       },
+      load_userId(){
+        this.userId = localStorage.getItem("token");
+      },
       delete_group(item) {
         var _this=this;
         this.$confirm({
@@ -318,6 +408,7 @@ export default {
         },
      },
      mounted() {
+      this.load_userId();
       this.load_list(this.$route.params.id);
     },
 }

@@ -1,7 +1,9 @@
 <template>
   <a-layout id="components-layout-demo-fixed-sider">
     <a-layout-sider :style="{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }">
-      <div class="logo" />
+      <div class="logo"> 
+          石墨文档 
+        </div>
       <a-menu theme="dark" mode="inline" :default-selected-keys="['1']"  @select="handleSelect">
         <a-menu-item key="private-message">
           <a-icon type="user" />
@@ -9,16 +11,20 @@
         </a-menu-item>
         <a-menu-item key="application">
           <a-icon type="video-camera" />
-          <span class="nav-text">申请信息反馈</span>
+          <span class="nav-text">申请信息</span>
         </a-menu-item>
         <a-menu-item key="invitation">
           <a-icon type="upload" />
           <span class="nav-text">邀请信息</span>
         </a-menu-item>
+        <a-menu-item key="notice">
+          <a-icon type="info-circle" />
+          <span class="nav-text">系统通知</span>
+        </a-menu-item>
       </a-menu>
     </a-layout-sider>
     <a-layout :style="{ marginLeft: '400px' }">
-      <div style="margin-top:30px">
+      <div style="margin-top:30px;height:590px;">
           <router-view v-if="isRouterAlive"></router-view>
       </div>
       <a-layout-footer :style="{ textAlign: 'center' }">
@@ -53,6 +59,9 @@ export default {
             case "application":
                 this.$router.push('/application')
                 break;
+            case "notice":
+                this.$router.push('/notice')
+                breakl
             default:
               console.log("nothing")
         }

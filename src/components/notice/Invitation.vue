@@ -1,73 +1,66 @@
 <template>
   <div>
-      1123
-    <a-table :columns="columns" :data-source="data">
+    <a-table :columns="columns" :data-source="data" style="margin-right:170px;margin-top:30px" rowKey="id">
       <a slot="name" slot-scope="text">{{ text }}</a>
+      <span slot="customTitle">
+      </span>
+      <span slot="action" slot-scope="text,item">
+        <a-button type="primary" size="large"  @click="agree_invitation(item.id)">
+            <a-icon type="check"/>
+        </a-button>
+        <a-divider type="vertical" />
+        <a-button type="danger" size="large" @click="refuse_invitation(item.id)">
+            <a-icon type="close" />
+        </a-button>
+        <a>{{ item.blank }}</a>
+      </span>
     </a-table>
   </div>
 </template>
 <script type="text/ecmascript-6">
+// import { mavonEditor } from "mavon-editor";
+// import memberAvatar from '../team/memberAvatar';
+import "mavon-editor/dist/css/index.css";
+import axios from "axios";
+// import moment from "moment";
+import "@/utils/htmlToPdf.js"
+// import docxtemplater from 'docxtemplater'
+// import PizZip from 'pizzip'
+// import JSZipUtils from 'jszip-utils'
+// import {saveAs} from 'file-saver'
+function myrefresh() {
+  window.location.reload();
+}
 const columns = [
   {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    scopedSlots: { customRender: "name" },
+    title:"邀请团队",
+    dataIndex: "group_name",
+    key: "group_name",
+    width: 150,
   },
   {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
-    width: 80,
+    title: "邀请者",
+    dataIndex: "sender_name",
+    key: "sender_name",
+    width: 150,
   },
   {
-    title: "Address",
-    dataIndex: "address",
-    key: "address 1",
-    ellipsis: true,
+    title: "邀请信息",
+    dataIndex: "content",
+    key: "content",
+    ellipsis: false,
+    width: 200,
   },
   {
-    title: "Long Column Long Column Long Column",
-    dataIndex: "address",
-    key: "address 2",
-    ellipsis: true,
-  },
-  {
-    title: "Long Column Long Column",
-    dataIndex: "address",
-    key: "address 3",
-    ellipsis: true,
-  },
-  {
-    title: "Long Column",
-    dataIndex: "address",
-    key: "address 4",
-    ellipsis: true,
+    title: "Action",
+    key: "action",
+    scopedSlots: { customRender: "action" },
+    width: 300,
   },
 ];
 
 const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park, New York No. 1 Lake Park",
-    tags: ["nice", "developer"],
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 2 Lake Park, London No. 2 Lake Park",
-    tags: ["loser"],
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sidney No. 1 Lake Park, Sidney No. 1 Lake Park",
-    tags: ["cool", "teacher"],
-  },
+  
 ];
 export default {
   data() {
@@ -75,6 +68,77 @@ export default {
       data,
       columns,
     };
+  },
+  mounted :function(){
+    this.get_confirm_notice();
+  },
+  methods :{
+    get_confirm_notice() {
+      let formData = new FormData();
+      formData.append("receiver_username", localStorage.getItem("token"));
+      let config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      var _this = this;
+      axios
+        .post("http://localhost:5000/api/view_confirm_notice/", formData, config)
+        .then(function (response) {
+            _this.data=response.data;
+        })
+        .catch(function (error) {
+          console.log("Fail", error);
+        });
+    },
+
+    agree_invitation(id){
+      var item=this.data.find(item => item.id==id);
+      console.log(item.id+":要接受的noticeid");
+      let formData = new FormData();
+      formData.append("id",item.id);
+      formData.append("userid", item.receiver_id);
+      formData.append("groupid",item.group_id);
+      let config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      axios
+        .post("http://localhost:5000/api/addgroupmember/", formData, config)
+        .then(function (response) {
+            console.log(response.data.message);
+             _this.data=_this.data.filter((record)=>record.id!=item.id)
+        })
+        .catch(function (error) {
+          console.log("Fail", error);
+        });
+    },
+
+    refuse_invitation(id){
+      var item=this.data.find(item => item.id==id);
+      var _this=this;
+      console.log(item.id+":要拒绝的noticeid");
+      let formData = new FormData();
+      formData.append("id",item.id);
+      formData.append("userid", item.receiver_id);
+      formData.append("groupid",item.group_id);
+      let config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      
+      axios
+        .post("http://localhost:5000/api/refuse_groupmember/", formData, config)
+        .then(function (response) {
+            console.log(response.data.message);
+            _this.data=_this.data.filter((record)=>record.id!=item.id)
+        })
+        .catch(function (error) {
+          console.log("Fail", error);
+        });
+    },
   },
 };
 </script>
