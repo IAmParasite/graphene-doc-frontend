@@ -293,17 +293,17 @@ export default {
               )
               .then(function (response) {
                 if (response.data != null) {
-                  _this.successmsg("zhao成功");
+                  //_this.successmsg("zhao成功");
                   console.log(response.data)
                   _this.invitedata = response.data;
                 } 
                 else {
                   console.log(response.data)
-                  _this.errormsg("1创建失败，请尝试刷新后再次创建");
+                  _this.errormsg("查找失败，请尝试刷新后再次创建");
                 }
               })
               .catch(function () {
-                _this.errormsg("创建失败，请尝试刷新后再次创建");
+                _this.errormsg("查找失败，请尝试刷新后再次创建");
               });
           },
     invite(e){
