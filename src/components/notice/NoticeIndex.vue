@@ -20,7 +20,7 @@
       </a-menu>
     </a-layout-sider>
     <a-layout :style="{ marginLeft: '400px' }">
-      <div style="margin-top:30px">
+      <div style="margin-top:30px;height:590px;">
           <router-view v-if="isRouterAlive"></router-view>
       </div>
       <a-layout-footer :style="{ textAlign: 'center' }">

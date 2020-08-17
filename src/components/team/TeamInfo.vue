@@ -50,6 +50,9 @@
 </template>
 
 <script>
+function myrefresh() {
+  window.location.reload();
+}
 const columns = [
   { title: 'Name', dataIndex: 'username', key: 'username' },
   { title: 'Email', dataIndex: 'email', key: 'email' },
@@ -204,6 +207,10 @@ export default {
         .then(function (response) {
           if (response) {
             _this.successmsg("邀请成功");
+            setTimeout(() => {
+              myrefresh();
+            }, 2000);
+
           } else {
             _this.errormsg("邀请失败");
           }
