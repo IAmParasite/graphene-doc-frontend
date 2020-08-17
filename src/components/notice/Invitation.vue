@@ -108,7 +108,7 @@ export default {
         .post("http://localhost:5000/api/addgroupmember/", formData, config)
         .then(function (response) {
             console.log(response.data.message);
-            myrefresh();
+             _this.data=_this.data.filter((record)=>record.id!=item.id)
         })
         .catch(function (error) {
           console.log("Fail", error);
@@ -117,6 +117,7 @@ export default {
 
     refuse_invitation(id){
       var item=this.data.find(item => item.id==id);
+      var _this=this;
       console.log(item.id+":要拒绝的noticeid");
       let formData = new FormData();
       formData.append("id",item.id);
@@ -132,7 +133,7 @@ export default {
         .post("http://localhost:5000/api/refuse_groupmember/", formData, config)
         .then(function (response) {
             console.log(response.data.message);
-            myrefresh()
+            _this.data=_this.data.filter((record)=>record.id!=item.id)
         })
         .catch(function (error) {
           console.log("Fail", error);
