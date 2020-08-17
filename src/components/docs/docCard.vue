@@ -262,6 +262,7 @@ export default {
       let formData = new FormData();
       formData.append("DocumentID", this.form.DocumentID);
       formData.append("title", this.form.title);
+      formData.append("username", localStorage.getItem("token"));
       let config = {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -270,13 +271,13 @@ export default {
       axios
         .post("http://localhost:5000/api/modify_doc_basic/", formData, config)
         .then(function (response) {
-          if (response) {
+          if (response.data.message == "success") {
             _this.successmsg("修改成功！");
             setTimeout(() => {
               myrefresh();
             }, 2000);
           } else {
-            _this.errormsg("修改失败，请尝试刷新后再次修改！");
+            _this.errormsg("修改失败，您不是文档的创建者！");
           }
         })
         .catch(function () {
