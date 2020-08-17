@@ -521,10 +521,6 @@ export default {
     this.websock.close(); //离开路由之后断开websocket连接
   },
   mounted: function () {
-    console.log(this.$route.params.id);
-    this.load_data(this.$route.params.id);
-    this.load_comment(this.$route.params.id);
-    this.load_modify_history(this.$route.params.id);
     //this.initWebSocket();
     this.load_right(this.$route.params.id);
     this.load_id();
