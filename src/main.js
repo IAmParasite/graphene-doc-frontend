@@ -32,6 +32,7 @@ import {Tooltip} from 'ant-design-vue';
 import { Radio } from 'ant-design-vue';
 import {Table} from 'ant-design-vue';
 import {Tag} from 'ant-design-vue';
+import {Switch} from 'ant-design-vue';
 import Axios from 'axios'
 import VueRouter from 'vue-router'
 
@@ -75,6 +76,7 @@ Vue.use(Tooltip);
 Vue.use(Radio);
 Vue.use(Table);
 Vue.use(Tag);
+Vue.use(Switch);
 Vue.config.productionTip = false
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {

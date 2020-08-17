@@ -60,9 +60,12 @@
                 <a slot="action" slot-scope="text" href="javascript:;" @click="invite(text.id)">Share</a>
               </a-table>
             </a-tab-pane>
-            <a-tab-pane key="4" tab="权限管理" :disabled="!share_right">
-              
-              
+
+            <!--权限编辑tab-->
+            <a-tab-pane key="4" tab="权限管理">
+              <div style="margin-left:10px;margin-right:10px">
+                <privilege-pane :propRightObj="rights"></privilege-pane>
+              </div>
             </a-tab-pane>
           </a-tabs>
         </a-layout-sider>
@@ -99,6 +102,7 @@ import docxtemplater from 'docxtemplater'
 import PizZip from 'pizzip'
 import JSZipUtils from 'jszip-utils'
 import {saveAs} from 'file-saver'
+import privilegePane from './privilegePane.vue'
 
 const inviteColumns = [
   {
@@ -127,11 +131,11 @@ export default {
   name: "Home",
   components: {
     mavonEditor,
-    memberAvatar
+    memberAvatar,
+    privilegePane,
   },
   data() {
     return {
-      
       inviteuser:"",
       inviteColumns,
       invitedata:[],
@@ -235,6 +239,7 @@ export default {
           if (response) {
             console.log(response.data);
             _this.rights=response.data;
+            console.log("loading rights",_this.rights)
             if(response.data.usertype==0){
               _this.watch_right=response.data.others_watch_right;
               _this.modify_right=response.data.others_modify_right;
