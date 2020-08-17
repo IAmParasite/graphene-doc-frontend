@@ -45,7 +45,7 @@
                 <a-list-item slot="renderItem" slot-scope="item" style="height:70px;float:left;">
                   <memberAvatar :username="item.username"></memberAvatar>
                   <a-comment style="margin-right:10px;width:200px">
-                    <p align="left" slot="content">修改了文档</p>
+                    <p align="left" slot="content">{{item.content}}</p>
                     <a-tooltip slot="datetime" :title="moment(item.datetime).subtract(8,'hours').format('YYYY-MM-DD HH:mm:ss')">
                       <span>{{ moment(item.datetime).subtract(8,'hours').fromNow()}}</span>
                     </a-tooltip>
