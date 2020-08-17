@@ -25,7 +25,7 @@
       <a-divider>团队管理</a-divider>
       <div v-if="iamfounder">
         <a-button type="primary" block style="margin-top:10px" @click="showModal">邀请成员加入团队</a-button>
-        <a-button type="primary" block style="margin-top:10px">管理成员权限</a-button>
+        <a-button type="primary" block style="margin-top:10px" @click="showModal2">管理成员权限</a-button>
          <a-button type="danger" block style="margin-top:10px;margin-bottom=10px" @click="delete_group">解散团队</a-button>
         <a-modal title="邀请成员加入团队" :visible="visible"   :footer="null" @ok="handleOk" @cancel="handleCancel">
             <template>
