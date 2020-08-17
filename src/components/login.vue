@@ -7,16 +7,16 @@
           <a-tab-pane key="sign in" tab="登录">
             <!-- 登录表单 -->
             <a-form-model ref="loginForm" :model="loginForm" v-bind="layout">
-            <a-input placeholder="用户名" v-model="loginForm.username" style="margin-top:60px">
+            <a-input placeholder="用户名" v-model="loginForm.username" style="margin-top:30px">
               <a-icon slot="prefix" type="user" />
             </a-input>
-            <a-input-password placeholder="密码"  v-model="loginForm.password" style="margin-top:60px">
+            <a-input-password placeholder="密码"  v-model="loginForm.password" style="margin-top:30px">
               <a-icon slot="prefix" type="info-circle" />
             </a-input-password>
             <a-alert v-show="rightlog.rl" message="登陆成功" type="success" banner/>
             <a-alert v-show="wronglog.wl" type="error" message="用户名或密码错误" banner />
             </a-form-model>
-            <a-row type="flex" justify="center" style="margin-top:60px;margin-bottom:60px">
+            <a-row type="flex" justify="center" style="margin-top:30px;margin-bottom:30px">
               <a-col :span="11">
                 <a-button type="primary" block @click="checklogin()">登录</a-button>
               </a-col>

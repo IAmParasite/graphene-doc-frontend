@@ -3,12 +3,14 @@
     <div :style="backgroundDiv">
       <h1 id='placeholder'> </h1>
     </div>
-      <h1 id='grouptitle'> {{groupObj.groupname}}</h1>
+      <a-col align="center">
+        <h1 id='grouptitle'> {{groupObj.groupname}}</h1>
+      </a-col>
     <div>
       <a-divider>成员列表</a-divider>
       <memberList :propGroupid="groupObj.groupid"></memberList>
       <a-divider>详细信息</a-divider>
-      <a-descriptions layout="vertical" bordered>
+      <a-descriptions layout="vertical" bordered style="text-align:center">
         <a-descriptions-item label="团队ID" span="1">
           {{groupObj.groupid}}
         </a-descriptions-item>
@@ -24,9 +26,8 @@
       <div v-if="iamfounder">
         <a-button type="primary" block style="margin-top:10px" @click="showModal">邀请成员加入团队</a-button>
         <a-button type="primary" block style="margin-top:10px" @click="showModal2">管理成员权限</a-button>
-        <a-button type="danger" block style="margin-top:10px;margin-bottom=10px" @click="delete_group">解散团队</a-button>
-        
-        <a-modal title="邀请成员加入团队" :visible="visible" :footer="null" @ok="handleOk" @cancel="handleCancel">
+         <a-button type="danger" block style="margin-top:10px;margin-bottom=10px" @click="delete_group">解散团队</a-button>
+        <a-modal title="邀请成员加入团队" :visible="visible"   :footer="null" @ok="handleOk" @cancel="handleCancel">
             <template>
               <div>
                 <a-input-search placeholder="请输入你想要搜索的用户名" enter-button @search="onSearch" />
@@ -60,13 +61,16 @@
 
       </div>
       <div v-else>
-        <a-button type="danger" block style="margin-top:10px;margin-bottom=10px">退出团队</a-button>
+        <a-button type="danger" block style="margin-bottom=10px">退出团队</a-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+function myrefresh() {
+  window.location.reload();
+}
 const columns = [
   { title: 'Name', dataIndex: 'username', key: 'username' },
   { title: 'Email', dataIndex: 'email', key: 'email' },
@@ -275,6 +279,10 @@ export default {
         .then(function (response) {
           if (response) {
             _this.successmsg("邀请成功");
+            setTimeout(() => {
+              myrefresh();
+            }, 2000);
+
           } else {
             _this.errormsg("邀请失败");
           }

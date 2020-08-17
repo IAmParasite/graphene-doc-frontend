@@ -4,19 +4,15 @@
       <a slot="name" slot-scope="text">{{ text }}</a>
       <span slot="customTitle">
       </span>
-      <span slot="action" slot-scope="text, record">
-        <a-button type="primary" size="large" >
-            <a-icon type="check" @click="agree_invitation(record.id)"/>
+      <span slot="action" slot-scope="text,item">
+        <a-button type="primary" size="large"  @click="agree_invitation(item.id)">
+            <a-icon type="check"/>
         </a-button>
         <a-divider type="vertical" />
-        <a-button type="danger" size="large">
-            <a-icon type="close" @click="refuse_invitation(record.id)"/>
+        <a-button type="danger" size="large" @click="refuse_invitation(item.id)">
+            <a-icon type="close" />
         </a-button>
-        <a-divider type="vertical" />
-        <a-button size="large" @click="delete_invitation(record.id)">
-            <a-icon type="delete" />
-        </a-button>
-        <a>{{ record.blank }}</a>
+        <a>{{ item.blank }}</a>
       </span>
     </a-table>
   </div>
@@ -32,7 +28,6 @@ import "@/utils/htmlToPdf.js"
 // import PizZip from 'pizzip'
 // import JSZipUtils from 'jszip-utils'
 // import {saveAs} from 'file-saver'
-
 const columns = [
   {
     title:"邀请团队",
@@ -42,7 +37,7 @@ const columns = [
   },
   {
     title: "邀请者",
-    dataIndex: "sender_id",
+    dataIndex: "sender_name",
     key: "sender_name",
     width: 150,
   },
@@ -87,11 +82,7 @@ export default {
       axios
         .post("http://localhost:5000/api/view_confirm_notice/", formData, config)
         .then(function (response) {
-          console.log(response.data.message);
-            console.log("程坤");
-            console.log("澄明");
             _this.data=response.data;
-            console.log(response);
         })
         .catch(function (error) {
           console.log("Fail", error);
@@ -99,21 +90,23 @@ export default {
     },
 
     agree_invitation(id){
-      console.log(id+":要接受的noticeid");
+      var _this=this
+      var item=this.data.find(item => item.id==id);
+      console.log(item.id+":要接受的noticeid");
       let formData = new FormData();
-      formData.append("new_notice_id", id);
+      formData.append("id",item.id);
+      formData.append("userid", item.receiver_id);
+      formData.append("groupid",item.group_id);
       let config = {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       };
-      
       axios
-        .post("http://localhost:5000/api/del_new_notice/", formData, config)
+        .post("http://localhost:5000/api/addgroupmember/", formData, config)
         .then(function (response) {
-            console.log("程坤");
             console.log(response.data.message);
-            console.log("澄明");
+             _this.data=_this.data.filter((record)=>record.id!=item.id)
         })
         .catch(function (error) {
           console.log("Fail", error);
@@ -121,9 +114,13 @@ export default {
     },
 
     refuse_invitation(id){
-      console.log(id+":要删除的noticeid");
+      var item=this.data.find(item => item.id==id);
+      var _this=this;
+      console.log(item.id+":要拒绝的noticeid");
       let formData = new FormData();
-      formData.append("new_notice_id", id);
+      formData.append("id",item.id);
+      formData.append("userid", item.receiver_id);
+      formData.append("groupid",item.group_id);
       let config = {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -131,39 +128,15 @@ export default {
       };
       
       axios
-        .post("http://localhost:5000/api/del_new_notice/", formData, config)
+        .post("http://localhost:5000/api/refuse_groupmember/", formData, config)
         .then(function (response) {
-            console.log("程坤");
             console.log(response.data.message);
-            console.log("澄明");
+            _this.data=_this.data.filter((record)=>record.id!=item.id)
         })
         .catch(function (error) {
           console.log("Fail", error);
         });
     },
-    
-
-    delete_invitation(id){
-      console.log(id+":要删除的noticeid");
-      let formData = new FormData();
-      formData.append("new_notice_id", id);
-      let config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-      
-      axios
-        .post("http://localhost:5000/api/del_new_notice/", formData, config)
-        .then(function (response) {
-            console.log("程坤");
-            console.log(response.data.message);
-            console.log("澄明");
-        })
-        .catch(function (error) {
-          console.log("Fail", error);
-        });
-    }
   },
 };
 </script>

@@ -88,6 +88,10 @@ Vue.use(VueRouter)
         path: '/private-message',
         component: () => import('../components/notice/PrivateMessage.vue')
       },
+      {
+        path: '/notice',
+        component: () => import('../components/notice/Notice.vue')
+      }
     ]
   },
   {
