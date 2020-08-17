@@ -27,15 +27,16 @@ import { Descriptions, Divider} from 'ant-design-vue';
 import { Modal} from 'ant-design-vue';
 import { Affix } from 'ant-design-vue';
 import { Checkbox } from 'ant-design-vue';
-import { Comment } from 'ant-design-vue';
+import {Comment} from 'ant-design-vue';
 import {Tooltip} from 'ant-design-vue';
 import { Radio } from 'ant-design-vue';
-import { Table } from 'ant-design-vue';
-import { Tag } from 'ant-design-vue';
+import {Table} from 'ant-design-vue';
+import {Tag} from 'ant-design-vue';
 import Axios from 'axios'
 import VueRouter from 'vue-router'
 
 import { message} from 'ant-design-vue'
+Vue.prototype.$confirm = Modal.confirm;
 Vue.prototype.$message = message;
 message.config({
     duration: 2,// 持续时间
