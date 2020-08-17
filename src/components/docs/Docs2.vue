@@ -129,6 +129,7 @@ export default {
   },
   data() {
     return {
+      inviteuser:"",
       inviteColumns,
       invitedata:[],
       form: {
