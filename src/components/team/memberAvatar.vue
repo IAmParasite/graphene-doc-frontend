@@ -41,7 +41,7 @@ export default {
   },
   methods: {
     gotoUserInfo() {
-      this.$router.push('/userInfo/'+this.$options.props.username);
+      this.$router.push('/userInfo/'+this.username);
     },
     handleHoverChange(visible) {
       this.clicked = false;
