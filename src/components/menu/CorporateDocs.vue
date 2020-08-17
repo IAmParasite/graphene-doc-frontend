@@ -48,7 +48,7 @@ export default {
       },
     };
     axios
-      .post("url", formData, config)
+      .post("http://localhost:5000/api/my_docs/", formData, config)
       .then(function (response) {
         if (response) {
           _this.data = response.data;

@@ -518,7 +518,7 @@ export default {
   },
   
   destroyed() {
-    this.websock.close(); //离开路由之后断开websocket连接
+    //this.websock.close(); //离开路由之后断开websocket连接
   },
   mounted: function () {
     //this.initWebSocket();

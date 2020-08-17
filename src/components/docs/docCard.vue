@@ -152,7 +152,7 @@ export default {
     },
 
     confirmDelete(x) {
-      var _this=this;
+      var _this = this;
       this.$confirm({
         title: <div style="font-weight:bold">确认删除？</div>,
         content: (x==1)?<div style="color:red;">文件将被移入回收站</div>:<div style="color:red;">文件将<span style="font-weight:bold"> 永 远 消 失 ！</span></div>,
