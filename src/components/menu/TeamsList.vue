@@ -82,7 +82,8 @@
       <a-modal title="申请加入团队" :visible="newaddteamvisible" @ok="addteam" @cancel="canceladd">
         <template>
           <a-form-model :model="newteamform" :label-col="labelCol" :wrapper-col="wrapperCol">
-            
+            <a-input placeholder="团队名称" v-model="addgroup"/>
+              <a-button type="primary" block style="margin-top:10px;margin-bottom=10px" @click="searchgroup">搜索团队</a-button>
           </a-form-model>
         </template>
       </a-modal>
@@ -106,6 +107,7 @@ export default {
     data(){
         return {
           data,
+          addgroup:"",
           // checkedList: defaultCheckedList,
           indeterminate: true,
           checkAll: false,

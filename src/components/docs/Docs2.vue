@@ -58,9 +58,11 @@
               <a-button type="primary" block style="margin-top:10px;margin-bottom=10px" @click="searchuser">搜索用户</a-button>
               <a-table rowKey="id" v-show="invitedata != null " :columns="inviteColumns" :data-source="invitedata" size="small" >
                 <a slot="action" slot-scope="text" href="javascript:;" @click="invite(text.id)">Share</a>
-                 
-                  
               </a-table>
+            </a-tab-pane>
+            <a-tab-pane key="4" tab="权限管理" :disabled="!share_right">
+              
+              
             </a-tab-pane>
           </a-tabs>
         </a-layout-sider>
@@ -129,6 +131,7 @@ export default {
   },
   data() {
     return {
+      
       inviteuser:"",
       inviteColumns,
       invitedata:[],
@@ -304,30 +307,7 @@ export default {
               });
           },
     invite(e){
-      let formData1 = new FormData();
-      var _this=this;
-      formData1.append("username", localStorage.getItem('token'));
-      let config1 = {
-        headers: {
-          "Content-Type": "multipart/form-data1",
-        },
-      };
-      axios.post("http://localhost:5000/api/get_user/", formData1, config1)
-        .then(function (response) {
-          console.log(response.data)
-          if (response) {
-            //_this.successmsg("邀请成功");
-            _this.userId = response.data.id
-            
-          } else {
-            _this.errormsg("获取用户ID失败");
-          }
-        })
-        .catch(function (error) {
-          console.log("wrong", error);
-        });
-      //var _this = this;
-      
+      var _this = this;
       let formData = new FormData();
       formData.append("user_id", this.userId);
       formData.append("DocumentID",_this.$route.params.id);
@@ -511,6 +491,30 @@ export default {
     websocketclose(){  //关闭
       console.log('断开连接');
     },
+    load_id(){
+      let formData1 = new FormData();
+      var _this=this;
+      formData1.append("username", localStorage.getItem('token'));
+      let config1 = {
+        headers: {
+          "Content-Type": "multipart/form-data1",
+        },
+      };
+      axios.post("http://localhost:5000/api/get_user/", formData1, config1)
+        .then(function (response) {
+          console.log(response.data)
+          if (response) {
+            //_this.successmsg("邀请成功");
+            _this.userId = response.data.id
+            
+          } else {
+            _this.errormsg("获取用户ID失败");
+          }
+        })
+        .catch(function (error) {
+          console.log("wrong", error);
+        });
+    }
   },
   
   destroyed() {
@@ -523,6 +527,7 @@ export default {
     this.load_modify_history(this.$route.params.id);
     //this.initWebSocket();
     this.load_right(this.$route.params.id);
+    this.load_id();
   },
   watch: {
     content() {

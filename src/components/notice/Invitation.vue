@@ -38,13 +38,13 @@ const columns = [
     title:"邀请团队",
     dataIndex: "group_name",
     key: "group_name",
-    width: 120,
+    width: 150,
   },
   {
     title: "邀请者",
     dataIndex: "sender_id",
     key: "sender_name",
-    width: 120,
+    width: 150,
   },
   {
     title: "邀请信息",
@@ -99,7 +99,7 @@ export default {
     },
 
     agree_invitation(id){
-      console.log(id+":要删除的noticeid");
+      console.log(id+":要接受的noticeid");
       let formData = new FormData();
       formData.append("new_notice_id", id);
       let config = {
