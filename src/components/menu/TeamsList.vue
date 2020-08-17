@@ -79,7 +79,7 @@
       </a-modal>
     </div>
      <div>
-      <a-modal title="申请加入团队" :visible="newaddteamvisible" @ok="addteam" @cancel="canceladd">
+      <a-modal title="申请加入团队" :visible="newaddteamvisible" :footer="null" @cancel="canceladd">
         <template>
           <a-form-model :model="newteamform" :label-col="labelCol" :wrapper-col="wrapperCol">
             <a-input placeholder="团队名称" v-model="addgroup"/>
