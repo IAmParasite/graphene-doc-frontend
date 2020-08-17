@@ -25,29 +25,7 @@
           <a-icon type="left" />
           
         </a-menu-item>
-        <a-menu-item key="star" style="float:right">
-          <a-icon type="star" />
-          <router-link to="/">
-          </router-link>
-        </a-menu-item>
-        <a-menu-item key="bell" style="margin-right:0px;float:right">
-          <a-dropdown v-if="renderDropdown">
-            <a class="ant-dropdown-link" @click="e => e.preventDefault()">
-              <a-icon type="bell" /><a-icon type="down" />
-            </a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-                <router-link to="/notice">通知</router-link>
-              </a-menu-item>
-              <a-menu-item>
-                <router-link to="/">邀请</router-link>
-              </a-menu-item>
-              <a-menu-item>
-                <router-link to="/">私信</router-link>
-              </a-menu-item>
-            </a-menu>
-          </a-dropdown>
-        </a-menu-item>
+
         <a-menu-item key="self" style="float:right">
           <div id="navNew" v-if="islog">
           <router-link v-if="showUserName == null " @click.native='tolog()' to="/loginView" >Login</router-link>
@@ -74,6 +52,29 @@
           <div id="navNew" v-if="islogging" >
             <router-link to="/" @click.native="logback">Back</router-link> 
           </div>
+        </a-menu-item>
+                <a-menu-item key="star" style="float:right">
+          <a-icon type="star" />
+          <router-link to="/">
+          </router-link>
+        </a-menu-item>
+        <a-menu-item key="bell" style="margin-right:0px;float:right">
+          <a-dropdown v-if="renderDropdown">
+            <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+              <a-icon type="bell" /><a-icon type="down" />
+            </a>
+            <a-menu slot="overlay">
+              <a-menu-item>
+                <router-link to="/notice">通知</router-link>
+              </a-menu-item>
+              <a-menu-item>
+                <router-link to="/">邀请</router-link>
+              </a-menu-item>
+              <a-menu-item>
+                <router-link to="/">私信</router-link>
+              </a-menu-item>
+            </a-menu>
+          </a-dropdown>
         </a-menu-item>
       </a-menu>
     </a-layout-header>
