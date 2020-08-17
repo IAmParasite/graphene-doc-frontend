@@ -23,9 +23,10 @@
       <a-divider>团队管理</a-divider>
       <div v-if="iamfounder">
         <a-button type="primary" block style="margin-top:10px" @click="showModal">邀请成员加入团队</a-button>
-        <a-button type="primary" block style="margin-top:10px">管理成员权限</a-button>
-         <a-button type="danger" block style="margin-top:10px;margin-bottom=10px" @click="delete_group">解散团队</a-button>
-        <a-modal title="邀请成员加入团队" :visible="visible"  @ok="handleOk" @cancel="handleCancel">
+        <a-button type="primary" block style="margin-top:10px" @click="showModal2">管理成员权限</a-button>
+        <a-button type="danger" block style="margin-top:10px;margin-bottom=10px" @click="delete_group">解散团队</a-button>
+        
+        <a-modal title="邀请成员加入团队" :visible="visible" :footer="null" @ok="handleOk" @cancel="handleCancel">
             <template>
               <div>
                 <a-input-search placeholder="请输入你想要搜索的用户名" enter-button @search="onSearch" />
@@ -41,6 +42,22 @@
               </div>
             </template>
         </a-modal>
+
+        <a-modal title="管理成员权限" :visible="visible2" :footer="null" @cancel="handleCancel2">
+            <template>
+              <div>
+                <a-table :columns="columns" :data-source="data2" rowKey="id">
+                   <!--<a slot="action" slot-scope="text" href="javascript:;">Delete</a>-->
+                  <a slot="action" slot-scope="text" href="javascript:;" @click="deleteMem(text.id)">Delete</a>
+                 
+                  <p slot="expandedRowRender" slot-scope="record" style="margin: 0">
+                    {{ record.description }}
+                  </p>
+                </a-table>
+              </div>
+            </template>
+        </a-modal>
+
       </div>
       <div v-else>
         <a-button type="danger" block style="margin-top:10px;margin-bottom=10px">退出团队</a-button>
@@ -57,6 +74,8 @@ const columns = [
 ];
 const data = [
 ];
+const data2 = [
+];
 import memberList from './memberList';
 import axios from 'axios';
 export default {
@@ -66,7 +85,6 @@ export default {
     memberList,
 
   },
-
   props: {
     groupid: {
       type: String,
@@ -121,10 +139,36 @@ export default {
       },
       ModalText: 'Content of the modal',
       visible: false,
+      visible2: false,
       confirmLoading: false,
+      userid: 0,
       data,
+      data2,
       columns,
     };
+  },
+  mounted() {
+    var _this = this;
+    let formData = new FormData();
+    formData.append("username", localStorage.getItem("token"));
+    let config = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    };
+    axios
+      .post("http://localhost:5000/api/get_user/", formData, config)
+      .then(function (response) {
+        if (response) {
+          _this.userid = response.data.id;
+          console.log(_this.userid);
+        } else {
+          alert("请先登录！");
+        }
+      })
+      .catch(function (error) {
+        console.log("wrong", error);
+      });
   },
   methods: {
     successmsg(message) {
@@ -135,6 +179,10 @@ export default {
     },
     showModal() {
       this.visible = true;
+    },
+    showModal2() {
+      this.visible2 = true;
+      this.get_groupmem();
     },
     handleOk() {
       this.ModalText = 'The modal will be closed after two seconds';
@@ -147,6 +195,10 @@ export default {
     handleCancel() {
       console.log('Clicked cancel button');
       this.visible = false;
+    },
+    handleCancel2() {
+      console.log('Clicked cancel button');
+      this.visible2 = false;
     },
     onSearch(value) {   //   搜索框显示
       console.log(value);
@@ -176,6 +228,25 @@ export default {
         .catch(function (error) {
           console.log("wrong", error);
         });
+    },
+    get_groupmem() {
+      let formData=new FormData();
+      console.log(this.groupid)
+      formData.append('groupid',this.groupid);
+      let config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      };
+      var _this=this;
+      axios.post('http://localhost:5000/api/get_user_bygroup/',formData,config)
+        .then(function(response) {
+          if(response) {
+            _this.data2 = response.data;
+          }
+        }).catch(error=> {
+          console.log('error',error);
+        })
     },
     confirm(e) {  // 邀请确认
       console.log(e);
@@ -222,7 +293,6 @@ export default {
         cancelText: '取消',
         onOk() {
           console.log("删除该项" + _this.groupObj.groupid);
-          
           let formData = new FormData();
           formData.append("groupid", _this.groupObj.groupid);
           console.log(localStorage.getItem("token"));
@@ -246,6 +316,46 @@ export default {
             })
             .catch(function () {
               _this.errormsg("删除失败，请尝试刷新后重试");
+            });
+          }
+        })
+      },
+      deleteMem(id) {
+        var _this=this;
+        this.$confirm({
+          title: <div style="font-weight:bold">确定删除改成员？</div>,
+          content: <div style="color:red;font-weight:bold"><p>改成员会被踢出团队！</p></div>,
+          okText: '删除',
+          okType: 'danger',
+          cancelText: '取消',
+          onOk() {
+            console.log("删除该成员" + id);
+            let formData = new FormData();
+            formData.append("groupid", _this.groupid);
+            formData.append("leaderid", _this.userid);
+            formData.append("userid", id)
+            console.log("组号" + _this.groupid);
+            console.log("执行者是" + _this.userid);
+            let config = {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            };
+            axios
+              .post("http://localhost:5000/api/delete_user/", formData, config)
+              .then(function (response) {
+                console.log(response.data.message);
+                if (response.data.message == "success") {
+                  _this.successmsg("删除成功");
+                  setTimeout(() => {
+                    _this.$router.go(-1);
+                  }, 2000);
+                } else {
+                  _this.errormsg("删除失败，请尝试刷新后重试");
+                }
+              })
+              .catch(function () {
+                _this.errormsg("删除失败，请尝试刷新后重试");
             });
       },
       onCancel() {
