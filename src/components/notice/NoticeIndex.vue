@@ -61,7 +61,7 @@ export default {
                 break;
             case "notice":
                 this.$router.push('/notice')
-                breakl
+                break
             default:
               console.log("nothing")
         }

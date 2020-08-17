@@ -28,9 +28,6 @@ import "@/utils/htmlToPdf.js";
 // import PizZip from 'pizzip'
 // import JSZipUtils from 'jszip-utils'
 // import {saveAs} from 'file-saver'
-function myrefresh() {
-  window.location.reload();
-}
 const columns = [
   {
     title: "通知信息",

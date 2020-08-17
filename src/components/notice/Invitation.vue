@@ -28,9 +28,6 @@ import "@/utils/htmlToPdf.js"
 // import PizZip from 'pizzip'
 // import JSZipUtils from 'jszip-utils'
 // import {saveAs} from 'file-saver'
-function myrefresh() {
-  window.location.reload();
-}
 const columns = [
   {
     title:"邀请团队",
@@ -93,6 +90,7 @@ export default {
     },
 
     agree_invitation(id){
+      var _this=this
       var item=this.data.find(item => item.id==id);
       console.log(item.id+":要接受的noticeid");
       let formData = new FormData();
