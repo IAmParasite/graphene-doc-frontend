@@ -8,13 +8,36 @@
         @click="toDocs(docObj.id)"
       />
       <template slot="actions" class="ant-card-actions">
-        <a-icon type="delete" @click="confirmDelete(1)" v-if="fav!=2"/>
+        <a-icon type="delete" @click="confirmDelete(1)" v-if="fav==0"/>
+        <a-icon type="edit" @click="showModal()" v-if="fav==0"/>
+        <a-icon type="file-add" @click="addFavorDocs()" v-if="fav==0" />
+
+        <a-icon type="delete" @click="confirmDelete(1)" v-if="fav==1"/>
+        <a-icon type="edit" @click="showModal()" v-if="fav==1"/>
+        <a-icon type="minus-square" @click="delFavorDocs()" v-if="fav==1" />
+
+        <a-icon type="delete" @click="confirmDelete(1)" v-if="fav==2"/>
+        <a-icon type="edit" @click="showModal()" v-if="fav==2"/>
+        <a-icon type="file-add" @click="addFavorDocs()" v-if="fav==2" />
+
+        <a-icon type="delete" @click="confirmDelete(1)" v-if="fav==3"/>
+        <a-icon type="edit" @click="showModal()" v-if="fav==3"/>
+        <a-icon type="file-add" @click="addFavorDocs()" v-if="fav==3" />
+
+        <a-icon type="unlock" @click="revoverDoc(docObj.id)" v-if="fav==4"/>
+        <a-icon type="delete" @click="confirmDelete(2)" v-if="fav==4"/>
+
+
+        <!--<a-icon type="delete" @click="confirmDelete(1)" v-if="fav!=2"/>
         <a-icon type="unlock" @click="revoverDoc()" v-if="fav==2"/>
         <a-icon type="edit" @click="showModal()" v-if="fav!=2"/>
         <a-icon type="delete" @click="confirmDelete(2)" v-if="fav==2"/>
         <a-icon type="file-add" @click="addFavorDocs()" v-if="fav==0" />
-        <a-icon type="minus-square" @click="delFavorDocs()" v-if="fav==1" />
+        <a-icon type="minus-square" @click="delFavorDocs()" v-if="fav==1" />-->
         
+
+
+
       </template>
       <a-card-meta :title="docObj.created_time">
         <a-avatar
@@ -226,10 +249,11 @@ export default {
           _this.errormsg("取消收藏失败，请尝试刷新后重试");
         });
     },
-    revoverDoc(item) {
+    revoverDoc(id) {
       var _this = this;
       let formData = new FormData();
-      formData.append("DocumentID", item.id);
+      formData.append("DocumentID", id);
+      console.log("DocumentId " + id)
       formData.append("username", localStorage.getItem("token"));
       let config = {
         headers: {
