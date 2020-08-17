@@ -8,7 +8,7 @@
         @click="toDocs(docObj.id)"
       />
       <template slot="actions" class="ant-card-actions">
-        <a-icon type="delete" @click="confirmDelete(1)" v-if="fav==0"/>
+        <a-icon type="delete" @click="confirmDelete(1)" v-if="fav==0" />
         <a-icon type="edit" @click="showModal()" v-if="fav==0"/>
         <a-icon type="file-add" @click="addFavorDocs()" v-if="fav==0" />
 
@@ -86,11 +86,14 @@ export default {
       form: {
         DocumentID: "",
         title: "",
-        fav: ""
+        fav: "",
+        creator_id: ""
       },
       labelCol: { span: 4 },
       wrapperCol: { span: 14 },
       visible: false,
+      creator_id: "",
+      group_id: "",
     }
     
   },
@@ -100,6 +103,9 @@ export default {
       handler(newVal) {
         this.form.DocumentID=newVal.id;
         this.form.title=newVal.title;
+        this.form.creator_id = newVal.creator_id;  // 文档的创建者
+        this.form.group_id = newVal.group_id   // 文档所属的组
+        this.group_id = newVal.group_id
       },
       deep: true,
       immediate: true
@@ -112,10 +118,10 @@ export default {
       immediate: true
     }
   },
+  mounted: function() {
+  },
 
   methods: {
-    
-
     successmsg(message) {
       this.$message.success(message);
     },
@@ -175,7 +181,37 @@ export default {
     },
 
     confirmDelete(x) {
-      var _this = this;
+      var _this = this
+      if(this.group_id == "0") {    // 个人文档，判断是否是创建者
+        if(this.form.creator_id != localStorage.getItem("userid"))
+          return;
+      }
+      else {    // 团队文档
+          if(this.form.creator_id != localStorage.getItem("userid")) {
+            let formData = new FormData();
+              formData.append("groupid", this.group_id);
+              formData.append("username", localStorage.getItem("token"));
+              console.log("登录用户" + localStorage.getItem("userid"));
+              console.log("组号" + this.group_id)
+              console.log("文档创建者" + this.form.creator_id)
+              let config = {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              };
+              axios.post("http://localhost:5000/api/groupiscreatedbyme/", formData, config)
+                .then(function (response) {
+                  console.log(response.data);
+                  if (response.data.message == "no") {
+                      return;
+                  } 
+                })
+                .catch(function () {
+                  _this.errormsg("失败，请尝试刷新后重试");
+                });
+          }
+          
+      }
       this.$confirm({
         title: <div style="font-weight:bold">确认删除？</div>,
         content: (x==1)?<div style="color:red;">文件将被移入回收站</div>:<div style="color:red;">文件将<span style="font-weight:bold"> 永 远 消 失 ！</span></div>,
@@ -282,6 +318,8 @@ export default {
       this.visible = true;
     },
     handleOk() {
+      if(this.creator_id != localStorage.getItem("userid"))
+          return;
       var _this = this;
       let formData = new FormData();
       formData.append("DocumentID", this.form.DocumentID);
