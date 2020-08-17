@@ -136,7 +136,7 @@ export default {
     showModal() {
       this.visible = true;
     },
-    handleOk(e) {
+    handleOk() {
       this.ModalText = 'The modal will be closed after two seconds';
       this.confirmLoading = true;
       setTimeout(() => {
@@ -144,7 +144,7 @@ export default {
         this.confirmLoading = false;
       }, 2000);
     },
-    handleCancel(e) {
+    handleCancel() {
       console.log('Clicked cancel button');
       this.visible = false;
     },

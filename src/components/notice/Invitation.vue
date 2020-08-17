@@ -6,11 +6,11 @@
       </span>
       <span slot="action" slot-scope="text, record">
         <a-button type="primary" size="large" >
-            <a-icon type="check" @click="agree_invitation()"/>
+            <a-icon type="check" @click="agree_invitation(record.id)"/>
         </a-button>
         <a-divider type="vertical" />
         <a-button type="danger" size="large">
-            <a-icon type="close" @click="refuse_invitation()"/>
+            <a-icon type="close" @click="refuse_invitation(record.id)"/>
         </a-button>
         <a-divider type="vertical" />
         <a-button size="large" @click="delete_invitation(record.id)">
@@ -22,16 +22,16 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-import { mavonEditor } from "mavon-editor";
-import memberAvatar from '../team/memberAvatar';
+// import { mavonEditor } from "mavon-editor";
+// import memberAvatar from '../team/memberAvatar';
 import "mavon-editor/dist/css/index.css";
 import axios from "axios";
-import moment from "moment";
+// import moment from "moment";
 import "@/utils/htmlToPdf.js"
-import docxtemplater from 'docxtemplater'
-import PizZip from 'pizzip'
-import JSZipUtils from 'jszip-utils'
-import {saveAs} from 'file-saver'
+// import docxtemplater from 'docxtemplater'
+// import PizZip from 'pizzip'
+// import JSZipUtils from 'jszip-utils'
+// import {saveAs} from 'file-saver'
 
 const columns = [
   {
@@ -98,7 +98,7 @@ export default {
         });
     },
 
-    agree_invitation(){
+    agree_invitation(id){
       console.log(id+":要删除的noticeid");
       let formData = new FormData();
       formData.append("new_notice_id", id);
@@ -107,7 +107,7 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
-      var _this = this;
+      
       axios
         .post("http://localhost:5000/api/del_new_notice/", formData, config)
         .then(function (response) {
@@ -120,7 +120,7 @@ export default {
         });
     },
 
-    refuse_invitation(){
+    refuse_invitation(id){
       console.log(id+":要删除的noticeid");
       let formData = new FormData();
       formData.append("new_notice_id", id);
@@ -129,7 +129,7 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
-      var _this = this;
+      
       axios
         .post("http://localhost:5000/api/del_new_notice/", formData, config)
         .then(function (response) {
@@ -152,7 +152,7 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
-      var _this = this;
+      
       axios
         .post("http://localhost:5000/api/del_new_notice/", formData, config)
         .then(function (response) {

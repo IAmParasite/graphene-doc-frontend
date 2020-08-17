@@ -53,7 +53,15 @@
                 </a-list-item>
               </a-list></a-tab-pane>
             <!-- 分享tab -->
-            <a-tab-pane key="3" tab="分享" :disabled="!share_right">Content of Tab Pane 3</a-tab-pane>
+            <a-tab-pane key="3" tab="分享" :disabled="!share_right">
+              <a-input placeholder="用户名" v-model="inviteuser"/>
+              <a-button type="primary" block style="margin-top:10px;margin-bottom=10px" @click="searchuser">搜索用户</a-button>
+              <a-table rowKey="id" v-show="invitedata != null " :columns="inviteColumns" :data-source="invitedata" size="small" >
+                <a slot="action" slot-scope="text" href="javascript:;" @click="invite(text.id)">Share</a>
+                 
+                  
+              </a-table>
+            </a-tab-pane>
           </a-tabs>
         </a-layout-sider>
         <!-- 主编辑区 -->
@@ -89,6 +97,27 @@ import docxtemplater from 'docxtemplater'
 import PizZip from 'pizzip'
 import JSZipUtils from 'jszip-utils'
 import {saveAs} from 'file-saver'
+
+const inviteColumns = [
+  {
+    title:'Email',
+    dataIndex:'email',
+    key:'email'
+  },
+  {
+    title:'Username',
+    dataIndex:'username',
+    key:'username',
+  },
+  { 
+    title: 'Action',
+    dataIndex: '',
+    key: 'x',
+     scopedSlots: { 
+       customRender: 'action' 
+       }
+  },
+];
 function myrefresh() {
   window.location.reload();
 }
@@ -100,6 +129,9 @@ export default {
   },
   data() {
     return {
+      inviteuser:"",
+      inviteColumns,
+      invitedata:[],
       form: {
         content: "",
         username: "",
@@ -117,6 +149,7 @@ export default {
       modify_right:true,
       discuss_right:true,
       share_right:true,
+      userId:0,
       rights:{
       }
     };
@@ -239,6 +272,90 @@ export default {
           console.log("Fail", error);
         });
     },
+    searchuser(){
+      
+      var _this = this;
+      let formData = new FormData();
+      formData.append("keyword",_this.inviteuser);
+      formData.append("document_id", _this.$route.params.id);
+      let config = {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            };
+            axios.post(
+                "http://localhost:5000/api/query_notindoc_user/",
+                formData,
+                config
+              )
+              .then(function (response) {
+                if (response.data != null) {
+                  _this.successmsg("zhao成功");
+                  console.log(response.data)
+                  _this.invitedata = response.data;
+                } 
+                else {
+                  console.log(response.data)
+                  _this.errormsg("1创建失败，请尝试刷新后再次创建");
+                }
+              })
+              .catch(function () {
+                _this.errormsg("创建失败，请尝试刷新后再次创建");
+              });
+          },
+    invite(e){
+      let formData1 = new FormData();
+      var _this=this;
+      formData1.append("username", localStorage.getItem('token'));
+      let config1 = {
+        headers: {
+          "Content-Type": "multipart/form-data1",
+        },
+      };
+      axios.post("http://localhost:5000/api/get_user/", formData1, config1)
+        .then(function (response) {
+          console.log(response.data)
+          if (response) {
+            //_this.successmsg("邀请成功");
+            _this.userId = response.data.id
+            
+          } else {
+            _this.errormsg("获取用户ID失败");
+          }
+        })
+        .catch(function (error) {
+          console.log("wrong", error);
+        });
+      //var _this = this;
+      
+      let formData = new FormData();
+      formData.append("user_id", this.userId);
+      formData.append("DocumentID",_this.$route.params.id);
+      formData.append("target_user_id",e );
+      console.log("文档id 被邀请人id 邀请者id")
+      console.log(_this.$route.params.id)
+      console.log(e)
+      console.log(_this.userId)
+      console.log("b")
+      let config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      axios.post("http://localhost:5000/api/pernal_doc_share_to/", formData, config)
+        .then(function (response) {
+          //console.log(response.data)
+          if (response) {
+            _this.successmsg("邀请成功");
+          } else {
+            _this.errormsg("邀请失败");
+          }
+        })
+        .catch(function (error) {
+          console.log("wrong", error);
+        });
+    },
+    
     callback() {},
     // 提交
     save_docs() {
