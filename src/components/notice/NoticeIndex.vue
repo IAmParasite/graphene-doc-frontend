@@ -1,5 +1,5 @@
 <template>
-  <a-layout id="components-layout-demo-side" style="min-height: 100vh;">
+  <a-layout id="components-layout-demo-side" style="min-height: 600px;">
     <a-layout-sider style="background: #fff;" v-model="collapsed" collapsible>
       <div class="logo" />
       <a-menu theme="light" mode="inline" :default-selected-keys="['1']"  @select="handleSelect">
