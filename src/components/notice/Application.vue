@@ -92,7 +92,7 @@ export default {
       console.log(item.id+":要接受的noticeid");
       let formData = new FormData();
       formData.append("id",item.id);
-      formData.append("userid", item.receiver_id);
+      formData.append("userid", item.sender_id);
       formData.append("groupid",item.group_id);
       let config = {
         headers: {
@@ -116,7 +116,7 @@ export default {
       console.log(item.id+":要拒绝的noticeid");
       let formData = new FormData();
       formData.append("id",item.id);
-      formData.append("userid", item.receiver_id);
+      formData.append("userid", item.sender_id);
       formData.append("groupid",item.group_id);
       let config = {
         headers: {
