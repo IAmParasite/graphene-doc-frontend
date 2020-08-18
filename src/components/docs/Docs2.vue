@@ -534,7 +534,7 @@ export default {
       this.initWebSocket();
     },
     websocketonmessage(e){ //数据接收
-      var jsondata=JSON.parse(e.data)
+      var jsondata=JSON.parse(e.data.replace(/\n/g,"\\n").replace(/\r/g,"\\r"));
       this.content=jsondata.content
       if(contains(this.userList,jsondata.username)){
         console.log("有了")
