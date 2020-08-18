@@ -65,7 +65,11 @@
               <div>
                 <a-table :columns="columns2" :data-source="data3" rowKey="id">
                    <!--<a slot="action" slot-scope="text" href="javascript:;">Delete</a>-->
-                  <a slot="action" slot-scope="text" href="javascript:;" @click="deleteDocs(text.id)">Delete</a>
+                   <span slot="action" slot-scope="item">
+                      <a  @click="detachDocs(item.id)">Detach</a>
+                      <a-divider type="vertical" />
+                      <a @click="deleteDocs(item.id)">Delete</a>
+                    </span>
                   <p slot="expandedRowRender" slot-scope="record" style="margin: 0">
                     {{ record.description }}
                   </p>
@@ -445,6 +449,44 @@ export default {
                 },
               };
               axios.post("http://localhost:5000/api/recycle_doc_2/", formData, config)
+                .then(function (response) {
+                  console.log("返回的结果是" + response.data.message);
+                  if (response.data.message == "success") {
+                    _this.successmsg("删除成功");
+                    setTimeout(() => {
+                      _this.$router.go(-1);
+                    }, 2000);
+                  } else {
+                    _this.errormsg("删除失败，请尝试刷新后重试");
+                  }
+                })
+                .catch(function () {
+                  _this.errormsg("删除失败，请尝试刷新后重试");
+              });
+        },
+        onCancel() {
+          console.log('Cancel');
+        },
+      });
+    },
+    detachDocs(id) {
+        var _this=this;
+          this.$confirm({
+            title: <div style="font-weight:bold">确定移除该文档？</div>,
+            content: <div style="color:red;font-weight:bold"><p>该文档会被移入你的工作台中！</p></div>,
+            okText: '删除',
+            okType: 'danger',
+            cancelText: '取消',
+            onOk() {
+              console.log("移除该文档" + id);
+              let formData = new FormData();
+              formData.append("DocumentID", id)
+              let config = {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              };
+              axios.post("url", formData, config)
                 .then(function (response) {
                   console.log("返回的结果是" + response.data.message);
                   if (response.data.message == "success") {

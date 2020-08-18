@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home" >
     <a-layout id="components-layout-demo-top-side-2">
       <a-layout>
         <!-- 左侧边栏 -->
@@ -64,7 +64,7 @@
             <!--权限编辑tab-->
             <a-tab-pane key="4" tab="权限管理">
               <div style="margin-left:10px;margin-right:10px">
-                <privilege-pane :propRightObj="rights"></privilege-pane>
+                <privilege-pane :propRightObj="rights" :propDocumentID="this.$route.params.id"></privilege-pane>
               </div>
             </a-tab-pane>
           </a-tabs>
@@ -72,10 +72,19 @@
         <!-- 主编辑区 -->
         <a-layout style="padding: 0 24px 24px">
           <a-breadcrumb style="margin: 16px 0"></a-breadcrumb>
+          <!--正在编辑的用户列表-->
+          <a-row>
+            <span style="float:left">正在编辑：</span>
+            <span v-for="(user,index) in userList" :key="index">
+              <memberAvatar :username="user.username" style="float:right"></memberAvatar>
+            </span>
+          </a-row>
           <a-layout-content
             :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
           >
-            <mavon-editor
+          
+            <mavon-editor 
+              
               v-model="content"
               ref="md"
               @change="change"
@@ -83,14 +92,22 @@
               :editable="modify_right"
               @save="save_docs()"
             />
+          
           </a-layout-content>
-          <a-icon type="download" @click="exportWord()"/>
+          <a-button @click="getPdf()"><a-icon type="download" size="small"/>导出为pdf</a-button>
+          <a-button @click="exportWord()"><a-icon type="download" />导出为word</a-button>
         </a-layout>
       </a-layout>
     </a-layout>
   </div>
 </template>
 
+
+<script  type="text/javascript" charset="utf-8"  src="js/html2canvas.js"></script>
+<script  type="text/javascript" charset="utf-8" src="js/jsPdf.debug.js"></script>
+<script  type="text/javascript" charset="utf-8" src="js/canvas2image.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/jspdf/1.3.4/jspdf.debug.js"></script>
 <script>
 import { mavonEditor } from "mavon-editor";
 import memberAvatar from '../team/memberAvatar';
@@ -103,6 +120,9 @@ import PizZip from 'pizzip'
 import JSZipUtils from 'jszip-utils'
 import {saveAs} from 'file-saver'
 import privilegePane from './privilegePane.vue'
+import $ from 'jquery'
+import html2canvas from 'html2canvas'
+
 
 const inviteColumns = [
   {
@@ -127,6 +147,7 @@ const inviteColumns = [
 function myrefresh() {
   window.location.reload();
 }
+
 export default {
   name: "Home",
   components: {
@@ -136,6 +157,11 @@ export default {
   },
   data() {
     return {
+      htmlTitle: "导出文件",
+      //定时刷新正在编辑的用户列表
+      timer:'',
+      userList:[],
+
       inviteuser:"",
       inviteColumns,
       invitedata:[],
@@ -162,6 +188,14 @@ export default {
     };
   },
   methods: {
+    exportReport(){
+      exportReportTemplet()
+    },
+    //刷新正在编辑的用户列表的方法
+    refreshUserList() {
+
+    },
+
     exportWord: function() {
       let _this = this;
       // 读取并获得模板文件的二进制内容
@@ -523,9 +557,11 @@ export default {
   },
   
   destroyed() {
+    clearInterval(this.timer);
     //this.websock.close(); //离开路由之后断开websocket连接
   },
   mounted: function () {
+    this.timer=setInterval(this.refreshUserList,1000);
     //this.initWebSocket();
     this.load_right(this.$route.params.id);
     this.load_id();
@@ -535,7 +571,9 @@ export default {
       //this.sendcontent();
     },
   },
+
 };
+
 </script>
 <style>
 #components-layout-demo-side .logo {
