@@ -64,7 +64,7 @@
             <!--权限编辑tab-->
             <a-tab-pane key="4" tab="权限管理">
               <div style="margin-left:10px;margin-right:10px">
-                <privilege-pane :propRightObj="rights" :propDocumentID="this.$route.params.id"></privilege-pane>
+                <privilege-pane :propRightObj="rights"></privilege-pane>
               </div>
             </a-tab-pane>
           </a-tabs>
@@ -73,9 +73,9 @@
         <a-layout style="padding: 0 24px 24px">
           <a-breadcrumb style="margin: 16px 0"></a-breadcrumb>
           <!--正在编辑的用户列表-->
-          <a-row>
-            <span style="float:left">正在编辑：</span>
-            <span v-for="(user,index) in userList" :key="index">
+          <a-row style="margin-bottom:10px;">
+            <span style="float:left;margin-top:10px;">正在编辑：</span>
+            <span v-for="(user,index) in userList" :key="index" style="float:left;">
               <memberAvatar :username="user.username" style="float:right"></memberAvatar>
             </span>
           </a-row>
@@ -147,7 +147,15 @@ const inviteColumns = [
 function myrefresh() {
   window.location.reload();
 }
-
+function contains(arr, obj) {  
+    var i = arr.length;  
+    while (i--) {  
+        if (arr[i].username=== obj) {  
+            return true;  
+        }  
+    }  
+    return false;  
+}
 export default {
   name: "Home",
   components: {
@@ -171,6 +179,10 @@ export default {
         title: ""
       },
       content: "",
+      sendjson:{
+        content:"",
+        username:"",
+      },
       html: "",
       configs: {},
       collapsed: false,
@@ -192,10 +204,6 @@ export default {
       exportReportTemplet()
     },
     //刷新正在编辑的用户列表的方法
-    refreshUserList() {
-
-    },
-
     exportWord: function() {
       let _this = this;
       // 读取并获得模板文件的二进制内容
@@ -303,7 +311,10 @@ export default {
                 _this.load_comment(_this.$route.params.id);
               }
               _this.load_modify_history(_this.$route.params.id);
-              //this.initWebSocket();
+              _this.userList.push({
+                "username":localStorage.getItem('token')
+              })
+              _this.initWebSocket();
             }
             
           } else {
@@ -515,14 +526,25 @@ export default {
       console.log('连接成功！')
     },
     sendcontent(){
-      this.websocketsend(JSON.stringify(this.content));
+      this.sendjson.content=this.content;
+      this.sendjson.username=localStorage.getItem('token')
+      this.websocketsend(JSON.stringify(this.sendjson));
     },
     websocketonerror(){//连接建立失败重连
       this.initWebSocket();
     },
     websocketonmessage(e){ //数据接收
-      console.log(JSON.parse(e.data))
-      this.content=JSON.parse(e.data)
+      var jsondata=JSON.parse(e.data)
+      this.content=jsondata.content
+      if(contains(this.userList,jsondata.username)){
+        console.log("有了")
+      }
+      else {
+        var tmp={
+          "username":jsondata.username
+        }
+        this.userList.push(tmp)
+      }
     },
     websocketsend(Data){//数据发送
       this.websock.send(Data);
@@ -558,17 +580,15 @@ export default {
   
   destroyed() {
     clearInterval(this.timer);
-    //this.websock.close(); //离开路由之后断开websocket连接
+    this.websock.close(); //离开路由之后断开websocket连接
   },
   mounted: function () {
-    this.timer=setInterval(this.refreshUserList,1000);
-    //this.initWebSocket();
     this.load_right(this.$route.params.id);
     this.load_id();
   },
   watch: {
     content() {
-      //this.sendcontent();
+      this.sendcontent();
     },
   },
 
