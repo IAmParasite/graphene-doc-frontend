@@ -124,7 +124,6 @@ Axios.interceptors.request.use(config => {
 //    })
 
 Vue.prototype.$notification = notification;
-
 new Vue({
   router,
   render: h => h(App)

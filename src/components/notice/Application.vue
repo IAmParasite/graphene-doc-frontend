@@ -104,6 +104,7 @@ export default {
         .then(function (response) {
             console.log(response.data.message);
              _this.data=_this.data.filter((record)=>record.id!=item.id)
+             _this.$emit('updatenotice');
         })
         .catch(function (error) {
           console.log("Fail", error);
@@ -128,6 +129,7 @@ export default {
         .post("http://localhost:5000/api/refuse_application_addgroupmember/", formData, config)
         .then(function (response) {
             _this.data=_this.data.filter((record)=>record.id!=item.id)
+            _this.$emit('updatenotice');
         })
         .catch(function (error) {
           console.log("Fail", error);

@@ -23,7 +23,7 @@
     </a-layout-sider>
     <a-layout :style="{ marginLeft: '50px' }">
       <div style="margin-top:30px;height:590px;">
-          <router-view v-if="isRouterAlive"></router-view>
+          <router-view v-if="isRouterAlive" @updatenotice="updatenotice"></router-view>
       </div>
       <a-layout-footer :style="{ textAlign: 'center' }">
         Ant Design ©2018 Created by Ant UED
@@ -41,6 +41,9 @@ export default {
     };
   },
   methods:{  
+    updatenotice(){
+      this.$emit('notice');
+    },
     reload () {
       this.isRouterAlive = false
       this.$nextTick(() => (this.isRouterAlive = true))

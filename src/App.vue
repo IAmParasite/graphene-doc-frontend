@@ -65,7 +65,7 @@
 
 
    
-    <router-view/>
+    <router-view @notice="updatenotice"></router-view>
   </a-layout>
   
 </template>
@@ -160,7 +160,7 @@ export default {
       isShow:false,
       backgroundDiv:{
         backgroundImage:'url('+require('./assets/timg1.jpg')+')'
-      }
+      },
     }
   },
 
@@ -173,6 +173,9 @@ export default {
   },
 
   methods:{
+    updatenotice(){
+      this.noticenum--;
+    },
      gotoUserInfo() {
       this.$router.push('/userInfo/'+localStorage.getItem('token'));
     },
@@ -213,6 +216,7 @@ export default {
         .post("http://localhost:5000/api/num_of_notice/", formData, config)
         .then(function (response) {
             _this.noticenum=response.data.notice_cnt;
+            console.log(_this.noticenum);
         })
         .catch(function (error) {
           console.log("Fail", error);
