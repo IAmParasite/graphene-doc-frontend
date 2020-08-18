@@ -191,10 +191,12 @@ export default {
       var _this = this
       axios.post('http://localhost:5000/api/login/',formData, config)
           .then(function (response)  {
-              if (response.data.message=='success') {
+              if (response.data.message!='fail') {
                   _this.wronglog.wl = false;
                   _this.rightlog.rl = true;
                   localStorage.setItem('token',_this.loginForm.username);
+                  localStorage.setItem('userid', response.data.id);
+                  console.log("用户登录" + localStorage.getItem("userid"));
                   _this.$router.push('/');
                   _this.$router.go(0)
               }else {

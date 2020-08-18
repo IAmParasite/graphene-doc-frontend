@@ -8,13 +8,36 @@
         @click="toDocs(docObj.id)"
       />
       <template slot="actions" class="ant-card-actions">
-        <a-icon type="delete" @click="confirmDelete(1)" v-if="fav!=2"/>
+        <a-icon type="delete" @click="confirmDelete(1)" v-if="fav==0" />
+        <a-icon type="edit" @click="showModal()" v-if="fav==0"/>
+        <a-icon type="file-add" @click="addFavorDocs()" v-if="fav==0" />
+
+        <a-icon type="delete" @click="confirmDelete(1)" v-if="fav==1"/>
+        <a-icon type="edit" @click="showModal()" v-if="fav==1"/>
+        <a-icon type="minus-square" @click="delFavorDocs()" v-if="fav==1" />
+
+        <a-icon type="delete" @click="confirmDelete(1)" v-if="fav==2"/>
+        <a-icon type="edit" @click="showModal()" v-if="fav==2"/>
+        <a-icon type="file-add" @click="addFavorDocs()" v-if="fav==2" />
+
+        <a-icon type="delete" @click="confirmDelete(1)" v-if="fav==3"/>
+        <a-icon type="edit" @click="showModal()" v-if="fav==3"/>
+        <a-icon type="file-add" @click="addFavorDocs()" v-if="fav==3" />
+
+        <a-icon type="unlock" @click="revoverDoc(docObj.id)" v-if="fav==4"/>
+        <a-icon type="delete" @click="confirmDelete(2)" v-if="fav==4"/>
+
+
+        <!--<a-icon type="delete" @click="confirmDelete(1)" v-if="fav!=2"/>
         <a-icon type="unlock" @click="revoverDoc()" v-if="fav==2"/>
         <a-icon type="edit" @click="showModal()" v-if="fav!=2"/>
         <a-icon type="delete" @click="confirmDelete(2)" v-if="fav==2"/>
         <a-icon type="file-add" @click="addFavorDocs()" v-if="fav==0" />
-        <a-icon type="minus-square" @click="delFavorDocs()" v-if="fav==1" />
+        <a-icon type="minus-square" @click="delFavorDocs()" v-if="fav==1" />-->
         
+
+
+
       </template>
       <a-card-meta :title="docObj.created_time">
         <a-avatar
@@ -63,11 +86,14 @@ export default {
       form: {
         DocumentID: "",
         title: "",
-        fav: ""
+        fav: "",
+        creator_id: ""
       },
       labelCol: { span: 4 },
       wrapperCol: { span: 14 },
       visible: false,
+      creator_id: "",
+      group_id: "",
     }
     
   },
@@ -77,6 +103,9 @@ export default {
       handler(newVal) {
         this.form.DocumentID=newVal.id;
         this.form.title=newVal.title;
+        this.form.creator_id = newVal.creator_id;  // 文档的创建者
+        this.form.group_id = newVal.group_id   // 文档所属的组
+        this.group_id = newVal.group_id
       },
       deep: true,
       immediate: true
@@ -89,10 +118,10 @@ export default {
       immediate: true
     }
   },
+  mounted: function() {
+  },
 
   methods: {
-    
-
     successmsg(message) {
       this.$message.success(message);
     },
@@ -152,7 +181,13 @@ export default {
     },
 
     confirmDelete(x) {
-      var _this = this;
+      var _this = this
+      console.log("文档创建者id" + this.form.creator_id)
+      console.log("登录id " + localStorage.getItem("userid"))
+      if(this.form.creator_id != localStorage.getItem("userid")) {
+        this.errormsg("您没有权限");
+        return;
+      }
       this.$confirm({
         title: <div style="font-weight:bold">确认删除？</div>,
         content: (x==1)?<div style="color:red;">文件将被移入回收站</div>:<div style="color:red;">文件将<span style="font-weight:bold"> 永 远 消 失 ！</span></div>,
@@ -209,8 +244,7 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
-      axios
-        .post("http://localhost:5000/api/cancel_favor_doc/", formData, config)
+      axios.post("http://localhost:5000/api/cancel_favor_doc/", formData, config)
         .then(function (response) {
           console.log(response.data.message);
           if (response.data.message == "success") {
@@ -226,18 +260,18 @@ export default {
           _this.errormsg("取消收藏失败，请尝试刷新后重试");
         });
     },
-    revoverDoc(item) {
+    revoverDoc(id) {
       var _this = this;
       let formData = new FormData();
-      formData.append("DocumentID", item.id);
+      formData.append("DocumentID", id);
+      console.log("DocumentId " + id)
       formData.append("username", localStorage.getItem("token"));
       let config = {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       };
-      axios
-        .post("http://localhost:5000/api/recover_doc/", formData, config)
+      axios.post("http://localhost:5000/api/recover_doc/", formData, config)
         .then(function (response) {
           if (response.data.message == "success") {
             _this.successmsg("恢复成功");
@@ -253,30 +287,36 @@ export default {
         });
     },
     showModal() {
+      if(this.form.creator_id != localStorage.getItem("userid")) {
+        this.errormsg("您没有权限")
+        return;
+      } 
       this.form.title = this.docObj.title;
       this.form.DocumentID = this.docObj.id;
       this.visible = true;
     },
     handleOk() {
+      if(this.creator_id != localStorage.getItem("userid"))
+          return;
       var _this = this;
       let formData = new FormData();
       formData.append("DocumentID", this.form.DocumentID);
       formData.append("title", this.form.title);
+      formData.append("username", localStorage.getItem("token"));
       let config = {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       };
-      axios
-        .post("http://localhost:5000/api/modify_doc_basic/", formData, config)
+      axios.post("http://localhost:5000/api/modify_doc_basic/", formData, config)
         .then(function (response) {
-          if (response) {
+          if (response.data.message == "success") {
             _this.successmsg("修改成功！");
             setTimeout(() => {
               myrefresh();
             }, 2000);
           } else {
-            _this.errormsg("修改失败，请尝试刷新后再次修改！");
+            _this.errormsg("修改失败，您不是文档的创建者！");
           }
         })
         .catch(function () {
