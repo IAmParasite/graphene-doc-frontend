@@ -25,8 +25,9 @@
       <a-divider>团队管理</a-divider>
       <div v-if="iamfounder">
         <a-button type="primary" block style="margin-top:10px" @click="showModal">邀请成员加入团队</a-button>
-        <a-button type="primary" block style="margin-top:10px" @click="showModal2">管理成员权限</a-button>
-         <a-button type="danger" block style="margin-top:10px;margin-bottom=10px" @click="delete_group">解散团队</a-button>
+        <a-button type="primary" block style="margin-top:10px" @click="showModal2">管理成员</a-button>
+        <a-button type="primary" block style="margin-top:10px" @click="showModal3">管理文档</a-button>
+        <a-button type="danger" block style="margin-top:10px;margin-bottom=10px" @click="delete_group">解散团队</a-button>
         <a-modal title="邀请成员加入团队" :visible="visible"   :footer="null" @ok="handleOk" @cancel="handleCancel">
             <template>
               <div>
@@ -44,10 +45,10 @@
             </template>
         </a-modal>
 
-        <a-modal title="管理成员权限" :visible="visible2" :footer="null" @cancel="handleCancel2">
+        <a-modal title="管理成员" :visible="visible2" :footer="null" @cancel="handleCancel2">
             <template>
               <div>
-                <a-table :columns="columns" :data-source="data2" rowKey="id">
+                <a-table :columns="columns" :data-source="data3" rowKey="id">
                    <!--<a slot="action" slot-scope="text" href="javascript:;">Delete</a>-->
                   <a slot="action" slot-scope="text" href="javascript:;" @click="deleteMem(text.id)">Delete</a>
                  
@@ -59,9 +60,23 @@
             </template>
         </a-modal>
 
+        <a-modal title="管理文档" :visible="visible3" :footer="null" @cancel="handleCancel3">
+            <template>
+              <div>
+                <a-table :columns="columns2" :data-source="data3" rowKey="id">
+                   <!--<a slot="action" slot-scope="text" href="javascript:;">Delete</a>-->
+                  <a slot="action" slot-scope="text" href="javascript:;" @click="deleteDocs(text.id)">Delete</a>
+                  <p slot="expandedRowRender" slot-scope="record" style="margin: 0">
+                    {{ record.description }}
+                  </p>
+                </a-table>
+              </div>
+            </template>
+        </a-modal>
+
       </div>
       <div v-else>
-        <a-button type="danger" block style="margin-bottom=10px">退出团队</a-button>
+        <a-button type="danger" block style="margin-bottom=10px" @click="Quit()">退出团队</a-button>
       </div>
     </div>
   </div>
@@ -76,18 +91,24 @@ const columns = [
   { title: 'Email', dataIndex: 'email', key: 'email' },
   { title: 'Action', dataIndex: '', key: 'x', scopedSlots: { customRender: 'action' } },
 ];
+const columns2 = [
+  { title: 'Title', dataIndex: 'title', key: 'title' },
+  { title: 'Mem_id', dataIndex: 'creator_id', key: 'creator_id' },
+  { title: 'Action', dataIndex: '', key: 'x', scopedSlots: { customRender: 'action' } },
+];
 const data = [
 ];
 const data2 = [
+];
+const data3 = [
+
 ];
 import memberList from './memberList';
 import axios from 'axios';
 export default {
   name: 'TeamInfo',
-
   components: {
     memberList,
-
   },
   props: {
     groupid: {
@@ -144,11 +165,14 @@ export default {
       ModalText: 'Content of the modal',
       visible: false,
       visible2: false,
+      visible3: false,
       confirmLoading: false,
       userid: 0,
       data,
       data2,
+      data3,
       columns,
+      columns2,
     };
   },
   mounted() {
@@ -188,6 +212,10 @@ export default {
       this.visible2 = true;
       this.get_groupmem();
     },
+    showModal3() {
+      this.visible3 = true;
+      this.get_groupdocs();
+    },
     handleOk() {
       this.ModalText = 'The modal will be closed after two seconds';
       this.confirmLoading = true;
@@ -203,6 +231,10 @@ export default {
     handleCancel2() {
       console.log('Clicked cancel button');
       this.visible2 = false;
+    },
+    handleCancel3() {
+      console.log('Clicked cancel button');
+      this.visible3 = false;
     },
     onSearch(value) {   //   搜索框显示
       console.log(value);
@@ -251,6 +283,30 @@ export default {
         }).catch(error=> {
           console.log('error',error);
         })
+    },
+    get_groupdocs() {
+      var _this = this;
+          let formData = new FormData();
+          formData.append("group_id", this.groupid);
+          console.log("该组的组号是" + this.groupid);
+          let config = {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          };
+          axios
+            .post("http://localhost:5000/api/get_group_docs/", formData, config)
+            .then(function (response) {
+              if (response) {
+                _this.data3 = response.data;
+                console.log(response.data);
+              } else {
+                alert("请先登录！");
+              }
+            })
+            .catch(function (error) {
+              console.log("wrong", error);
+            });
     },
     confirm(e) {  // 邀请确认
       console.log(e);
@@ -328,49 +384,126 @@ export default {
           }
         })
       },
-      deleteMem(id) {
-        var _this=this;
-        this.$confirm({
-          title: <div style="font-weight:bold">确定删除改成员？</div>,
-          content: <div style="color:red;font-weight:bold"><p>改成员会被踢出团队！</p></div>,
-          okText: '删除',
-          okType: 'danger',
-          cancelText: '取消',
-          onOk() {
-            console.log("删除该成员" + id);
-            let formData = new FormData();
-            formData.append("groupid", _this.groupid);
-            formData.append("leaderid", _this.userid);
-            formData.append("userid", id)
-            console.log("组号" + _this.groupid);
-            console.log("执行者是" + _this.userid);
-            let config = {
-              headers: {
-                "Content-Type": "multipart/form-data",
-              },
-            };
-            axios
-              .post("http://localhost:5000/api/delete_user/", formData, config)
-              .then(function (response) {
-                console.log(response.data.message);
-                if (response.data.message == "success") {
-                  _this.successmsg("删除成功");
-                  setTimeout(() => {
-                    _this.$router.go(-1);
-                  }, 2000);
-                } else {
+    deleteMem(id) {
+          var _this=this;
+          this.$confirm({
+            title: <div style="font-weight:bold">确定删除改成员？</div>,
+            content: <div style="color:red;font-weight:bold"><p>改成员会被踢出团队！</p></div>,
+            okText: '删除',
+            okType: 'danger',
+            cancelText: '取消',
+            onOk() {
+              console.log("删除该成员" + id);
+              let formData = new FormData();
+              formData.append("groupid", _this.groupid);
+              formData.append("leaderid", _this.userid);
+              formData.append("userid", id)
+              console.log("组号" + _this.groupid);
+              console.log("执行者是" + _this.userid);
+              let config = {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              };
+              axios
+                .post("http://localhost:5000/api/delete_user/", formData, config)
+                .then(function (response) {
+                  console.log(response.data.message);
+                  if (response.data.message == "success") {
+                    _this.successmsg("删除成功");
+                    setTimeout(() => {
+                      _this.$router.go(-1);
+                    }, 2000);
+                  } else {
+                    _this.errormsg("删除失败，请尝试刷新后重试");
+                  }
+                })
+                .catch(function () {
                   _this.errormsg("删除失败，请尝试刷新后重试");
-                }
-              })
-              .catch(function () {
-                _this.errormsg("删除失败，请尝试刷新后重试");
-            });
-      },
-      onCancel() {
-        console.log('Cancel');
-      },
-    });
+              });
+        },
+        onCancel() {
+          console.log('Cancel');
+        },
+      });
     },
+    deleteDocs(id) {
+          var _this=this;
+          this.$confirm({
+            title: <div style="font-weight:bold">确定删除该文档？</div>,
+            content: <div style="color:red;font-weight:bold"><p>该文档会被移入创建者的回收站中！</p></div>,
+            okText: '删除',
+            okType: 'danger',
+            cancelText: '取消',
+            onOk() {
+              console.log("删除该文档" + id);
+              let formData = new FormData();
+              formData.append("DocumentID", id)
+              let config = {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              };
+              axios.post("http://localhost:5000/api/recycle_doc_2/", formData, config)
+                .then(function (response) {
+                  console.log("返回的结果是" + response.data.message);
+                  if (response.data.message == "success") {
+                    _this.successmsg("删除成功");
+                    setTimeout(() => {
+                      _this.$router.go(-1);
+                    }, 2000);
+                  } else {
+                    _this.errormsg("删除失败，请尝试刷新后重试");
+                  }
+                })
+                .catch(function () {
+                  _this.errormsg("删除失败，请尝试刷新后重试");
+              });
+        },
+        onCancel() {
+          console.log('Cancel');
+        },
+      });
+    },
+    Quit() {
+          var _this=this;
+          this.$confirm({
+            title: <div style="font-weight:bold">确认</div>,
+            content: <div style="color:red;font-weight:bold"><p>您确定要退出该团队嘛</p></div>,
+            okText: '退出',
+            okType: 'danger',
+            cancelText: '取消',
+            onOk() {
+              console.log("退出该团队" + _this.groupid);
+              let formData = new FormData();
+              formData.append("userid", localStorage.getItem("userid"));
+              formData.append("groupid", _this.groupid);
+              let config = {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              };
+              axios.post("http://localhost:5000/api/quit_group/", formData, config)
+                .then(function (response) {
+                  console.log("返回的结果是" + response.data.message);
+                  if (response.data.message == "success") {
+                    _this.successmsg("退出成功");
+                    setTimeout(() => {
+                      _this.$router.go(-1);
+                    }, 2000);
+                  } else {
+                    _this.errormsg("退出失败，请尝试刷新后重试");
+                  }
+                })
+                .catch(function () {
+                  _this.errormsg("退出失败，请尝试刷新后重试");
+              });
+        },
+        onCancel() {
+          console.log('Cancel');
+        },
+      });
+    }
   }
 }
 </script>

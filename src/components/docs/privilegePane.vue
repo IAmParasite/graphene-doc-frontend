@@ -4,7 +4,7 @@
 		<a-row>
 			<a-col span="6" align="left">查看文档</a-col>
 			<a-col span="18" align="right">
-				<a-radio-group name="watch_right" v-model="rightObj.watch_right" :disabled="rightObj.isleader">
+				<a-radio-group name="watch_right" v-model="rightObj.watch_right" :disabled="!rightObj.isleader">
 					<a-radio :value="true">有</a-radio>
 					<a-radio :value="false">无</a-radio>
 				</a-radio-group>
@@ -13,7 +13,7 @@
 		<a-row>
 			<a-col span="6" align="left">修改文档</a-col>
 			<a-col span="18" align="right">
-				<a-radio-group name="modify_right" v-model="rightObj.modify_right" :disabled="rightObj.isleader">
+				<a-radio-group name="modify_right" v-model="rightObj.modify_right" :disabled="!rightObj.isleader">
 					<a-radio :value="true">有</a-radio>
 					<a-radio :value="false">无</a-radio>
 				</a-radio-group>
@@ -22,7 +22,7 @@
 		<a-row>
 			<a-col span="6" align="left">分享文档</a-col>
 			<a-col span="18" align="right">
-				<a-radio-group name="modify_right" v-model="rightObj.share_right" :disabled="rightObj.isleader">
+				<a-radio-group name="modify_right" v-model="rightObj.share_right" :disabled="!rightObj.isleader">
 					<a-radio :value="true">有</a-radio>
 					<a-radio :value="false">无</a-radio>
 				</a-radio-group>
@@ -31,7 +31,7 @@
 		<a-row>
 			<a-col span="6" align="left">参与讨论</a-col>
 			<a-col span="18" align="right">
-				<a-radio-group name="modify_right" v-model="rightObj.discuss_right" :disabled="rightObj.isleader">
+				<a-radio-group name="modify_right" v-model="rightObj.discuss_right" :disabled="!rightObj.isleader">
 					<a-radio :value="true">有</a-radio>
 					<a-radio :value="false">无</a-radio>
 				</a-radio-group>
@@ -42,7 +42,7 @@
 		<a-row>
 			<a-col span="6" align="left">查看文档</a-col>
 			<a-col span="18" align="right">
-				<a-radio-group name="modify_right" v-model="rightObj.others_modify_right" :disabled="rightObj.isleader">
+				<a-radio-group name="modify_right" v-model="rightObj.others_modify_right" :disabled="!rightObj.isleader">
 					<a-radio :value="true">有</a-radio>
 					<a-radio :value="false">无</a-radio>
 				</a-radio-group>
@@ -51,7 +51,7 @@
 		<a-row>
 			<a-col span="6" align="left">修改文档</a-col>
 			<a-col span="18" align="right">
-				<a-radio-group name="modify_right" v-model="rightObj.others_modify_right" :disabled="rightObj.isleader">
+				<a-radio-group name="modify_right" v-model="rightObj.others_modify_right" :disabled="!rightObj.isleader">
 					<a-radio :value="true">有</a-radio>
 					<a-radio :value="false">无</a-radio>
 				</a-radio-group>
@@ -60,7 +60,7 @@
 		<a-row>
 			<a-col span="6" align="left">分享文档</a-col>
 			<a-col span="18" align="right">
-				<a-radio-group name="modify_right" v-model="rightObj.others_share_right" :disabled="rightObj.isleader">
+				<a-radio-group name="modify_right" v-model="rightObj.others_share_right" :disabled="!rightObj.isleader">
 					<a-radio :value="true">有</a-radio>
 					<a-radio :value="false">无</a-radio>
 				</a-radio-group>
