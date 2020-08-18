@@ -37,7 +37,12 @@
       @click="toGroupDocs(item)"
     />
     <template slot="actions" class="ant-card-actions">
+      <a-tooltip placement="bottom">
+        <template slot="title">
+          <span>解散团队</span>
+        </template>
       <a-icon key="delete" type="delete" @click="delete_group(item)"/>
+      </a-tooltip>
       <a-icon key="edit" type="edit" />
       <a-icon key="ellipsis" type="ellipsis" />
     </template>

@@ -8,25 +8,98 @@
         @click="toDocs(docObj.id)"
       />
       <template slot="actions" class="ant-card-actions">
-        
-        <a-icon type="delete" @click="confirmDelete(1)" v-if="fav==0" />
-        <a-icon type="edit" @click="showModal()" v-if="fav==0"/>
-        <a-icon type="file-add" @click="addFavorDocs()" v-if="fav==0" />
+        <a-tooltip placement="bottom" v-if="fav==0">
+        <template slot="title">
+          <span>移到回收站</span>
+        </template>
+        <a-icon type="delete" @click="confirmDelete(1)"  />
+        </a-tooltip>
+        <a-tooltip placement="bottom" v-if="fav==0">
+        <template slot="title">
+          <span>修改标题</span>
+        </template>
+        <a-icon type="edit" @click="showModal()" />
+        </a-tooltip>
+        <a-tooltip placement="bottom" v-if="fav==0">
+        <template slot="title">
+          <span>收藏文档</span>
+        </template>
+        <a-icon type="file-add" @click="addFavorDocs()"  />
+        </a-tooltip>
 
-        <a-icon type="delete" @click="confirmDelete(1)" v-if="fav==1"/>
-        <a-icon type="edit" @click="showModal()" v-if="fav==1"/>
-        <a-icon type="minus-square" @click="delFavorDocs()" v-if="fav==1" />
 
-        <a-icon type="delete" @click="confirmDelete(1)" v-if="fav==2"/>
-        <a-icon type="edit" @click="showModal()" v-if="fav==2"/>
+        <a-tooltip placement="bottom" v-if="fav==1">
+        <template slot="title">
+          <span>移到回收站</span>
+        </template>
+        <a-icon type="delete" @click="confirmDelete(1)" />
+        </a-tooltip>
+        <a-tooltip placement="bottom" v-if="fav==1">
+        <template slot="title">
+          <span>修改标题</span>
+        </template>
+        <a-icon type="edit" @click="showModal()" />
+        </a-tooltip>
+        <a-tooltip placement="bottom" v-if="fav==1" >
+        <template slot="title">
+          <span>取消收藏</span>
+        </template>
+        <a-icon type="minus-square" @click="delFavorDocs()" />
+        </a-tooltip>
+
+
+        <a-tooltip placement="bottom" v-if="fav==2">
+        <template slot="title">
+          <span>移到回收站</span>
+        </template>
+        <a-icon type="delete" @click="confirmDelete(1)" />
+        </a-tooltip>
+        <a-tooltip placement="bottom" v-if="fav==2">
+        <template slot="title">
+          <span>修改标题</span>
+        </template>
+        <a-icon type="edit" @click="showModal()" />
+        </a-tooltip>
+        <a-tooltip placement="bottom" v-if="fav==2">
+        <template slot="title">
+          <span>收藏文档</span>
+        </template>
         <a-icon type="file-add" @click="addFavorDocs()" v-if="fav==2" />
+        </a-tooltip>
 
+
+        <a-tooltip placement="bottom" v-if="fav==3">
+        <template slot="title">
+          <span>移到回收站</span>
+        </template>
         <a-icon type="delete" @click="confirmDelete(1)" v-if="fav==3"/>
+        </a-tooltip>
+        <a-tooltip placement="bottom" v-if="fav==3">
+        <template slot="title">
+          <span>修改标题</span>
+        </template>
         <a-icon type="edit" @click="showModal()" v-if="fav==3"/>
+        </a-tooltip>
+        <a-tooltip placement="bottom" v-if="fav==3">
+        <template slot="title">
+          <span>收藏文档</span>
+        </template>
         <a-icon type="file-add" @click="addFavorDocs()" v-if="fav==3" />
+        </a-tooltip>
 
+
+<a-tooltip placement="bottom" v-if="fav==4">
+        <template slot="title">
+          <span>恢复文档</span>
+        </template>
         <a-icon type="unlock" @click="revoverDoc(docObj.id)" v-if="fav==4"/>
+        </a-tooltip>
+        <a-tooltip placement="bottom" v-if="fav==4">
+        <template slot="title">
+          <span>彻底删除文档</span>
+        </template>
         <a-icon type="delete" @click="confirmDelete(2)" v-if="fav==4"/>
+        </a-tooltip>
 
 
         <!--<a-icon type="delete" @click="confirmDelete(1)" v-if="fav!=2"/>
