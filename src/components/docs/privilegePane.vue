@@ -76,6 +76,7 @@ export default {
 
 	data() {
 		return{
+      DocumentID:'',
 			rightObj:{
 				modify_right: false,
 				share_right: false,
@@ -93,24 +94,58 @@ export default {
 	},
 
 	props: {
-		propRightObj:{},
+    propRightObj:{
+      isleader: Boolean,
+      doctype: Number,
+      usertype: Number,
+    },
 		propDocumentID:String,
 	},
 
 	watch: {
-		propRightObj: {
+    propRightObj: {
+      handler(newVal) {
+        console.log("watch saw changes in propRightObj");
+        this.rightObj.isleader=newVal.isleader;
+        this.rightObj.doctype=newVal.doctype;
+        this.rightObj.usertype=newVal.usertype;
+      },
+      deep: true,
+      immediate: true,
+    },
+		propDocumentID: {
 			handler(newVal) {
-				console.log("watch saw changes in propRightObj");
-				console.log(this);
-				this.load_right(newVal);
-			},
-			deep: true,
-			immediate: true,
-		},
-		DocumentID: {
-			handler() {
-				console.log("watch saw changes in DocumentID");
-				console.log(this);
+        var _this=this;
+        this.DocumentID=newVal;
+				let formData = new FormData();
+				formData.append("DocumentID", newVal);
+				let config = {
+					headers: {
+					"Content-Type": "multipart/form-data",
+					},
+				};
+				axios
+					.post("http://localhost:5000/api/tell_current_doc_right/", formData, config)
+					.then(function (response) {
+              if (response) {						
+                console.log(response.data);
+                _this.rightObj.modify_right=(response.data.modify_right==1);
+                _this.rightObj.share_right=(response.data.share_right==1);
+                _this.rightObj.discuss_right=(response.data.discuss_right==1);
+
+                _this.rightObj.others_modify_right=(response.data.others_modify_right==1);
+                _this.rightObj.others_share_right=(response.data.others_share_right==1);
+                _this.rightObj.others_discuss_right=(response.data.others_discuss_right==1);
+                console.log("loaded rights",_this.rightObj)
+						}
+						else{
+              _this.$message.error('获取权限失败，请刷新后重试');
+						}
+					
+					})
+					.catch(function (error) {
+            _this.$message.error('获取权限失败，请刷新后重试'+error);
+					});
 			},
 			deep: true,
 			immediate: true,

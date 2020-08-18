@@ -39,12 +39,9 @@
 
 
       </template>
-      <a-card-meta :title="docObj.created_time">
-        <a-avatar
-        slot="avatar"
-        src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-        />
-      </a-card-meta>
+      <span> 创建者: {{ this.username }}</span>
+      <br/><br/>
+      <span> 创建日期 : {{ moment(docObj.created_time).format("YYYY-MM-DD") }}</span>
     </a-card>
 
     <a-modal title="修改文档信息" :visible="visible" @ok="handleOk" @cancel="handleCancel">

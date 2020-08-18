@@ -64,7 +64,7 @@
             <!--权限编辑tab-->
             <a-tab-pane key="4" tab="权限管理">
               <div style="margin-left:10px;margin-right:10px">
-                <privilege-pane :propRightObj="rights" :propDocumentID="this.$route.params.id"></privilege-pane>
+                <privilege-pane :propRightObj="this.rights" :propDocumentID="this.$route.params.id"></privilege-pane>
               </div>
             </a-tab-pane>
           </a-tabs>
