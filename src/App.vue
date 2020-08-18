@@ -56,7 +56,7 @@
             <router-link to="/" @click.native="logback">Back</router-link> 
           </div>
         </a-menu-item>
-        </a-menu-item>
+        
         <a-menu-item key="bell" style="margin-right:0px;float:right">
                 <router-link to="/notice"><a-badge :count="noticenum" :number-style="{ backgroundColor: '#52c41a' }"><a-icon type="bell" /></a-badge></router-link>
         </a-menu-item>

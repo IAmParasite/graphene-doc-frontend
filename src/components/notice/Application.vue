@@ -127,7 +127,7 @@ export default {
       
       axios
         .post("http://localhost:5000/api/refuse_application_addgroupmember/", formData, config)
-        .then(function (response) {
+        .then(function () {
             _this.data=_this.data.filter((record)=>record.id!=item.id)
             _this.$emit('updatenotice');
         })

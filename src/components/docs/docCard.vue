@@ -8,6 +8,7 @@
         @click="toDocs(docObj.id)"
       />
       <template slot="actions" class="ant-card-actions">
+        
         <a-icon type="delete" @click="confirmDelete(1)" v-if="fav==0" />
         <a-icon type="edit" @click="showModal()" v-if="fav==0"/>
         <a-icon type="file-add" @click="addFavorDocs()" v-if="fav==0" />

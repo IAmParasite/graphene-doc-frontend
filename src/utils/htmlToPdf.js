@@ -1,34 +1,39 @@
-import html2canvas from 'html2canvas'
-import jsPDF from 'jspdf'
-export default{
-    install (Vue) {
-        Vue.prototype.getPdf = function (htmlTitle) {
-            var element = document.getElementById("file");
-            html2canvas(element, {
-                logging:false
-            }).then(function(canvas) {
-                var pdf = new jsPDF('p', 'mm', 'a4');    //A4纸，纵向
-                var ctx = canvas.getContext('2d'),
-                    a4w = 190, a4h = 277,    //A4大小，210mm x 297mm，四边各保留10mm的边距，显示区域190x277
-                    imgHeight = Math.floor(a4h * canvas.width / a4w),    //按A4显示比例换算一页图像的像素高度
-                    renderedHeight = 0;
-
-            while(renderedHeight < canvas.height) {
-                var page = document.createElement("canvas");
-                page.width = canvas.width;
-                page.height = Math.min(imgHeight, canvas.height - renderedHeight);//可能内容不足一页
-
-                //用getImageData剪裁指定区域，并画到前面创建的canvas对象中
-                page.getContext('2d').putImageData(ctx.getImageData(0, renderedHeight, canvas.width, Math.min(imgHeight, canvas.height - renderedHeight)), 0, 0);
-                pdf.addImage(page.toDataURL('image/jpeg', 1.0), 'JPEG', 10, 10, a4w, Math.min(a4h, a4w * page.height / page.width));    //添加图像到页面，保留10mm边距
-
-                renderedHeight += imgHeight;
-                if(renderedHeight < canvas.height)
-                    pdf.addPage();//如果后面还有内容，添加一个空页
+// utils -> htmlToPdf.js
+// 导出页面为PDF格式
+import html2Canvas from "html2canvas";
+import JsPDF from "jspdf";
+export default {
+  install(Vue) {
+    Vue.prototype.getPdf = function() {
+      var title = this.htmlTitle;     // 需要导出页面的标题，在导出的页面的data中声明 htmlTitle，具体看下方代码
+      html2Canvas(document.querySelector(".v-note-show"), {    // 需要导出页面内容的容器的 id 跟此处 "#pdfDom" 一致
+        allowTaint: true,
+        useCORS: true
+      }).then(function(canvas) {
+        let contentWidth = canvas.width;
+        let contentHeight = canvas.height;
+        let pageHeight = (contentWidth/ 592.28 * 841.89 );
+        let leftHeight = contentHeight;
+        let position = 0;
+        let imgWidth = 595.28;
+        let imgHeight = (592.28 / contentWidth) * contentHeight;
+        let pageData = canvas.toDataURL("image/jpeg", 1.0);
+        let PDF = new JsPDF("", "pt", "a4");
+        if (leftHeight < pageHeight) {
+          PDF.addImage(pageData, "JPEG", 0, 0, imgWidth, imgHeight);
+        } else {
+          while (leftHeight > 0) {
+            PDF.addImage(pageData, "JPEG", 0, position, imgWidth, imgHeight);
+            leftHeight -= pageHeight;
+            position -= 841.89;
+            if (leftHeight > 0) {
+              PDF.addPage();
             }
-            
-            pdf.save(htmlTitle);
-        });
-    }
-}
-}
+          }
+        }
+        PDF.save(title + ".pdf");
+      });
+    };
+  }
+};
+

@@ -35,8 +35,11 @@ import {Tag} from 'ant-design-vue';
 import {Switch} from 'ant-design-vue';
 import Axios from 'axios'
 import VueRouter from 'vue-router'
+import $ from 'jquery'
 
 import { message} from 'ant-design-vue'
+import htmlToPdf from '@/utils/htmlToPdf'
+Vue.use(htmlToPdf)
 Vue.prototype.$confirm = Modal.confirm;
 Vue.prototype.$message = message;
 message.config({
@@ -44,7 +47,7 @@ message.config({
     top:`100px`, // 到页面顶部距离
     maxCount: 3 // 最大显示数, 超过限制时，最早的消息会被自动关闭
 });
-
+Vue.use($);
 Vue.use(Button);
 Vue.use(Input);
 Vue.use(Layout);
