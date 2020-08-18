@@ -100,6 +100,7 @@ export default {
         .then(function (response) {
           console.log(response.data.message);
           _this.data=_this.data.filter((record)=>record.id!=item.id);
+          _this.$emit('updatenotice');
         })
         .catch(function (error) {
           console.log("Fail", error);
