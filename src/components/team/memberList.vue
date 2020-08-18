@@ -1,8 +1,10 @@
 <template>
 <div>
+  <a-col align='center'>
   <span v-for="(user,index) in memberList" :key="index">
     <memberAvatar :username="user.username"></memberAvatar>
   </span>
+  </a-col>
 </div>
 </template>
 

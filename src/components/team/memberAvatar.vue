@@ -1,28 +1,19 @@
 <template>
   <a-popover
-    style="width: 64px"
-    title="简要信息"
+    style="width: 40px"
+    title="用户信息"
     trigger="hover"
     :visible="hovered"
     @visibleChange="handleHoverChange"
   >
-    <div slot="content">
-      这里展示简要信息<br/>{{username}}
-    </div>
-    <a-popover
-      style="width: 64px"
-      title="详细信息"
-      trigger="click"
-      :visible="clicked"
-      @visibleChange="handleClickChange"
-    >
+    
       <div slot="content">
         <div>
-          这里展示详细信息<br/>{{username}}<br/>邮箱
+            用户名: {{username}}
+            <a slot="content" @click="gotoUserInfo"><br/>点击跳转到个人主页</a>
         </div>
       </div>
-      <a-avatar :size="64"  style="margin-left:5px;margin-right:5px">{{username}}</a-avatar>
-    </a-popover>
+      <a-avatar :size="40"  style="margin-left:5px;margin-right:5px" @click="gotoUserInfo">{{username}}</a-avatar>
   </a-popover>
 </template>
 <script>
@@ -49,9 +40,8 @@ export default {
     };
   },
   methods: {
-    hide() {
-      this.clicked = false;
-      this.hovered = false;
+    gotoUserInfo() {
+      this.$router.push('/userInfo/'+this.username);
     },
     handleHoverChange(visible) {
       this.clicked = false;

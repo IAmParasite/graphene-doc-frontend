@@ -13,6 +13,19 @@
         </a-affix>
       </a-col>
     </a-row>
+      <a-row v-if="this.$route.params.id=='joined-team'">
+      <a-col :span="10" :offset="7"></a-col>
+      <a-col :span="2" :offset="5">
+        <a-affix :offset-top="top">
+          <a-popover placement="topRight">
+            <template slot="content">
+              <span style="font-size:20px">点击申请加入一个团队! QwQ</span>
+            </template>
+            <a-button type="primary" icon="plus" size="large" block @click="showjointeamform"></a-button>
+          </a-popover>
+        </a-affix>
+      </a-col>
+    </a-row>
         <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="data">
     <a-list-item slot="renderItem" slot-scope="item">
       
@@ -24,8 +37,13 @@
       @click="toGroupDocs(item)"
     />
     <template slot="actions" class="ant-card-actions">
+      <a-tooltip placement="bottom">
+        <template slot="title">
+          <span>解散团队</span>
+        </template>
       <a-icon key="delete" type="delete" @click="delete_group(item)"/>
-      <a-icon key="edit" type="edit" />
+      </a-tooltip>
+      <a-icon key="edit" type="edit" @click="showModifyTeamForm(item)"/>
       <a-icon key="ellipsis" type="ellipsis" />
     </template>
     <a-card-meta :title="item.groupname" description="This is the description">
@@ -39,6 +57,19 @@
   </a-list>
     
     <div>
+      <a-modal title="修改团队信息" :visible="modifyTeamVisible" @ok="modifyTeam" @cancel="cancelModify">
+        <template>
+          <a-form-model :model="modifyTeamForm" :label-col="labelCol" :wrapper-col="wrapperCol">
+            <a-form-model-item label="团队队名">
+              <a-input v-model="modifyTeamForm.groupname" />
+            </a-form-model-item>
+            <a-form-model-item label="团队简介">
+              <a-input v-model="modifyTeamForm.description" />
+            </a-form-model-item>
+          </a-form-model>
+        </template>
+      </a-modal>
+
       <a-modal title="创建团队" :visible="newteamvisible" @ok="createteam" @cancel="cancelcreate">
         <template>
           <a-form-model :model="newteamform" :label-col="labelCol" :wrapper-col="wrapperCol">
@@ -65,6 +96,19 @@
         </template>
       </a-modal>
     </div>
+     <div>
+      <a-modal title="申请加入团队" :visible="newaddteamvisible" :footer="null" @cancel="canceladd">
+        <template>
+          <a-form-model :model="newteamform" :label-col="labelCol" :wrapper-col="wrapperCol">
+            <a-input placeholder="团队名称" v-model="addgroup"/>
+              <a-button type="primary" block style="margin-top:10px;margin-bottom=10px" @click="searchgroup">搜索团队</a-button>
+              <a-table rowKey="groupname" v-show="adddata != null " :columns="addColumns" :data-source="adddata" size="small" >
+                <a slot="action" slot-scope="text" href="javascript:;" @click="addteam(text.groupname)">Apply</a>
+              </a-table>
+          </a-form-model>
+        </template>
+      </a-modal>
+    </div>
     </div>
 </template>
 <script type="text/ecmascript-6">
@@ -75,46 +119,90 @@ const data= [
   //
 
 ];
+const addColumns = [
+  {
+    title:'Group',
+    dataIndex:'groupname',
+    key:'groupname'
+  },
+  {
+    title:'GroupId',
+    dataIndex:'groupid',
+    key:'groupid',
+  },
+  { 
+    title: 'Action',
+    dataIndex: '',
+    key: 'x',
+     scopedSlots: { 
+       customRender: 'action' 
+       }
+  },
+];
 function myrefresh() {
   window.location.reload();
 }
 // const plainOptions = ['修改', '评论', '分享'];
 // const defaultCheckedList = ['修改', '评论'];
 export default {
-    data(){
-        return {
-          data,
-          // checkedList: defaultCheckedList,
-          indeterminate: true,
-          checkAll: false,
-          // plainOptions,
-          newteamvisible:false,
-          top: 0,
-          visible: false,
-          labelCol: { span: 4 },
-          wrapperCol: { span: 14 },
-          form: {
-            DocumentID: "",
-            title: "",
-          },
-          DocumentID: {
-            type: Number,
-          },
-          newteamform:{
-            groupname:"",
-            description:"",
-          }
-        }
-    },
+  data(){
+    return {
+      data,
+      addColumns,
+      adddata:[],
+      addgroup:"",
+      // checkedList: defaultCheckedList,
+      indeterminate: true,
+      checkAll: false,
+      // plainOptions,
+      newteamvisible:false,
+      modifyTeamVisible:false,
+      newaddteamvisible:false,
+      top: 0,
+      visible: false,
+      labelCol: { span: 4 },
+      wrapperCol: { span: 14 },
+      form: {
+        DocumentID: "",
+        title: "",
+      },
+      DocumentID: {
+        type: Number,
+      },
+      newteamform:{
+        groupname:"",
+        description:"",
+      },
+      modifyTeamForm:{
+        groupid:"",
+        groupname:"",
+        description:"",
+      },
+      userId:"",
+    }
+  },
 
     
 
     methods: {
       successmsg(message) {
-      this.$message.success(message);
+        this.$message.success(message);
       },
       errormsg(message) {
         this.$message.error(message);
+      },
+      canceladd(){
+        this.newaddteamvisible=false;
+      },
+      cancelModify() {
+        this.modifyTeamVisible=false;
+      },
+      showjointeamform(){
+        this.newaddteamvisible=true;
+      },
+      showModifyTeamForm(item) {
+        this.modifyTeamVisible=true;
+        this.modifyTeamForm.groupid=item.groupid;
       },
       // onChange(checkedList) {
       //   this.indeterminate = !!checkedList.length && checkedList.length < plainOptions.length;
@@ -144,6 +232,68 @@ export default {
       cancelcreate(){
         this.newteamvisible=false;
       },
+      searchgroup(){
+        var _this = this;
+        let formData = new FormData();
+        formData.append("keyword",_this.addgroup);
+        formData.append("username", _this.userId);
+        let config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        };
+        axios.post(
+          "http://localhost:5000/api/search_group/",
+          formData,
+          config
+        )
+        .then(function (response) {
+          if (response.data != null) {
+            //_this.successmsg("zhao成功");
+            //console.log(response.data)
+            _this.adddata = response.data;
+          } 
+          else {
+            console.log(response.data)
+            _this.errormsg("查找失败，请尝试刷新后再次创建");
+          }
+        })
+        .catch(function () {
+          _this.errormsg("查找失败，请尝试刷新后再次创建");
+        });
+          
+      },
+      addteam(e){
+        
+        var _this = this;
+        let formData = new FormData();
+        formData.append("username", _this.userId);
+        formData.append("groupname",e);
+        
+        // console.log("文档id 被邀请人id 邀请者id")
+        
+        // console.log(e)
+        // console.log(_this.userId)
+        // console.log("b")
+        let config = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        };
+        axios.post("http://localhost:5000/api/apply_in_group/", formData, config)
+          .then(function (response) {
+            //console.log(response.data)
+            if (response) {
+              _this.successmsg("申请成功");
+            } else {
+              _this.errormsg("申请失败");
+            }
+          })
+          .catch(function (error) {
+            console.log("wrong", error);
+          });
+
+      },
       shownewteamform(){
         this.newteamvisible=true;
       },
@@ -165,6 +315,38 @@ export default {
         axios
           .post(
             "http://localhost:5000/api/creategroup/",
+            formData,
+            config
+          )
+          .then(function (response) {
+            if (response.data.message == "success") {
+              _this.successmsg("创建成功");
+              setTimeout(() => {
+                myrefresh();
+              }, 2000);
+            } else {
+              _this.errormsg("创建失败，请尝试刷新后再次创建");
+            }
+          })
+          .catch(function () {
+            _this.errormsg("创建失败，请尝试刷新后再次创建");
+          });
+      },
+      modifyTeam() {
+        var _this=this;
+        let formData = new FormData();
+        formData.append("groupid", this.modifyTeamForm.groupid);
+        formData.append("groupname", this.modifyTeamForm.groupname);
+        formData.append("description", this.modifyTeamForm.description);
+        let config = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        };
+        
+        axios
+          .post(
+            "http://localhost:5000/api/modify_group_info/",
             formData,
             config
           )
@@ -242,37 +424,54 @@ export default {
             console.log('wrong',error);
             });
       },
+      load_userId(){
+        this.userId = localStorage.getItem("token");
+      },
       delete_group(item) {
-          console.log("删除该项" + item.groupid);
-          this.data.splice(item, 1);
-          var _this=this;
-          let formData = new FormData();
-          formData.append("groupid", item.groupid);
-          console.log(localStorage.getItem("token"));
-          let config = {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          };
-          axios
-            .post("http://localhost:5000/api/delete_group/", formData, config)
-            .then(function (response) {
-              console.log(response.data.message);
-              if (response.data.message == "success") {
-                _this.successmsg("删除成功");
-                setTimeout(() => {
-                  myrefresh();
-                }, 2000);
-              } else {
+        var _this=this;
+        this.$confirm({
+          title: <div style="font-weight:bold">确认解散团队？</div>,
+          content: <div style="color:red;font-weight:bold"><p>团队将被解散！</p><p>团队文档将会 永 远 消 失 ！</p></div>,
+          okText: '删除',
+          okType: 'danger',
+          cancelText: '取消',
+          onOk() {
+            console.log("删除该项" + item.groupid);
+            _this.data.splice(item, 1);
+            
+            let formData = new FormData();
+            formData.append("groupid", item.groupid);
+            console.log(localStorage.getItem("token"));
+            let config = {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            };
+            axios
+              .post("http://localhost:5000/api/delete_group/", formData, config)
+              .then(function (response) {
+                console.log(response.data.message);
+                if (response.data.message == "success") {
+                  _this.successmsg("删除成功");
+                  setTimeout(() => {
+                    myrefresh();
+                  }, 2000);
+                } else {
+                  _this.errormsg("删除失败，请尝试刷新后重试");
+                }
+              })
+              .catch(function () {
                 _this.errormsg("删除失败，请尝试刷新后重试");
-              }
-            })
-            .catch(function () {
-              _this.errormsg("删除失败，请尝试刷新后重试");
-            });
+              });
+          },
+          onCancel() {
+            console.log('Cancel');
+          },
+        });
         },
      },
      mounted() {
+      this.load_userId();
       this.load_list(this.$route.params.id);
     },
 }

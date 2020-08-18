@@ -20,6 +20,11 @@
       <a-input-password placeholder="确认密码" style="margin-top:30px" v-model="ruleForm.checkPass" autocomplete="off" />
     </a-form-model-item>
 
+    <a-form-model-item has-feedback prop="description" style="marginBottom:0" :wrapper-col="wrapperCol">
+      <a-textarea placeholder="个人简介" v-model="ruleForm.description" style="margin-top:30px">
+      </a-textarea>
+    </a-form-model-item>
+
     <a-row type="flex" justify="center" style="margin-top:30px;margin-bottom:30px;">
         <a-button type="danger" @click="resetForm('ruleForm')" style="margin-right:33%">放弃修改</a-button>
         <a-button type="primary" @click="changeInfo('ruleForm')">保存修改</a-button>
@@ -76,7 +81,8 @@ export default {
         pass: '',
         checkPass: '',
         email:'',
-        username:''
+        username:'',
+        description:'',
       },
       data:{
 
@@ -107,6 +113,7 @@ export default {
       this.ruleForm.checkPass=this.data.password;
       this.ruleForm.pass=this.data.password;
       this.ruleForm.email=this.data.email;
+      this.ruleForm.description=this.data.description;
     },
     changeInfo(formName) {
       var _this=this;
@@ -117,6 +124,7 @@ export default {
           formData.append('new_password1', this.ruleForm.pass);
           formData.append('new_email', this.ruleForm.email);
           formData.append('username',this.PreUsername);
+          formData.append('new_description',this.ruleForm.description);
           let config = {
               headers: {
                   'Content-Type': 'multipart/form-data'
@@ -160,6 +168,7 @@ export default {
           _this.ruleForm.email=response.data.email;
           _this.ruleForm.pass=response.data.password;
           _this.ruleForm.checkPass=response.data.password;
+          _this.ruleForm.description=response.data.description;
           _this.data=response.data;
         }else {
           _this.errormsg("请先登录")

@@ -29,10 +29,16 @@ import { Affix } from 'ant-design-vue';
 import { Checkbox } from 'ant-design-vue';
 import {Comment} from 'ant-design-vue';
 import {Tooltip} from 'ant-design-vue';
+import { Radio } from 'ant-design-vue';
+import {Table} from 'ant-design-vue';
+import {Tag} from 'ant-design-vue';
+import {Switch} from 'ant-design-vue';
 import Axios from 'axios'
 import VueRouter from 'vue-router'
-
 import { message} from 'ant-design-vue'
+import htmlToPdf from '@/utils/htmlToPdf'
+Vue.use(htmlToPdf)
+Vue.prototype.$confirm = Modal.confirm;
 Vue.prototype.$message = message;
 message.config({
     duration: 2,// 持续时间
@@ -68,6 +74,10 @@ Vue.use(Affix);
 Vue.use(Checkbox);
 Vue.use(Comment);
 Vue.use(Tooltip);
+Vue.use(Radio);
+Vue.use(Table);
+Vue.use(Tag);
+Vue.use(Switch);
 Vue.config.productionTip = false
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
@@ -115,7 +125,6 @@ Axios.interceptors.request.use(config => {
 //    })
 
 Vue.prototype.$notification = notification;
-
 new Vue({
   router,
   render: h => h(App)
