@@ -119,6 +119,8 @@ export default {
 
 	methods: {
 		commit() {
+			var _this=this;
+			console.log(this.rightObj);
 			if(this.rightObj.doctype==1) {
 				let formData = new FormData();
 				formData.append("DocumentID", this.propDocumentID);
@@ -136,13 +138,13 @@ export default {
 					.post("http://localhost:5000/api/modify_personal_doc_right/", formData, config)
 					.then(function (response) {
 						if (response.data.message=='success') {
-							console.log("程坤")
+							_this.$message.success('修改成功');
 						} else {
-							console.log("失败");
+							_this.$message.error('修改失败');
 						}
 					})
 					.catch(function (error) {
-						console.log("失败", error);
+						_this.$message.error('修改失败'+error);
 					});
 			} else {
 				if(this.rightObj.isleader) {
@@ -164,13 +166,13 @@ export default {
 						.post("http://localhost:5000/api/modify_group_doc_right/", formData, config)
 						.then(function (response) {
 							if (response.data.message=='success') {
-								console.log("程坤")
+								_this.$message.success('修改成功');
 							} else {
-								console.log("失败");
+								_this.$message.error('修改失败');
 							}
 						})
 						.catch(function (error) {
-							console.log("失败", error);
+							_this.$message.error('修改失败'+error);
 						});
 				}else {
 					console.log("权限不足")
