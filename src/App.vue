@@ -3,7 +3,7 @@
 
     <a-layout-header class="header" style="background: rgba(215, 215, 215, 1)">
       <div class="logo" > 
-        <span class="icon-juzhentanyuansujiegou" style="font-size: 80px; " >
+        <span class="icon-juzhentanyuansujiegou" style="font-size: 64px; " >
         </span>
       </div>
       <a-menu
