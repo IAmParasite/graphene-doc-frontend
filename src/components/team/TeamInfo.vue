@@ -9,7 +9,6 @@
     <div>
       <a-divider>成员列表</a-divider>
       <memberList :propGroupid="groupObj.groupid"></memberList>
-      <a-divider>详细信息</a-divider>
       <a-descriptions layout="vertical" bordered style="text-align:center">
         <a-descriptions-item label="团队ID" span="1">
           {{groupObj.groupid}}
@@ -22,7 +21,6 @@
         </a-descriptions-item>
         
       </a-descriptions>
-      <a-divider>团队管理</a-divider>
       <div v-if="iamfounder">
         <a-button type="primary" block style="margin-top:10px" @click="showModal">邀请成员加入团队</a-button>
         <a-button type="primary" block style="margin-top:10px" @click="showModal2">管理成员</a-button>
