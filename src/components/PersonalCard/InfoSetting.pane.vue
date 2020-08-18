@@ -12,18 +12,17 @@
       </a-input>
     </a-form-model-item>
 
-    <a-form-model-item has-feedback prop="description" style="marginBottom:0" :wrapper-col="wrapperCol">
-      <a-input  v-model="ruleForm.description" style="margin-top:30px">
-          <a-icon slot="prefix" type="user" />
-      </a-input>
-    </a-form-model-item>
-
     <a-form-model-item has-feedback prop="pass" style="marginBottom:0" :wrapper-col="wrapperCol">
       <a-input-password placeholder="密码" style="margin-top:30px" v-model="ruleForm.pass" autocomplete="off" />
     </a-form-model-item>
 
     <a-form-model-item has-feedback prop="checkPass" style="marginBottom:0" :wrapper-col="wrapperCol">
       <a-input-password placeholder="确认密码" style="margin-top:30px" v-model="ruleForm.checkPass" autocomplete="off" />
+    </a-form-model-item>
+
+    <a-form-model-item has-feedback prop="description" style="marginBottom:0" :wrapper-col="wrapperCol">
+      <a-textarea placeholder="个人简介" v-model="ruleForm.description" style="margin-top:30px">
+      </a-textarea>
     </a-form-model-item>
 
     <a-row type="flex" justify="center" style="margin-top:30px;margin-bottom:30px;">

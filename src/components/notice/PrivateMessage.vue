@@ -43,7 +43,6 @@
 </style>
 <script type="text/ecmascript-6">
 import memberAvatar from "../team/memberAvatar";
-import axios from "axios";
 import moment from "moment";
 import infiniteScroll from 'vue-infinite-scroll';
 export default {

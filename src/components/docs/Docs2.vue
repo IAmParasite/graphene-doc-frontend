@@ -147,14 +147,14 @@ const inviteColumns = [
 function myrefresh() {
   window.location.reload();
 }
-function contains(arr, obj) {  
-    var i = arr.length;  
-    while (i--) {  
-        if (arr[i].username=== obj) {  
-            return true;  
-        }  
-    }  
-    return false;  
+function contains(arr, obj) {  
+  var i = arr.length;  
+    while (i--) {  
+      if (arr[i].username=== obj) {  
+        return true;  
+      }  
+    }  
+  return false;  
 }
 export default {
   name: "Home",
