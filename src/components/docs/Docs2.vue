@@ -72,6 +72,12 @@
         <!-- 主编辑区 -->
         <a-layout style="padding: 0 24px 24px">
           <a-breadcrumb style="margin: 16px 0"></a-breadcrumb>
+          <!--正在编辑的用户列表-->
+          <a-row>
+            <span v-for="(user,index) in userList" :key="index">
+              <memberAvatar :username="user.username"></memberAvatar>
+            </span>
+          </a-row>
           <a-layout-content
             :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
           >
@@ -136,6 +142,10 @@ export default {
   },
   data() {
     return {
+      //定时刷新正在编辑的用户列表
+      timer:'',
+      userList:[],
+
       inviteuser:"",
       inviteColumns,
       invitedata:[],
@@ -162,6 +172,11 @@ export default {
     };
   },
   methods: {
+    //刷新正在编辑的用户列表的方法
+    refreshUserList() {
+
+    },
+
     exportWord: function() {
       let _this = this;
       // 读取并获得模板文件的二进制内容
@@ -523,9 +538,11 @@ export default {
   },
   
   destroyed() {
+    clearInterval(this.timer);
     //this.websock.close(); //离开路由之后断开websocket连接
   },
   mounted: function () {
+    this.timer=setInterval(this.refreshUserList,1000);
     //this.initWebSocket();
     this.load_right(this.$route.params.id);
     this.load_id();
