@@ -63,8 +63,8 @@
 		</div>
 
 		<a-divider></a-divider>
-		<a-button type="default" style="float:left;margin-left:10%" @click="load_right(propRightObj)">重置</a-button>
-		<a-button type="primary" style="float:right;margin-right:10%" @click="commit()">提交</a-button>
+		<a-button type="default" style="float:left;margin-left:10%" @click="load_right(propRightObj)" :disabled="!rightObj.isleader">重置</a-button>
+		<a-button type="primary" style="float:right;margin-right:10%" @click="commit()" :disabled="!rightObj.isleader">提交</a-button>
 	</div>
 </template>
 
