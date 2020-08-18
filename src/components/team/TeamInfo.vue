@@ -12,16 +12,16 @@
       <a-divider/>
       <a-col layout="vertical" bordered style="text-align:center;margin-left:20px;margin-right:20px">
         <a-row>
-          <a-col span=6 align="left">团队ID</a-col>
-          <a-col span=18 align="left">{{groupObj.groupid}}</a-col>
+          <a-col span=8 align="left">团队ID</a-col>
+          <a-col span=16 align="left">{{groupObj.groupid}}</a-col>
         </a-row>
         <a-row>
-          <a-col span=6 align="left">建立时间</a-col>
-          <a-col span=18 align="left">{{groupObj.createdtime}}</a-col>
+          <a-col span=8 align="left">建立时间</a-col>
+          <a-col span=16 align="left">{{groupObj.createdtime}}</a-col>
         </a-row>
         <a-row>
-          <a-col span=6 align="left">描述</a-col>
-          <a-col span=18 align="left">{{groupObj.description}}</a-col>
+          <a-col span=8 align="left">描述</a-col>
+          <a-col span=16 align="left">{{groupObj.description}}</a-col>
         </a-row>
         
       </a-col>
