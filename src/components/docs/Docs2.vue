@@ -74,8 +74,9 @@
           <a-breadcrumb style="margin: 16px 0"></a-breadcrumb>
           <!--正在编辑的用户列表-->
           <a-row>
+            <span style="float:left">正在编辑：</span>
             <span v-for="(user,index) in userList" :key="index">
-              <memberAvatar :username="user.username"></memberAvatar>
+              <memberAvatar :username="user.username" style="float:right"></memberAvatar>
             </span>
           </a-row>
           <a-layout-content
