@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-card hoverable style="width: 190px" :title="docObj.title">
+    <a-card hoverable style="width: 190px" :title="docObj.title" align="center">
       <img
         slot="cover"
         alt="example"
@@ -40,11 +40,9 @@
 
 
       </template>
-      <a-card-meta :title="docObj.created_time">
-        <a-avatar
-        slot="avatar"
-        src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-        />
+      <span> 创建者: {{ this.username }}</span>
+      <br/><br/>
+      <span> 创建日期 : {{ moment(docObj.created_time).format("YYYY-MM-DD") }}</span>
       </a-card-meta>
     </a-card>
 
@@ -64,6 +62,7 @@
 <script>
 
 import axios from 'axios';
+import moment from "moment";
 
 function myrefresh() {
   window.location.reload();
@@ -95,6 +94,8 @@ export default {
       visible: false,
       creator_id: "",
       group_id: "",
+      moment,
+      username: "",
     }
     
   },
@@ -107,6 +108,25 @@ export default {
         this.form.creator_id = newVal.creator_id;  // 文档的创建者
         this.form.group_id = newVal.group_id   // 文档所属的组
         this.group_id = newVal.group_id
+        var _this = this;
+        let formData = new FormData();
+        formData.append("userid", this.form.creator_id);
+        let config = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        };
+        axios.post("http://localhost:5000/api/get_user_byid/", formData, config)
+          .then(function (response) {
+            if (response) {
+                _this.username = response.data.username
+            } else {
+              _this.errormsg("恢复失败，请稍后重试");
+            }
+          })
+          .catch(function () {
+            _this.errormsg("恢复失败，请稍后重试");
+          });
       },
       deep: true,
       immediate: true
@@ -120,6 +140,7 @@ export default {
     }
   },
   mounted: function() {
+    
   },
 
   methods: {
