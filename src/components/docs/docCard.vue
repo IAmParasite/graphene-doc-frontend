@@ -43,7 +43,6 @@
       <span> 创建者: {{ this.username }}</span>
       <br/><br/>
       <span> 创建日期 : {{ moment(docObj.created_time).format("YYYY-MM-DD") }}</span>
-      </a-card-meta>
     </a-card>
 
     <a-modal title="修改文档信息" :visible="visible" @ok="handleOk" @cancel="handleCancel">
