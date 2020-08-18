@@ -76,7 +76,7 @@
 
       </div>
       <div v-else>
-        <a-button type="danger" block style="margin-bottom=10px">退出团队</a-button>
+        <a-button type="danger" block style="margin-bottom=10px" @click="Quit()">退出团队</a-button>
       </div>
     </div>
   </div>
@@ -384,7 +384,7 @@ export default {
           }
         })
       },
-      deleteMem(id) {
+    deleteMem(id) {
           var _this=this;
           this.$confirm({
             title: <div style="font-weight:bold">确定删除改成员？</div>,
@@ -458,6 +458,45 @@ export default {
                 })
                 .catch(function () {
                   _this.errormsg("删除失败，请尝试刷新后重试");
+              });
+        },
+        onCancel() {
+          console.log('Cancel');
+        },
+      });
+    },
+    Quit() {
+          var _this=this;
+          this.$confirm({
+            title: <div style="font-weight:bold">确认</div>,
+            content: <div style="color:red;font-weight:bold"><p>您确定要退出该团队嘛</p></div>,
+            okText: '退出',
+            okType: 'danger',
+            cancelText: '取消',
+            onOk() {
+              console.log("退出该团队" + _this.groupid);
+              let formData = new FormData();
+              formData.append("userid", localStorage.getItem("userid"));
+              formData.append("groupid", _this.groupid);
+              let config = {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              };
+              axios.post("http://localhost:5000/api/quit_group/", formData, config)
+                .then(function (response) {
+                  console.log("返回的结果是" + response.data.message);
+                  if (response.data.message == "success") {
+                    _this.successmsg("退出成功");
+                    setTimeout(() => {
+                      _this.$router.go(-1);
+                    }, 2000);
+                  } else {
+                    _this.errormsg("退出失败，请尝试刷新后重试");
+                  }
+                })
+                .catch(function () {
+                  _this.errormsg("退出失败，请尝试刷新后重试");
               });
         },
         onCancel() {
