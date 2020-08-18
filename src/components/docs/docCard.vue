@@ -182,35 +182,11 @@ export default {
 
     confirmDelete(x) {
       var _this = this
-      if(this.group_id == "0") {    // 个人文档，判断是否是创建者
-        if(this.form.creator_id != localStorage.getItem("userid"))
-          return;
-      }
-      else {    // 团队文档
-          if(this.form.creator_id != localStorage.getItem("userid")) {
-            let formData = new FormData();
-              formData.append("groupid", this.group_id);
-              formData.append("username", localStorage.getItem("token"));
-              console.log("登录用户" + localStorage.getItem("userid"));
-              console.log("组号" + this.group_id)
-              console.log("文档创建者" + this.form.creator_id)
-              let config = {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                },
-              };
-              axios.post("http://localhost:5000/api/groupiscreatedbyme/", formData, config)
-                .then(function (response) {
-                  console.log(response.data);
-                  if (response.data.message == "no") {
-                      return;
-                  } 
-                })
-                .catch(function () {
-                  _this.errormsg("失败，请尝试刷新后重试");
-                });
-          }
-          
+      console.log("文档创建者id" + this.form.creator_id)
+      console.log("登录id " + localStorage.getItem("userid"))
+      if(this.form.creator_id != localStorage.getItem("userid")) {
+        this.errormsg("您没有权限");
+        return;
       }
       this.$confirm({
         title: <div style="font-weight:bold">确认删除？</div>,
@@ -268,8 +244,7 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
-      axios
-        .post("http://localhost:5000/api/cancel_favor_doc/", formData, config)
+      axios.post("http://localhost:5000/api/cancel_favor_doc/", formData, config)
         .then(function (response) {
           console.log(response.data.message);
           if (response.data.message == "success") {
@@ -296,8 +271,7 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
-      axios
-        .post("http://localhost:5000/api/recover_doc/", formData, config)
+      axios.post("http://localhost:5000/api/recover_doc/", formData, config)
         .then(function (response) {
           if (response.data.message == "success") {
             _this.successmsg("恢复成功");
@@ -313,6 +287,10 @@ export default {
         });
     },
     showModal() {
+      if(this.form.creator_id != localStorage.getItem("userid")) {
+        this.errormsg("您没有权限")
+        return;
+      } 
       this.form.title = this.docObj.title;
       this.form.DocumentID = this.docObj.id;
       this.visible = true;
@@ -330,8 +308,7 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
-      axios
-        .post("http://localhost:5000/api/modify_doc_basic/", formData, config)
+      axios.post("http://localhost:5000/api/modify_doc_basic/", formData, config)
         .then(function (response) {
           if (response.data.message == "success") {
             _this.successmsg("修改成功！");

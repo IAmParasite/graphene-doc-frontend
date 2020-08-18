@@ -196,8 +196,7 @@ export default {
                   _this.rightlog.rl = true;
                   localStorage.setItem('token',_this.loginForm.username);
                   localStorage.setItem('userid', response.data.id);
-                  console.log(localStorage.getItem("userid"))
-                  console.log(response.data)
+                  console.log("用户登录" + localStorage.getItem("userid"));
                   _this.$router.push('/');
                   _this.$router.go(0)
               }else {
