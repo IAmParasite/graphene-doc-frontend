@@ -316,7 +316,7 @@ export default {
         .then(function (response) {
           console.log(response.data.message);
           if (response.data.message == "success") {
-            _this.successmsg("收藏陈坤");
+            _this.successmsg("收藏成功");
           } else {
             _this.errormsg("您已经收藏过改文档了哦");
           }
@@ -342,7 +342,7 @@ export default {
         .then(function (response) {
           console.log(response.data.message);
           if (response.data.message == "success") {
-            _this.successmsg("取消收藏陈坤");
+            _this.successmsg("取消收藏成功");
             setTimeout(() => {
               myrefresh();
             }, 2000);
@@ -390,8 +390,10 @@ export default {
       this.visible = true;
     },
     handleOk() {
-      if(this.creator_id != localStorage.getItem("userid"))
-          return;
+      if(this.form.creator_id != localStorage.getItem("userid")){
+        this.errormsg("你不是创建者，不能修改")
+        return;
+      }
       var _this = this;
       let formData = new FormData();
       formData.append("DocumentID", this.form.DocumentID);

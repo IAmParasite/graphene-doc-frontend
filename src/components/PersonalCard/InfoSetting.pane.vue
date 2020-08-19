@@ -117,6 +117,11 @@ export default {
     },
     changeInfo(formName) {
       var _this=this;
+
+      if(this.ruleForm.description.length >12){
+        _this.errormsg("简介太长啦")
+        return;
+      }
       this.$refs[formName].validate(valid => {
         if (valid) {
           let formData = new FormData();

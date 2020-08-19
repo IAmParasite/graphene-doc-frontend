@@ -46,7 +46,7 @@
       <a-icon key="edit" type="edit" @click="showModifyTeamForm(item)"/>
       <a-icon key="ellipsis" type="ellipsis" />
     </template>
-    <a-card-meta :title="item.groupname" description="This is the description">
+    <a-card-meta :title="item.groupname" :description="item.description">
       <a-avatar
         slot="avatar"
         src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
@@ -203,6 +203,8 @@ export default {
       showModifyTeamForm(item) {
         this.modifyTeamVisible=true;
         this.modifyTeamForm.groupid=item.groupid;
+        this.modifyTeamForm.groupname=item.groupname;
+        this.modifyTeamForm.description=item.description;
       },
       // onChange(checkedList) {
       //   this.indeterminate = !!checkedList.length && checkedList.length < plainOptions.length;

@@ -1,7 +1,7 @@
 <template>
   <a-layout style="min-height:100%">
-    <a-layout-content>
-      <a-card style="width:400px;height:500px;margin:100px auto;">
+    <a-layout-content id="card">
+      <a-card style="width:400px;height:500px;margin:157px auto;">
         <a-tabs default-active-key="sign in" @change="callback">
           <!-- 登录card -->
           <a-tab-pane key="sign in" tab="登录">
@@ -57,7 +57,12 @@
     </a-layout-content>
   </a-layout>
 </template>
-
+<style scoped>
+  #card{
+   background: url('../assets/aaa.jpg');
+   background-size: cover;
+}
+</style>
 <script>
 import axios from 'axios'
 function myrefresh() {
