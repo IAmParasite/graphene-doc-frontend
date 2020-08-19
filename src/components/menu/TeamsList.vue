@@ -203,6 +203,8 @@ export default {
       showModifyTeamForm(item) {
         this.modifyTeamVisible=true;
         this.modifyTeamForm.groupid=item.groupid;
+        this.modifyTeamForm.groupname=item.groupname;
+        this.modifyTeamForm.description=item.description;
       },
       // onChange(checkedList) {
       //   this.indeterminate = !!checkedList.length && checkedList.length < plainOptions.length;
