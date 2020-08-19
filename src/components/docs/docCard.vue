@@ -390,8 +390,10 @@ export default {
       this.visible = true;
     },
     handleOk() {
-      if(this.creator_id != localStorage.getItem("userid"))
-          return;
+      if(this.form.creator_id != localStorage.getItem("userid")){
+        this.errormsg("你不是创建者，不能修改")
+        return;
+      }
       var _this = this;
       let formData = new FormData();
       formData.append("DocumentID", this.form.DocumentID);
