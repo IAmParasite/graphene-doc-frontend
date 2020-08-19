@@ -22,31 +22,16 @@
           <div class="demo-infinite-container" :infinite-scroll-distance="10">
             <a-table
               :columns="columns"
-              :data-source="this.showdata"
+              :data-source="this.data"
               style="margin-left:0px;margin-top:0px"
               rowKey="id"
               :pagination="false"
             >
-              <span slot="action" slot-scope="text,item">
-                <a-button type="primary" size="large" @click="agree_invitation(item.id)">
-                  <a-icon type="check" />
-                </a-button>
-                <a-divider type="vertical" />
-                <a-button type="danger" size="large" @click="refuse_invitation(item.id)">
-                  <a-icon type="close" />
-                </a-button>
-                <a>{{ item.blank }}</a>
-              </span>
             </a-table>
           </div>
         </a-layout-content>
         <a-layout-footer :style="{ textAlign: 'center',background:'#fff' }">
-          <a-input-search
-            placeholder
-            enter-button="Send"
-            size="large"
-            @click="send"
-          ></a-input-search>
+          <a-input-search  v-model="key" enter-button="Send" @search="send"/>
         </a-layout-footer>
       </a-layout-content>
     </a-layout>
@@ -90,58 +75,9 @@ const columns = [
   },
 ];
 
-const data = [
-  {
-    sender_name: "xp",
-    content: "你好",
-    sendtime: moment().subtract(1, "days"),
-  },
-  {
-    sender_name: "xp",
-    content: "你好",
-    sendtime: moment().subtract(1, "days"),
-  },
-  {
-    sender_name: "xp",
-    content: "哈哈哈",
-    sendtime: moment().subtract(1, "days"),
-  },
-  {
-    sender_name: "xp",
-    content: "lsp了aaa",
-    sendtime: moment().subtract(1, "days"),
-  },
-  {
-    sender_name: "xzcy",
-    content: "好",
-    datetime: moment().subtract(1, "days"),
-  },
-  {
-    sender_name: "xzcy",
-    content: "好",
-    sendtime: moment().subtract(1, "days"),
-  },
-  {
-    sender_name: "xzcy",
-    content: "好",
-    sendtime: moment().subtract(1, "days"),
-  },
-];
+const data = [];
 
-const user = [
-  {
-    sender_name: "xp1",
-    id: 1,
-  },
-  {
-    sender_name: "zyh",
-    id: 2,
-  },
-  {
-    sender_name: "zcy",
-    id: 3,
-  },
-];
+const user = [];
 
 const showdata = [];
 const sendobj="";
@@ -155,102 +91,37 @@ export default {
     return {
       user,
       data,
-      showdata,
       columns,
       sendobj,
+      key:"",
     };
   },
   mounted: function () {
     this.who_send_msg();
-    this.receive_all_msg();
   },
   methods: {
     who_send_msg() {
       let formData = new FormData();
       formData.append("receiver_username", localStorage.getItem("token"));
-      console.log("123");
       let config = {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       };
       var _this = this;
-      console.log("12345");
       axios
         .post("http://localhost:5000/api/send_msg_people/", formData, config)
         .then(function (response) {
-          console.log("1234");
           _this.user = response.data;
-          console.log(response.data);
-          console.log("4321");
         })
         .catch(function (error) {
           console.log("Fail", error);
         });
     },
     thisusermsg(sender_name) {
-      console.log("dianle");
-      this.showdata = this.data.filter(
-        (item) => item.sender_name == sender_name
-      );
-      this.sendobj = sender_name;
-    },
-    receive_all_msg() {
       let formData = new FormData();
       formData.append("receiver_username", localStorage.getItem("token"));
-      console.log("abc");
-      let config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-      var _this = this;
-      console.log("abcde");
-      axios
-        .post("http://localhost:5000/api/who_send_msg/", formData, config)
-        .then(function (response) {
-          console.log("abcd");
-          _this.data = response.data;
-          console.log(response.data);
-          console.log("dcba");
-        })
-        .catch(function (error) {
-          console.log("Fail", error);
-        });
-    },
-    send(value) {
-      console.log(value+":value");
-      let formData = new FormData();
-      formData.append("sender_username", this.sendobj);
-      formData.append("receiver_username",localStorage.getItem("token"));
-      formData.append("content",value);
-      let config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-      var _this = this;
-      axios
-        .post("http://localhost:5000/api/send_msg_to_sb/", formData, config)
-        .then(function (response) {
-          console.log(response.data);
-          this.showdata.push(response.data);
-        })
-        .catch(function (error) {
-          console.log("Fail", error);
-        });
-    },
-    /*
-    get_my_message() {
-      var item = this.data.find(
-        (item) => item.sender_username == sender_username
-      );
-      console.log("成昆");
-      //console.log(item.sender_username+":sender-username");
-      console.log("沪宁");
-      let formData = new FormData();
-      formData.append("receiver_username", localStorage.getItem("token"));
-      //formData.append("sender_username", item.sender_username);
+      formData.append("sender_username",sender_name)
       let config = {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -261,11 +132,35 @@ export default {
         .post("http://localhost:5000/api/our_msg/", formData, config)
         .then(function (response) {
           _this.data = response.data;
+          console.log(response.data);
+          _this.sendobj=sender_name;
         })
         .catch(function (error) {
           console.log("Fail", error);
         });
-    },*/
+    },
+    send() {
+      let formData = new FormData();
+      formData.append("receiver_username", this.sendobj);
+      formData.append("sender_username",localStorage.getItem("token"));
+      formData.append("content",this.key);
+      let config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+      var _this = this;
+      axios
+        .post("http://localhost:5000/api/send_msg_to_sb/", formData, config)
+        .then(function (response) {
+          console.log(response.data);
+          _this.data.push(response.data);
+          _this.key="";
+        })
+        .catch(function (error) {
+          console.log("Fail", error);
+        });
+    },
   },
 };
 </script>
