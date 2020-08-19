@@ -1,5 +1,5 @@
 <template>
-  <div class="home" >
+  <div class="home" v-title data-title="请开始编辑你的文档吧！">
     <a-layout id="components-layout-demo-top-side-2">
       <a-layout>
         <!-- 左侧边栏 -->

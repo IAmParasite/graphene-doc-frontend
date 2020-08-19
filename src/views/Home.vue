@@ -1,5 +1,5 @@
 <template>
-  <a-layout id="components-layout-demo-side" style="min-height: 100vh;">
+  <a-layout id="components-layout-demo-side" style="min-height: 100vh;" v-title data-title="石墨烯文档主页">
     <a-layout-sider style="background: #fff;" v-model="collapsed" collapsible theme="light">
       <a-menu theme="light" :default-selected-keys="['recent-docs']" mode="inline" @select="handleSelect" style="margin-top:20px"> 
         <a-sub-menu key="sub1">

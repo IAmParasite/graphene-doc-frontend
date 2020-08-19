@@ -1,5 +1,5 @@
 <template>
-      <div>
+      <div v-title data-title="团队主页">
         
         
         <a-col span="20">

@@ -1,5 +1,5 @@
 <template>
-  <a-layout id="components-layout-demo-top-side-2">
+  <a-layout id="components-layout-demo-top-side-2"  v-title data-title="请处理您的私信">
     <a-layout-sider
       width="50"
       style="background: #fff"
