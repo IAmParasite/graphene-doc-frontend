@@ -1,7 +1,7 @@
 <template>
-  <a-layout id="components-layout-demo-top-side-2">
+  <a-layout id="components-layout-demo-top-side-2" style="height:100%">
 
-    <a-layout-header class="header" style="background: rgba(215, 215, 215, 1);padding:0">
+    <a-layout-header class="header" style="background: rgba(215, 215, 215, 1)">
       <div class="logo" style="width:200px;height:80px;margin-left:10px;margin-right:0"> 
         <span class="icon-juzhentanyuansujiegou" style="font-size: 64px; " ></span>
         <span class="test" style="font-size:20px">石墨烯文档</span>
@@ -63,9 +63,12 @@
       </a-menu>
     </a-layout-header>
 
-
+    
    
     <router-view @notice="updatenotice"></router-view>
+    <a-layout-footer style="text-align: center;background-color:#ffffff">
+        石墨烯文档
+      </a-layout-footer>
   </a-layout>
   
 </template>
