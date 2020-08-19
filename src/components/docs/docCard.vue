@@ -316,7 +316,7 @@ export default {
         .then(function (response) {
           console.log(response.data.message);
           if (response.data.message == "success") {
-            _this.successmsg("收藏陈坤");
+            _this.successmsg("收藏成功");
           } else {
             _this.errormsg("您已经收藏过改文档了哦");
           }
@@ -342,7 +342,7 @@ export default {
         .then(function (response) {
           console.log(response.data.message);
           if (response.data.message == "success") {
-            _this.successmsg("取消收藏陈坤");
+            _this.successmsg("取消收藏成功");
             setTimeout(() => {
               myrefresh();
             }, 2000);
