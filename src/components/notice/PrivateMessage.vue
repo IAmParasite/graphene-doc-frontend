@@ -49,7 +49,6 @@
 <script type="text/ecmascript-6">
 import memberAvatar from "../team/memberAvatar";
 import axios from "axios";
-import moment from "moment";
 import infiniteScroll from "vue-infinite-scroll";
 import "mavon-editor/dist/css/index.css";
 import "@/utils/htmlToPdf.js";
@@ -79,7 +78,6 @@ const data = [];
 
 const user = [];
 
-const showdata = [];
 const sendobj="";
 export default {
   name: "PrivateMessage",
