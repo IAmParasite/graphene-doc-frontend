@@ -63,8 +63,10 @@
 		</div>
 
 		<a-divider></a-divider>
-		<a-button type="default" style="float:left;margin-left:10%" @click="load_right(propRightObj)">重置</a-button>
-		<a-button type="primary" style="float:right;margin-right:10%" @click="commit()">提交</a-button>
+		<a-button type="default" style="float:left;margin-left:10%;margin-bottom:20px" @click="load_right(propRightObj)" :disabled="!rightObj.isleader">重置</a-button>
+		<a-button type="primary" style="float:right;margin-right:10%;margin-bottom:20px" @click="commit()" :disabled="!rightObj.isleader">提交</a-button>
+		<a-divider/>
+		<span><a-button type="danger" block :disabled="!rightObj.isleader" @click="personalize()">一键私密</a-button></span>
 	</div>
 </template>
 
@@ -76,6 +78,7 @@ export default {
 
 	data() {
 		return{
+      DocumentID:'',
 			rightObj:{
 				modify_right: false,
 				share_right: false,
@@ -93,24 +96,58 @@ export default {
 	},
 
 	props: {
-		propRightObj:{},
+    propRightObj:{
+      isleader: Boolean,
+      doctype: Number,
+      usertype: Number,
+    },
 		propDocumentID:String,
 	},
 
 	watch: {
-		propRightObj: {
+    propRightObj: {
+      handler(newVal) {
+        console.log("watch saw changes in propRightObj");
+        this.rightObj.isleader=newVal.isleader;
+        this.rightObj.doctype=newVal.doctype;
+        this.rightObj.usertype=newVal.usertype;
+      },
+      deep: true,
+      immediate: true,
+    },
+		propDocumentID: {
 			handler(newVal) {
-				console.log("watch saw changes in propRightObj");
-				console.log(this);
-				this.load_right(newVal);
-			},
-			deep: true,
-			immediate: true,
-		},
-		DocumentID: {
-			handler() {
-				console.log("watch saw changes in DocumentID");
-				console.log(this);
+        var _this=this;
+        this.DocumentID=newVal;
+				let formData = new FormData();
+				formData.append("DocumentID", newVal);
+				let config = {
+					headers: {
+					"Content-Type": "multipart/form-data",
+					},
+				};
+				axios
+					.post("http://localhost:5000/api/tell_current_doc_right/", formData, config)
+					.then(function (response) {
+              if (response) {						
+                console.log(response.data);
+                _this.rightObj.modify_right=(response.data.modify_right==1);
+                _this.rightObj.share_right=(response.data.share_right==1);
+                _this.rightObj.discuss_right=(response.data.discuss_right==1);
+
+                _this.rightObj.others_modify_right=(response.data.others_modify_right==1);
+                _this.rightObj.others_share_right=(response.data.others_share_right==1);
+                _this.rightObj.others_discuss_right=(response.data.others_discuss_right==1);
+                console.log("loaded rights",_this.rightObj)
+						}
+						else{
+              _this.$message.error('获取权限失败，请刷新后重试');
+						}
+					
+					})
+					.catch(function (error) {
+            _this.$message.error('获取权限失败，请刷新后重试'+error);
+					});
 			},
 			deep: true,
 			immediate: true,
@@ -118,6 +155,69 @@ export default {
 	},
 
 	methods: {
+		personalize() {
+			var _this=this;
+			console.log(this.rightObj);
+			if(this.rightObj.doctype==1) {
+				let formData = new FormData();
+				formData.append("DocumentID", this.propDocumentID);
+				
+				formData.append("username", localStorage.getItem("token"));
+				let config = {
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
+				};
+				axios
+					.post("http://localhost:5000/api/set_document_private/", formData, config)
+					.then(function (response) {
+						if (response.data.message=='success') {
+							_this.$message.success('修改成功');
+						} else {
+							_this.$message.error('修改失败');
+						}
+					})
+					.catch(function (error) {
+						_this.$message.error('修改失败'+error);
+					});
+      } else {
+        if(this.rightObj.isleader) {
+          let formData = new FormData();
+          formData.append("DocumentID", this.propDocumentID);
+          formData.append("username", localStorage.getItem("token"));
+          let config = {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          };
+          axios
+            .post("http://localhost:5000/api/group_doc_to_personal/", formData, config)
+            .then(function (response) {
+              if (response.data.message=='success') {
+                _this.$message.success('修改成功');
+              } else {
+                _this.$message.error('修改失败');
+              }
+            })
+            .catch(function (error) {
+              _this.$message.error('修改失败'+error);
+            });
+        }else {
+          console.log("权限不足")
+        }
+      }
+		},
+		load_right(newVal) {
+			this.rightObj.discuss_right=newVal.discuss_right;
+			this.rightObj.doctype=newVal.doctype;
+			this.rightObj.modify_right=newVal.modify_right;
+			this.rightObj.others_discuss_right=newVal.others_discuss_right;
+			this.rightObj.others_modify_right=newVal.others_modify_right;
+			this.rightObj.others_share_right=newVal.others_share_right;
+			this.rightObj.share_right=newVal.share_right;
+			this.rightObj.usertype=newVal.usertype;
+			this.rightObj.isleader=newVal.isleader;
+		},
 		commit() {
 			var _this=this;
 			console.log(this.rightObj);
@@ -179,17 +279,6 @@ export default {
 				}
 			}
 		},
-		load_right(newVal) {
-			this.rightObj.discuss_right=newVal.discuss_right;
-			this.rightObj.doctype=newVal.doctype;
-			this.rightObj.modify_right=newVal.modify_right;
-			this.rightObj.others_discuss_right=newVal.others_discuss_right;
-			this.rightObj.others_modify_right=newVal.others_modify_right;
-			this.rightObj.others_share_right=newVal.others_share_right;
-			this.rightObj.share_right=newVal.share_right;
-			this.rightObj.usertype=newVal.usertype;
-			this.rightObj.isleader=newVal.isleader;
-		}
 	},
 }
 </script>

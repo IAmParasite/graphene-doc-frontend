@@ -37,11 +37,16 @@
       @click="toGroupDocs(item)"
     />
     <template slot="actions" class="ant-card-actions">
+      <a-tooltip placement="bottom">
+        <template slot="title">
+          <span>解散团队</span>
+        </template>
       <a-icon key="delete" type="delete" @click="delete_group(item)"/>
-      <a-icon key="edit" type="edit" />
+      </a-tooltip>
+      <a-icon key="edit" type="edit" @click="showModifyTeamForm(item)"/>
       <a-icon key="ellipsis" type="ellipsis" />
     </template>
-    <a-card-meta :title="item.groupname" description="This is the description">
+    <a-card-meta :title="item.groupname" :description="item.description">
       <a-avatar
         slot="avatar"
         src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
@@ -52,6 +57,19 @@
   </a-list>
     
     <div>
+      <a-modal title="修改团队信息" :visible="modifyTeamVisible" @ok="modifyTeam" @cancel="cancelModify">
+        <template>
+          <a-form-model :model="modifyTeamForm" :label-col="labelCol" :wrapper-col="wrapperCol">
+            <a-form-model-item label="团队队名">
+              <a-input v-model="modifyTeamForm.groupname" />
+            </a-form-model-item>
+            <a-form-model-item label="团队简介">
+              <a-input v-model="modifyTeamForm.description" />
+            </a-form-model-item>
+          </a-form-model>
+        </template>
+      </a-modal>
+
       <a-modal title="创建团队" :visible="newteamvisible" @ok="createteam" @cancel="cancelcreate">
         <template>
           <a-form-model :model="newteamform" :label-col="labelCol" :wrapper-col="wrapperCol">
@@ -127,42 +145,48 @@ function myrefresh() {
 // const plainOptions = ['修改', '评论', '分享'];
 // const defaultCheckedList = ['修改', '评论'];
 export default {
-    data(){
-        return {
-          data,
-          addColumns,
-          adddata:[],
-          addgroup:"",
-          // checkedList: defaultCheckedList,
-          indeterminate: true,
-          checkAll: false,
-          // plainOptions,
-          newteamvisible:false,
-          newaddteamvisible:false,
-          top: 0,
-          visible: false,
-          labelCol: { span: 4 },
-          wrapperCol: { span: 14 },
-          form: {
-            DocumentID: "",
-            title: "",
-          },
-          DocumentID: {
-            type: Number,
-          },
-          newteamform:{
-            groupname:"",
-            description:"",
-          },
-          userId:"",
-        }
-    },
+  data(){
+    return {
+      data,
+      addColumns,
+      adddata:[],
+      addgroup:"",
+      // checkedList: defaultCheckedList,
+      indeterminate: true,
+      checkAll: false,
+      // plainOptions,
+      newteamvisible:false,
+      modifyTeamVisible:false,
+      newaddteamvisible:false,
+      top: 0,
+      visible: false,
+      labelCol: { span: 4 },
+      wrapperCol: { span: 14 },
+      form: {
+        DocumentID: "",
+        title: "",
+      },
+      DocumentID: {
+        type: Number,
+      },
+      newteamform:{
+        groupname:"",
+        description:"",
+      },
+      modifyTeamForm:{
+        groupid:"",
+        groupname:"",
+        description:"",
+      },
+      userId:"",
+    }
+  },
 
     
 
     methods: {
       successmsg(message) {
-      this.$message.success(message);
+        this.$message.success(message);
       },
       errormsg(message) {
         this.$message.error(message);
@@ -170,8 +194,17 @@ export default {
       canceladd(){
         this.newaddteamvisible=false;
       },
+      cancelModify() {
+        this.modifyTeamVisible=false;
+      },
       showjointeamform(){
         this.newaddteamvisible=true;
+      },
+      showModifyTeamForm(item) {
+        this.modifyTeamVisible=true;
+        this.modifyTeamForm.groupid=item.groupid;
+        this.modifyTeamForm.groupname=item.groupname;
+        this.modifyTeamForm.description=item.description;
       },
       // onChange(checkedList) {
       //   this.indeterminate = !!checkedList.length && checkedList.length < plainOptions.length;
@@ -203,64 +236,64 @@ export default {
       },
       searchgroup(){
         var _this = this;
-      let formData = new FormData();
-      formData.append("keyword",_this.addgroup);
-      formData.append("username", _this.userId);
-      let config = {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      };
-      axios.post(
-        "http://localhost:5000/api/search_group/",
-        formData,
-        config
-      )
-      .then(function (response) {
-        if (response.data != null) {
-          //_this.successmsg("zhao成功");
-          //console.log(response.data)
-          _this.adddata = response.data;
-        } 
-        else {
-          console.log(response.data)
+        let formData = new FormData();
+        formData.append("keyword",_this.addgroup);
+        formData.append("username", _this.userId);
+        let config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        };
+        axios.post(
+          "http://localhost:5000/api/search_group/",
+          formData,
+          config
+        )
+        .then(function (response) {
+          if (response.data != null) {
+            //_this.successmsg("zhao成功");
+            //console.log(response.data)
+            _this.adddata = response.data;
+          } 
+          else {
+            console.log(response.data)
+            _this.errormsg("查找失败，请尝试刷新后再次创建");
+          }
+        })
+        .catch(function () {
           _this.errormsg("查找失败，请尝试刷新后再次创建");
-        }
-      })
-      .catch(function () {
-        _this.errormsg("查找失败，请尝试刷新后再次创建");
-      });
+        });
           
       },
       addteam(e){
         
-      var _this = this;
-      let formData = new FormData();
-      formData.append("username", _this.userId);
-      formData.append("groupname",e);
-      
-      // console.log("文档id 被邀请人id 邀请者id")
-      
-      // console.log(e)
-      // console.log(_this.userId)
-      // console.log("b")
-      let config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-      axios.post("http://localhost:5000/api/apply_in_group/", formData, config)
-        .then(function (response) {
-          //console.log(response.data)
-          if (response) {
-            _this.successmsg("申请成功");
-          } else {
-            _this.errormsg("申请失败");
-          }
-        })
-        .catch(function (error) {
-          console.log("wrong", error);
-        });
+        var _this = this;
+        let formData = new FormData();
+        formData.append("username", _this.userId);
+        formData.append("groupname",e);
+        
+        // console.log("文档id 被邀请人id 邀请者id")
+        
+        // console.log(e)
+        // console.log(_this.userId)
+        // console.log("b")
+        let config = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        };
+        axios.post("http://localhost:5000/api/apply_in_group/", formData, config)
+          .then(function (response) {
+            //console.log(response.data)
+            if (response) {
+              _this.successmsg("申请成功");
+            } else {
+              _this.errormsg("申请失败");
+            }
+          })
+          .catch(function (error) {
+            console.log("wrong", error);
+          });
 
       },
       shownewteamform(){
@@ -284,6 +317,38 @@ export default {
         axios
           .post(
             "http://localhost:5000/api/creategroup/",
+            formData,
+            config
+          )
+          .then(function (response) {
+            if (response.data.message == "success") {
+              _this.successmsg("创建成功");
+              setTimeout(() => {
+                myrefresh();
+              }, 2000);
+            } else {
+              _this.errormsg("创建失败，请尝试刷新后再次创建");
+            }
+          })
+          .catch(function () {
+            _this.errormsg("创建失败，请尝试刷新后再次创建");
+          });
+      },
+      modifyTeam() {
+        var _this=this;
+        let formData = new FormData();
+        formData.append("groupid", this.modifyTeamForm.groupid);
+        formData.append("groupname", this.modifyTeamForm.groupname);
+        formData.append("description", this.modifyTeamForm.description);
+        let config = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        };
+        
+        axios
+          .post(
+            "http://localhost:5000/api/modify_group_info/",
             formData,
             config
           )

@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div v-title data-title="请处理您的系统通知">
     <a-table
       :columns="columns"
       :data-source="data"
       style="margin-right:170px;margin-top:30px"
       rowKey="id"
-    >
+    >v
       <a slot="name" slot-scope="text">{{ text }}</a>
       <span slot="customTitle"></span>
       <span slot="action" slot-scope="text,item">

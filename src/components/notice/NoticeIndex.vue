@@ -1,5 +1,5 @@
 <template>
-  <a-layout id="components-layout-demo-side" style="min-height: 600px;">
+  <a-layout id="components-layout-demo-side" style="min-height: 600px;" v-title data-title="欢迎进入消息通知系统">
     <a-layout-sider style="background: #fff;" v-model="collapsed" collapsible>
       <div class="logo" />
       <a-menu theme="light" mode="inline" :default-selected-keys="['1']"  @select="handleSelect">

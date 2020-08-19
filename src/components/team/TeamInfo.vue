@@ -1,33 +1,38 @@
 <template>
   <div>
-    <div :style="backgroundDiv">
-      <h1 id='placeholder'> </h1>
+    <div id="placeholder">
+
     </div>
-      <a-col align="center">
-        <h1 id='grouptitle'> {{groupObj.groupname}}</h1>
-      </a-col>
+    <a-col align="center">
+      <h1 id='grouptitle'> {{groupObj.groupname}}</h1>
+    </a-col>
     <div>
-      <a-divider>成员列表</a-divider>
+      <a-divider></a-divider>
       <memberList :propGroupid="groupObj.groupid"></memberList>
-      <a-divider>详细信息</a-divider>
-      <a-descriptions layout="vertical" bordered style="text-align:center">
-        <a-descriptions-item label="团队ID" span="1">
-          {{groupObj.groupid}}
-        </a-descriptions-item>
-        <a-descriptions-item label="建立时间" span="2">
-          {{groupObj.createdtime}}
-        </a-descriptions-item>
-        <a-descriptions-item label="描述" span="1">
-          {{groupObj.description}}
-        </a-descriptions-item>
+      <a-divider/>
+      <a-col layout="vertical" bordered style="text-align:center;margin-left:20px;margin-right:20px">
+        <a-row>
+          <a-col span=8 align="left">团队ID</a-col>
+          <a-col span=16 align="left">{{groupObj.groupid}}</a-col>
+        </a-row>
+        <a-row>
+          <a-col span=8 align="left">建立时间</a-col>
+          <a-col span=16 align="left">{{groupObj.createdtime}}</a-col>
+        </a-row>
+        <a-row>
+          <a-col span=8 align="left">描述</a-col>
+          <a-col span=16 align="left">{{groupObj.description}}</a-col>
+        </a-row>
         
-      </a-descriptions>
-      <a-divider>团队管理</a-divider>
+      </a-col>
       <div v-if="iamfounder">
-        <a-button type="primary" block style="margin-top:10px" @click="showModal">邀请成员加入团队</a-button>
+        <a-col style="margin:10px">
+        <a-divider/>
+        <a-button type="primary" block style="margin-top:10px;" @click="showModal">邀请成员加入团队</a-button>
         <a-button type="primary" block style="margin-top:10px" @click="showModal2">管理成员</a-button>
         <a-button type="primary" block style="margin-top:10px" @click="showModal3">管理文档</a-button>
         <a-button type="danger" block style="margin-top:10px;margin-bottom=10px" @click="delete_group">解散团队</a-button>
+        </a-col>
         <a-modal title="邀请成员加入团队" :visible="visible"   :footer="null" @ok="handleOk" @cancel="handleCancel">
             <template>
               <div>
@@ -48,7 +53,7 @@
         <a-modal title="管理成员" :visible="visible2" :footer="null" @cancel="handleCancel2">
             <template>
               <div>
-                <a-table :columns="columns" :data-source="data3" rowKey="id">
+                <a-table :columns="columns" :data-source="data2" rowKey="id">
                    <!--<a slot="action" slot-scope="text" href="javascript:;">Delete</a>-->
                   <a slot="action" slot-scope="text" href="javascript:;" @click="deleteMem(text.id)">Delete</a>
                  
@@ -391,8 +396,8 @@ export default {
     deleteMem(id) {
           var _this=this;
           this.$confirm({
-            title: <div style="font-weight:bold">确定删除改成员？</div>,
-            content: <div style="color:red;font-weight:bold"><p>改成员会被踢出团队！</p></div>,
+            title: <div style="font-weight:bold">确定删除该成员？</div>,
+            content: <div style="color:red;font-weight:bold"><p>该成员会被踢出团队！</p></div>,
             okText: '删除',
             okType: 'danger',
             cancelText: '取消',
@@ -552,7 +557,8 @@ export default {
 
 <style scoped>
 #placeholder{
-  padding-top:250px;
+  padding-top:200px;
+  background-image:url(../../assets/teaminfopic.jpg);
 }
 
 #grouptitle{

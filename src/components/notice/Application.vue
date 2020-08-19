@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div  v-title data-title="请处理您的申请信息">
     <a-table :columns="columns" :data-source="data" style="margin-right:170px;margin-top:30px" rowKey="id">
       <span slot="action" slot-scope="text,item">
         <a-button type="primary" size="large"  @click="agree_invitation(item.id)">

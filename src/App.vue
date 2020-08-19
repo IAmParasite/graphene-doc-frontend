@@ -1,10 +1,10 @@
 <template>
-  <a-layout id="components-layout-demo-top-side-2">
+  <a-layout id="components-layout-demo-top-side-2" style="height:100%">
 
     <a-layout-header class="header" style="background: rgba(215, 215, 215, 1)">
-      <div class="logo" > 
-        <span class="icon-juzhentanyuansujiegou" style="font-size: 80px; " >
-        </span>
+      <div class="logo" style="width:200px;height:80px;margin-left:10px;margin-right:0"> 
+        <span class="icon-juzhentanyuansujiegou" style="font-size: 64px; " ></span>
+        <span class="test" style="font-size:20px">石墨烯文档</span>
       </div>
       <a-menu
         theme="light"
@@ -14,7 +14,7 @@
         :style="{ lineHeight: '64px' }"
       >
         <a-menu-item key="Home" > 
-          <a style="color:#545454;margin-left:64px" >
+          <a style="color:#545454;margin-left:10px" >
             <a-icon type="home" />Home
           </a>
           <router-link to="/">
@@ -63,9 +63,12 @@
       </a-menu>
     </a-layout-header>
 
-
+    
    
     <router-view @notice="updatenotice"></router-view>
+    <a-layout-footer style="text-align: center;background-color:#ffffff">
+        石墨烯文档
+      </a-layout-footer>
   </a-layout>
   
 </template>

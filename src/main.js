@@ -35,7 +35,6 @@ import {Tag} from 'ant-design-vue';
 import {Switch} from 'ant-design-vue';
 import Axios from 'axios'
 import VueRouter from 'vue-router'
-
 import { message} from 'ant-design-vue'
 import htmlToPdf from '@/utils/htmlToPdf'
 Vue.use(htmlToPdf)
@@ -46,6 +45,7 @@ message.config({
     top:`100px`, // 到页面顶部距离
     maxCount: 3 // 最大显示数, 超过限制时，最早的消息会被自动关闭
 });
+
 Vue.use(Button);
 Vue.use(Input);
 Vue.use(Layout);
@@ -83,6 +83,12 @@ const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => err)
 }
+Vue.directive('title', {
+  inserted: function (el, binding) {
+    document.title = el.dataset.title
+  }
+})
+
 
 Axios.interceptors.request.use(config => {  
   if(config.push === '/'){

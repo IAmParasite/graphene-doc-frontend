@@ -1,6 +1,9 @@
 <template>
-      <div>
-        <a-row>
+      <div v-title data-title="团队主页">
+        
+        
+        <a-col span="20">
+          <a-row>
           <a-col :span="10" :offset="7"></a-col>
           <a-col :span="2" :offset="5">
             <a-affix :offset-top="top">
@@ -13,15 +16,13 @@
             </a-affix>
           </a-col>
         </a-row>
-        
-        <a-col span="18">
           <a-list :grid="{ gutter: 25, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }" :data-source="data">
             <a-list-item slot="renderItem" slot-scope="item">
               <docCard :docObj="item" :fav="2"></docCard>
             </a-list-item>
           </a-list>
         </a-col>
-        <a-col span="6" id="sider-col">
+        <a-col span="4" id="sider-col">
           <TeamInfo :groupid="this.$route.params.id"></TeamInfo>
         </a-col>
         <div>
@@ -306,8 +307,6 @@ function myrefresh() {
 </script>
 <style>
 #sider-col{
-  background-color: #dcdcdc;
-  border: solid rgb(136, 136, 136) 1px;
-  height: 100%
+  background-color: #ffffff;
 }
 </style>
