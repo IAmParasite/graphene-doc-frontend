@@ -46,7 +46,7 @@
       <a-icon key="edit" type="edit" @click="showModifyTeamForm(item)"/>
       <a-icon key="ellipsis" type="ellipsis" />
     </template>
-    <a-card-meta :title="item.groupname" description="This is the description">
+    <a-card-meta :title="item.groupname" :description="item.description">
       <a-avatar
         slot="avatar"
         src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
