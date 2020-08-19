@@ -53,7 +53,7 @@
         <a-modal title="管理成员" :visible="visible2" :footer="null" @cancel="handleCancel2">
             <template>
               <div>
-                <a-table :columns="columns" :data-source="data3" rowKey="id">
+                <a-table :columns="columns" :data-source="data2" rowKey="id">
                    <!--<a slot="action" slot-scope="text" href="javascript:;">Delete</a>-->
                   <a slot="action" slot-scope="text" href="javascript:;" @click="deleteMem(text.id)">Delete</a>
                  
@@ -396,8 +396,8 @@ export default {
     deleteMem(id) {
           var _this=this;
           this.$confirm({
-            title: <div style="font-weight:bold">确定删除改成员？</div>,
-            content: <div style="color:red;font-weight:bold"><p>改成员会被踢出团队！</p></div>,
+            title: <div style="font-weight:bold">确定删除该成员？</div>,
+            content: <div style="color:red;font-weight:bold"><p>该成员会被踢出团队！</p></div>,
             okText: '删除',
             okType: 'danger',
             cancelText: '取消',

@@ -71,7 +71,10 @@
         </a-layout-sider>
         <!-- 主编辑区 -->
         <a-layout style="padding: 0 24px 24px">
-          <a-breadcrumb style="margin: 16px 0"></a-breadcrumb>
+          <a-breadcrumb style="margin: 16px 0;text-align: left;">
+          <a-breadcrumb-item>文档 </a-breadcrumb-item>
+          <a-breadcrumb-item>Bill</a-breadcrumb-item>
+        </a-breadcrumb>
           <!--正在编辑的用户列表-->
           <a-row style="margin-bottom:10px;">
             <span style="float:left;margin-top:10px;">正在编辑：</span>

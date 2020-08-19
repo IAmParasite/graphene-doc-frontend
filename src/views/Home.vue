@@ -55,10 +55,10 @@
     <a-layout>
       
       <a-layout-content style="margin: 0 26px;">
-        <a-breadcrumb style="margin: 16px 0;text-align: left;">
+        <!-- <a-breadcrumb style="margin: 16px 0;text-align: left;">
           <a-breadcrumb-item>User </a-breadcrumb-item>
           <a-breadcrumb-item>Bill</a-breadcrumb-item>
-        </a-breadcrumb>
+        </a-breadcrumb> -->
         
         <div style="margin-top:10px">
           <router-view v-if="isRouterAlive"></router-view>
