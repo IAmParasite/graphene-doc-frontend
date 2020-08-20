@@ -48,7 +48,7 @@ export default {
       },
     };
     axios
-      .post("http://localhost:5000/api/my_favor_doc/", formData, config)
+      .post("http://49.235.221.218:8080/api/my_favor_doc/", formData, config)
       .then(function (response) {
         if (response) {
           _this.data = response.data;

@@ -146,7 +146,7 @@ export default {
             },
           };
           axios
-            .post("http://localhost:5000/api/groupiscreatedbyme/", formData, config)
+            .post("http://49.235.221.218:8080/api/groupiscreatedbyme/", formData, config)
             .then(function (response) {
               if (response) {
                 _this.iamfounder=(response.data.message=='yes');
@@ -194,7 +194,7 @@ export default {
       },
     };
     axios
-      .post("http://localhost:5000/api/get_user/", formData, config)
+      .post("http://49.235.221.218:8080/api/get_user/", formData, config)
       .then(function (response) {
         if (response) {
           _this.userid = response.data.id;
@@ -261,7 +261,7 @@ export default {
         },
       };
       axios
-        .post("http://localhost:5000/api/queryuser/", formData, config)
+        .post("http://49.235.221.218:8080/api/queryuser/", formData, config)
         .then(function (response) {
           if (response) {
             _this.data = response.data;
@@ -276,7 +276,6 @@ export default {
     },
     get_groupmem() {
       let formData=new FormData();
-      console.log(this.groupid)
       formData.append('groupid',this.groupid);
       let config = {
         headers: {
@@ -284,10 +283,11 @@ export default {
         }
       };
       var _this=this;
-      axios.post('http://localhost:5000/api/get_user_bygroup/',formData,config)
+      axios.post('http://49.235.221.218:8080/api/get_user_bygroup/',formData,config)
         .then(function(response) {
           if(response) {
             _this.data2 = response.data;
+            _this.data2=_this.data2.filter(item=>item.username!=localStorage.getItem('token'))
           }
         }).catch(error=> {
           console.log('error',error);
@@ -297,18 +297,16 @@ export default {
       var _this = this;
           let formData = new FormData();
           formData.append("group_id", this.groupid);
-          console.log("该组的组号是" + this.groupid);
           let config = {
             headers: {
               "Content-Type": "multipart/form-data",
             },
           };
           axios
-            .post("http://localhost:5000/api/get_group_docs/", formData, config)
+            .post("http://49.235.221.218:8080/api/get_group_docs/", formData, config)
             .then(function (response) {
               if (response) {
                 _this.data3 = response.data;
-                console.log(response.data);
               } else {
                 alert("请先登录！");
               }
@@ -326,9 +324,6 @@ export default {
       this.$message.error('Click on No');
     },
     invite(id) {
-      console.log("邀请用户的id " + id)
-      console.log("邀请组的id" + this.groupid)
-      console.log("用户" + localStorage.getItem('token'))
       var _this = this;
       let formData = new FormData();
       formData.append("user_id", id);
@@ -340,7 +335,7 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
-      axios.post("http://localhost:5000/api/invite_user/", formData, config)
+      axios.post("http://49.235.221.218:8080/api/invite_user/", formData, config)
         .then(function (response) {
           if (response) {
             _this.successmsg("邀请成功");
@@ -375,7 +370,7 @@ export default {
             },
           };
           axios
-            .post("http://localhost:5000/api/delete_group/", formData, config)
+            .post("http://49.235.221.218:8080/api/delete_group/", formData, config)
             .then(function (response) {
               console.log(response.data.message);
               if (response.data.message == "success") {
@@ -402,20 +397,17 @@ export default {
             okType: 'danger',
             cancelText: '取消',
             onOk() {
-              console.log("删除该成员" + id);
               let formData = new FormData();
               formData.append("groupid", _this.groupid);
               formData.append("leaderid", _this.userid);
               formData.append("userid", id)
-              console.log("组号" + _this.groupid);
-              console.log("执行者是" + _this.userid);
               let config = {
                 headers: {
                   "Content-Type": "multipart/form-data",
                 },
               };
               axios
-                .post("http://localhost:5000/api/delete_user/", formData, config)
+                .post("http://49.235.221.218:8080/api/delete_user/", formData, config)
                 .then(function (response) {
                   console.log(response.data.message);
                   if (response.data.message == "success") {
@@ -445,7 +437,6 @@ export default {
             okType: 'danger',
             cancelText: '取消',
             onOk() {
-              console.log("删除该文档" + id);
               let formData = new FormData();
               formData.append("DocumentID", id)
               let config = {
@@ -453,7 +444,7 @@ export default {
                   "Content-Type": "multipart/form-data",
                 },
               };
-              axios.post("http://localhost:5000/api/recycle_doc_2/", formData, config)
+              axios.post("http://49.235.221.218:8080/api/recycle_doc_2/", formData, config)
                 .then(function (response) {
                   console.log("返回的结果是" + response.data.message);
                   if (response.data.message == "success") {
@@ -530,7 +521,7 @@ export default {
                   "Content-Type": "multipart/form-data",
                 },
               };
-              axios.post("http://localhost:5000/api/quit_group/", formData, config)
+              axios.post("http://49.235.221.218:8080/api/quit_group/", formData, config)
                 .then(function (response) {
                   console.log("返回的结果是" + response.data.message);
                   if (response.data.message == "success") {
