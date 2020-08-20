@@ -188,7 +188,7 @@ export default {
             "Content-Type": "multipart/form-data",
           },
         };
-        axios.post("http://49.235.221.218:8080/api/get_user_byid/", formData, config)
+        axios.post("http://localhost:5000/api/get_user_byid/", formData, config)
           .then(function (response) {
             if (response) {
                 _this.username = response.data.username
@@ -238,7 +238,7 @@ export default {
         },
       };
       if(flag == 1) {
-          axios.post("http://49.235.221.218:8080/api/recycle_doc/", formData, config)
+          axios.post("http://localhost:5000/api/recycle_doc/", formData, config)
         .then(function (response) {
           console.log(response.data.message);
           if (response.data.message == "success") {
@@ -255,7 +255,7 @@ export default {
         });
       }
       else {
-        axios.post("http://49.235.221.218:8080/api/del_doc/", formData, config)
+        axios.post("http://localhost:5000/api/del_doc/", formData, config)
           .then(function (response) {
             console.log(response.data.message);
             if (response.data.message == "success") {
@@ -312,7 +312,7 @@ export default {
         },
       };
       axios
-        .post("http://49.235.221.218:8080/api/favor_doc/", formData, config)
+        .post("http://localhost:5000/api/favor_doc/", formData, config)
         .then(function (response) {
           console.log(response.data.message);
           if (response.data.message == "success") {
@@ -338,7 +338,7 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
-      axios.post("http://49.235.221.218:8080/api/cancel_favor_doc/", formData, config)
+      axios.post("http://localhost:5000/api/cancel_favor_doc/", formData, config)
         .then(function (response) {
           console.log(response.data.message);
           if (response.data.message == "success") {
@@ -365,7 +365,7 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
-      axios.post("http://49.235.221.218:8080/api/recover_doc/", formData, config)
+      axios.post("http://localhost:5000/api/recover_doc/", formData, config)
         .then(function (response) {
           if (response.data.message == "success") {
             _this.successmsg("恢复成功");
@@ -404,7 +404,7 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
-      axios.post("http://49.235.221.218:8080/api/modify_doc_basic/", formData, config)
+      axios.post("http://localhost:5000/api/modify_doc_basic/", formData, config)
         .then(function (response) {
           if (response.data.message == "success") {
             _this.successmsg("修改成功！");

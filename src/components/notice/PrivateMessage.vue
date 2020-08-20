@@ -108,7 +108,7 @@ export default {
       };
       var _this = this;
       axios
-        .post("http://49.235.221.218:8080/api/send_msg_people/", formData, config)
+        .post("http://localhost:5000/api/send_msg_people/", formData, config)
         .then(function (response) {
           _this.user = response.data;
         })
@@ -127,7 +127,7 @@ export default {
       };
       var _this = this;
       axios
-        .post("http://49.235.221.218:8080/api/our_msg/", formData, config)
+        .post("http://localhost:5000/api/our_msg/", formData, config)
         .then(function (response) {
           _this.data = response.data;
           console.log(response.data);
@@ -149,7 +149,7 @@ export default {
       };
       var _this = this;
       axios
-        .post("http://49.235.221.218:8080/api/send_msg_to_sb/", formData, config)
+        .post("http://localhost:5000/api/send_msg_to_sb/", formData, config)
         .then(function (response) {
           console.log(response.data);
           _this.data.push(response.data);

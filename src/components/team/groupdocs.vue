@@ -170,7 +170,7 @@ function myrefresh() {
             },
           };
           axios
-            .post("http://49.235.221.218:8080/api/get_group_docs/", formData, config)
+            .post("http://localhost:5000/api/get_group_docs/", formData, config)
             .then(function (response) {
               if (response) {
                 _this.data = response.data;
@@ -283,7 +283,7 @@ function myrefresh() {
               },
             };
             axios.post(
-                "http://49.235.221.218:8080/api/create_group_doc/",
+                "http://localhost:5000/api/create_group_doc/",
                 formData,
                 config
               )

@@ -280,7 +280,7 @@ export default {
       };
       var _this = this;
       axios
-        .post("http://49.235.221.218:8080/api/tell_doc_right/", formData, config)
+        .post("http://localhost:5000/api/tell_doc_right/", formData, config)
         .then(function (response) {
           if (response) {
             console.log(response.data);
@@ -341,7 +341,7 @@ export default {
               },
             };
             axios.post(
-                "http://49.235.221.218:8080/api/query_notindoc_user/",
+                "http://localhost:5000/api/query_notindoc_user/",
                 formData,
                 config
               )
@@ -376,7 +376,7 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
-      axios.post("http://49.235.221.218:8080/api/pernal_doc_share_to/", formData, config)
+      axios.post("http://localhost:5000/api/pernal_doc_share_to/", formData, config)
         .then(function (response) {
           //console.log(response.data)
           if (response) {
@@ -404,7 +404,7 @@ export default {
         },
       };
       axios
-        .post("http://49.235.221.218:8080/api/modify_doc/", formData, config)
+        .post("http://localhost:5000/api/modify_doc/", formData, config)
         .then(function (response) {
           console.log(response.data.message);
           if (response.data.message == "success") {
@@ -435,7 +435,7 @@ export default {
         },
       };
       axios
-        .post("http://49.235.221.218:8080/api/create_comment/", formData, config)
+        .post("http://localhost:5000/api/create_comment/", formData, config)
         .then(function (response) {
           if (response.data.message == "success") {
             console.log("程坤");
@@ -459,7 +459,7 @@ export default {
       };
       var _this = this;
       axios
-        .post("http://49.235.221.218:8080/api/get_doccontent/", formData, config)
+        .post("http://localhost:5000/api/get_doccontent/", formData, config)
         .then(function (response) {
           if (response.data.message == "success") {
             _this.content = response.data.content;
@@ -484,7 +484,7 @@ export default {
       };
       var _this = this;
       axios
-        .post("http://49.235.221.218:8080/api/get_all_comment/", formData, config)
+        .post("http://localhost:5000/api/get_all_comment/", formData, config)
         .then(function (response) {
           if (response) {
             _this.comment=response.data;
@@ -506,7 +506,7 @@ export default {
       };
       var _this = this;
       axios
-        .post("http://49.235.221.218:8080/api/get_all_modified_time/", formData, config)
+        .post("http://localhost:5000/api/get_all_modified_time/", formData, config)
         .then(function (response) {
           if (response) {
             _this.modify_history=response.data;
@@ -565,7 +565,7 @@ export default {
           "Content-Type": "multipart/form-data1",
         },
       };
-      axios.post("http://49.235.221.218:8080/api/get_user/", formData1, config1)
+      axios.post("http://localhost:5000/api/get_user/", formData1, config1)
         .then(function (response) {
           console.log(response.data)
           if (response) {
@@ -592,7 +592,7 @@ export default {
         },
       };
       axios
-        .post("http://49.235.221.218:8080/api/get_doctitle/", formData1, config)
+        .post("http://localhost:5000/api/get_doctitle/", formData1, config)
         .then(function (response) {
           if (response) {
             _this.doctitle = response.data.title;

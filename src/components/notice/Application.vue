@@ -77,7 +77,7 @@ export default {
       };
       var _this = this;
       axios
-        .post("http://49.235.221.218:8080/api/view_confirm_apply_notice/", formData, config)
+        .post("http://localhost:5000/api/view_confirm_apply_notice/", formData, config)
         .then(function (response) {
             _this.data=response.data;
         })
@@ -100,7 +100,7 @@ export default {
         },
       };
       axios
-        .post("http://49.235.221.218:8080/api/accept_application_addgroupmember/", formData, config)
+        .post("http://localhost:5000/api/accept_application_addgroupmember/", formData, config)
         .then(function (response) {
             console.log(response.data.message);
              _this.data=_this.data.filter((record)=>record.id!=item.id)
@@ -126,7 +126,7 @@ export default {
       };
       
       axios
-        .post("http://49.235.221.218:8080/api/refuse_application_addgroupmember/", formData, config)
+        .post("http://localhost:5000/api/refuse_application_addgroupmember/", formData, config)
         .then(function () {
             _this.data=_this.data.filter((record)=>record.id!=item.id)
             _this.$emit('updatenotice');

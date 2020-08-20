@@ -245,7 +245,7 @@ export default {
         },
         };
         axios.post(
-          "http://49.235.221.218:8080/api/search_group/",
+          "http://localhost:5000/api/search_group/",
           formData,
           config
         )
@@ -282,7 +282,7 @@ export default {
             "Content-Type": "multipart/form-data",
           },
         };
-        axios.post("http://49.235.221.218:8080/api/apply_in_group/", formData, config)
+        axios.post("http://localhost:5000/api/apply_in_group/", formData, config)
           .then(function (response) {
             //console.log(response.data)
             if (response) {
@@ -316,7 +316,7 @@ export default {
         
         axios
           .post(
-            "http://49.235.221.218:8080/api/creategroup/",
+            "http://localhost:5000/api/creategroup/",
             formData,
             config
           )
@@ -348,7 +348,7 @@ export default {
         
         axios
           .post(
-            "http://49.235.221.218:8080/api/modify_group_info/",
+            "http://localhost:5000/api/modify_group_info/",
             formData,
             config
           )
@@ -389,7 +389,7 @@ export default {
                 'Content-Type': 'multipart/form-data'
             }
         };
-        axios.post('http://49.235.221.218:8080/api/mygroup/',formData,config)
+        axios.post('http://localhost:5000/api/mygroup/',formData,config)
             .then(function(response) {
                 if(response) {
                   _this.data=response.data;
@@ -411,7 +411,7 @@ export default {
                 'Content-Type': 'multipart/form-data'
             }
         };
-        axios.post('http://49.235.221.218:8080/api/group_created_byme/',formData,config)
+        axios.post('http://localhost:5000/api/group_created_byme/',formData,config)
             .then(function(response) {
                 if(response) {
                   _this.data=response.data;
@@ -450,7 +450,7 @@ export default {
               },
             };
             axios
-              .post("http://49.235.221.218:8080/api/delete_group/", formData, config)
+              .post("http://localhost:5000/api/delete_group/", formData, config)
               .then(function (response) {
                 console.log(response.data.message);
                 if (response.data.message == "success") {

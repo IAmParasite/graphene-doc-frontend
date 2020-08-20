@@ -64,7 +64,7 @@ export default {
         },
       };
       axios
-        .post("http://49.235.221.218:8080/api/sayhi/", formData, config)
+        .post("http://localhost:5000/api/sayhi/", formData, config)
         .then(function (response) {
             _this.successmsg("打招呼成功，快去和他聊天吧！")
         })

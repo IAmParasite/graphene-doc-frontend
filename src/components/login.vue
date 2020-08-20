@@ -161,7 +161,7 @@ export default {
               }
           };
           var _this = this
-          axios.post('http://49.235.221.218:8080/api/regist/',formData,config)
+          axios.post('http://localhost:5000/api/regist/',formData,config)
               .then(function (response) {
                   if (response.data.message=="success"){
                     _this.successmessage("注册成功");
@@ -194,7 +194,7 @@ export default {
           }
       };
       var _this = this
-      axios.post('http://49.235.221.218:8080/api/login/',formData, config)
+      axios.post('http://localhost:5000/api/login/',formData, config)
           .then(function (response)  {
               if (response.data.message!='fail') {
                   _this.wronglog.wl = false;

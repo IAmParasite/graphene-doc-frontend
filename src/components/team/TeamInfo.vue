@@ -146,7 +146,7 @@ export default {
             },
           };
           axios
-            .post("http://49.235.221.218:8080/api/groupiscreatedbyme/", formData, config)
+            .post("http://localhost:5000/api/groupiscreatedbyme/", formData, config)
             .then(function (response) {
               if (response) {
                 _this.iamfounder=(response.data.message=='yes');
@@ -194,7 +194,7 @@ export default {
       },
     };
     axios
-      .post("http://49.235.221.218:8080/api/get_user/", formData, config)
+      .post("http://localhost:5000/api/get_user/", formData, config)
       .then(function (response) {
         if (response) {
           _this.userid = response.data.id;
@@ -261,7 +261,7 @@ export default {
         },
       };
       axios
-        .post("http://49.235.221.218:8080/api/queryuser/", formData, config)
+        .post("http://localhost:5000/api/queryuser/", formData, config)
         .then(function (response) {
           if (response) {
             _this.data = response.data;
@@ -283,7 +283,7 @@ export default {
         }
       };
       var _this=this;
-      axios.post('http://49.235.221.218:8080/api/get_user_bygroup/',formData,config)
+      axios.post('http://localhost:5000/api/get_user_bygroup/',formData,config)
         .then(function(response) {
           if(response) {
             _this.data2 = response.data;
@@ -303,7 +303,7 @@ export default {
             },
           };
           axios
-            .post("http://49.235.221.218:8080/api/get_group_docs/", formData, config)
+            .post("http://localhost:5000/api/get_group_docs/", formData, config)
             .then(function (response) {
               if (response) {
                 _this.data3 = response.data;
@@ -335,7 +335,7 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
-      axios.post("http://49.235.221.218:8080/api/invite_user/", formData, config)
+      axios.post("http://localhost:5000/api/invite_user/", formData, config)
         .then(function (response) {
           if (response) {
             _this.successmsg("邀请成功");
@@ -370,7 +370,7 @@ export default {
             },
           };
           axios
-            .post("http://49.235.221.218:8080/api/delete_group/", formData, config)
+            .post("http://localhost:5000/api/delete_group/", formData, config)
             .then(function (response) {
               console.log(response.data.message);
               if (response.data.message == "success") {
@@ -407,7 +407,7 @@ export default {
                 },
               };
               axios
-                .post("http://49.235.221.218:8080/api/delete_user/", formData, config)
+                .post("http://localhost:5000/api/delete_user/", formData, config)
                 .then(function (response) {
                   console.log(response.data.message);
                   if (response.data.message == "success") {
@@ -444,7 +444,7 @@ export default {
                   "Content-Type": "multipart/form-data",
                 },
               };
-              axios.post("http://49.235.221.218:8080/api/recycle_doc_2/", formData, config)
+              axios.post("http://localhost:5000/api/recycle_doc_2/", formData, config)
                 .then(function (response) {
                   console.log("返回的结果是" + response.data.message);
                   if (response.data.message == "success") {
@@ -521,7 +521,7 @@ export default {
                   "Content-Type": "multipart/form-data",
                 },
               };
-              axios.post("http://49.235.221.218:8080/api/quit_group/", formData, config)
+              axios.post("http://localhost:5000/api/quit_group/", formData, config)
                 .then(function (response) {
                   console.log("返回的结果是" + response.data.message);
                   if (response.data.message == "success") {

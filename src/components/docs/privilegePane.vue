@@ -127,7 +127,7 @@ export default {
 					},
 				};
 				axios
-					.post("http://49.235.221.218:8080/api/tell_current_doc_right/", formData, config)
+					.post("http://localhost:5000/api/tell_current_doc_right/", formData, config)
 					.then(function (response) {
               if (response) {						
                 console.log(response.data);
@@ -169,7 +169,7 @@ export default {
 					},
 				};
 				axios
-					.post("http://49.235.221.218:8080/api/set_document_private/", formData, config)
+					.post("http://localhost:5000/api/set_document_private/", formData, config)
 					.then(function (response) {
 						if (response.data.message=='success') {
 							_this.$message.success('修改成功');
@@ -191,7 +191,7 @@ export default {
             },
           };
           axios
-            .post("http://49.235.221.218:8080/api/group_doc_to_personal/", formData, config)
+            .post("http://localhost:5000/api/group_doc_to_personal/", formData, config)
             .then(function (response) {
               if (response.data.message=='success') {
                 _this.$message.success('修改成功');
@@ -235,7 +235,7 @@ export default {
 					},
 				};
 				axios
-					.post("http://49.235.221.218:8080/api/modify_personal_doc_right/", formData, config)
+					.post("http://localhost:5000/api/modify_personal_doc_right/", formData, config)
 					.then(function (response) {
 						if (response.data.message=='success') {
 							_this.$message.success('修改成功');
@@ -263,7 +263,7 @@ export default {
 						},
 					};
 					axios
-						.post("http://49.235.221.218:8080/api/modify_group_doc_right/", formData, config)
+						.post("http://localhost:5000/api/modify_group_doc_right/", formData, config)
 						.then(function (response) {
 							if (response.data.message=='success') {
 								_this.$message.success('修改成功');

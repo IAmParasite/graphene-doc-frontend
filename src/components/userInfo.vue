@@ -73,7 +73,7 @@ export default {
       }
     };
     var _this=this;
-    axios.post('http://49.235.221.218:8080/api/get_user/',formData,config)
+    axios.post('http://localhost:5000/api/get_user/',formData,config)
       .then(function(response) {
         if(response) {
           _this.userObj=response.data;

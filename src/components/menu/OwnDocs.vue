@@ -205,7 +205,7 @@ export default {
           "Content-Type": "multipart/form-data",
         },
       };
-      axios.post("http://49.235.221.218:8080/api/create_personal_doc/", formData, config)
+      axios.post("http://localhost:5000/api/create_personal_doc/", formData, config)
         .then(function (response) {
           if (response.data.message == "success") {
             _this.successmsg("创建成功");
@@ -233,7 +233,7 @@ export default {
       },
     };
     axios
-      .post("http://49.235.221.218:8080/api/my_created_docs/", formData, config)
+      .post("http://localhost:5000/api/my_created_docs/", formData, config)
       .then(function (response) {
         if (response) {
           _this.data = response.data;

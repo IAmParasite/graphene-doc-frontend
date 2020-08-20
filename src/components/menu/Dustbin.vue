@@ -46,7 +46,7 @@ export default {
       },
     };
     axios
-      .post("http://49.235.221.218:8080/api/my_deleted_docs/", formData, config)
+      .post("http://localhost:5000/api/my_deleted_docs/", formData, config)
       .then(function (response) {
         if (response) {
           _this.data = response.data;

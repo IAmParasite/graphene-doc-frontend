@@ -216,7 +216,7 @@ export default {
       };
       var _this = this;
       axios
-        .post("http://49.235.221.218:8080/api/num_of_notice/", formData, config)
+        .post("http://localhost:5000/api/num_of_notice/", formData, config)
         .then(function (response) {
             _this.noticenum=response.data.notice_cnt;
             console.log(_this.noticenum);
