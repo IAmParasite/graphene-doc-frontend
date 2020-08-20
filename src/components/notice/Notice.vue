@@ -72,7 +72,7 @@ export default {
       var _this = this;
       axios
         .post(
-          "http://localhost:5000/api/view_non_confirm_notice/",
+          "http://49.235.221.218:8080/api/view_non_confirm_notice/",
           formData,
           config
         )
@@ -96,7 +96,7 @@ export default {
         },
       };
       axios
-        .post("http://localhost:5000/api/del_new_notice/", formData, config)
+        .post("http://49.235.221.218:8080/api/del_new_notice/", formData, config)
         .then(function (response) {
           console.log(response.data.message);
           _this.data=_this.data.filter((record)=>record.id!=item.id);
